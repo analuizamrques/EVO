@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -166,11 +166,11 @@
 
         /* HERO */
         .hero {
-            min-height: 100vh;
+            min-height: 55vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 80px 48px 72px;
+            padding: 40px 48px 40px;
             text-align: center;
         }
         .hero-content { max-width: 680px; }
@@ -550,7 +550,155 @@
             .playlist-grid { grid-template-columns: repeat(2, 1fr); }
         }
     <style>
-    </style>
+    
+.tips-container {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    padding: 12px;
+    border-radius: 0 0 12px 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    z-index: 20;
+}
+.playlist-card:hover .tips-container {
+    display: block;
+}
+.tip-item {
+    margin-bottom: 4px;
+}
+</style>
+
+    <style>
+    .genre-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 20px;
+    }
+    .genre-modal-overlay.hidden {
+        display: none;
+    }
+    .genre-modal {
+        background: #fff;
+        border: 2px solid #0a0a0a;
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 640px;
+        width: 100%;
+        box-shadow: 8px 8px 0 #0a0a0a;
+        text-align: center;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .genre-modal h2 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0a0a0a;
+        margin-bottom: 6px;
+    }
+    .genre-modal p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 28px;
+    }
+    .genre-modal .genres {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    .genre-modal .genre-card {
+        background: #fff;
+        border: 2px solid #0a0a0a;
+        border-radius: 12px;
+        padding: 16px 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    .genre-modal .genre-card:hover {
+        background: #FFD600;
+        transform: translateY(-2px);
+    }
+    .genre-modal .genre-card.selected {
+        background: #FFD600;
+        box-shadow: 3px 3px 0 #0a0a0a;
+    }
+    .genre-modal .genre-card .icon {
+        font-size: 1.8em;
+    }
+    .genre-modal .genre-card .name {
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #0a0a0a;
+        text-align: center;
+    }
+    .genre-modal .btn {
+        background: #FFD600;
+        border: 2px solid #0a0a0a;
+        border-radius: 12px;
+        padding: 14px 28px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        box-shadow: 4px 4px 0 #0a0a0a;
+        transition: all 0.2s;
+    }
+    .genre-modal .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 6px 6px 0 #0a0a0a;
+    }
+    .genre-modal .skip {
+        margin-top: 14px;
+        font-size: 12px;
+        color: #999;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .genre-modal .skip:hover {
+        color: #0a0a0a;
+    }
+    
+.tips-container {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    padding: 12px;
+    border-radius: 0 0 12px 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    z-index: 20;
+}
+.playlist-card:hover .tips-container {
+    display: block;
+}
+.tip-item {
+    margin-bottom: 4px;
+}
+</style>
 </head>
 <body>
 
@@ -568,8 +716,8 @@
         <span class="nav-name">EVO</span>
     </div>
     <div style="display: flex; align-items: center; gap: 10px;">
-        <a href="#" style="text-decoration: none; font-size: 10px; font-weight: 700; color: #0a0a0a; padding: 4px 10px; background: #FFD600; border: 1.5px solid #0a0a0a; border-radius: 12px; letter-spacing: 1px;">PT</a>
-        <a href="#" style="text-decoration: none; font-size: 10px; font-weight: 700; color: #0a0a0a; padding: 4px 10px; background: #FFD600; border: 1.5px solid #0a0a0a; border-radius: 12px; letter-spacing: 1px;">ES</a>
+        <a href="index.html" style="text-decoration: none; font-size: 10px; font-weight: 700; color: #0a0a0a; padding: 4px 10px; background: #FFD600; border: 1.5px solid #0a0a0a; border-radius: 12px; letter-spacing: 1px;">PT</a>
+        <a href="index-es.html" style="text-decoration: none; font-size: 10px; font-weight: 700; color: #0a0a0a; padding: 4px 10px; background: #FFD600; border: 1.5px solid #0a0a0a; border-radius: 12px; letter-spacing: 1px;">ES</a>
            </div>
 </nav>
 
@@ -577,53 +725,125 @@
 <section class="hero" style="background: #fff; padding: 60px 24px 50px;">
     <div class="hero-content">
         <div class="hero-badge" style="display:none"></div>
-        <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6em, 4vw, 2.8em); font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; color: var(--text);">O primeiro <span style="background: linear-gradient(90deg, #FFD600, #FF8C42, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">sistema</span> de idiomas guiado pela <span style="background: linear-gradient(90deg, #FFD600, #FF8C42, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">música latino-americana</span></h1>
-        <div class="hero-actions" style="justify-content: center;">
-            <a href="#musica" class="btn-primary">
-                Conheça Evo
+        <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.4em, 3.5vw, 2.4em); font-weight: 700; line-height: 1.15; margin-bottom: 12px; letter-spacing: -1px; color: var(--text);">O primeiro <span style="background: linear-gradient(90deg, #FFD600, #FF8C42, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">sistema</span> de idiomas guiado pela <span style="background: linear-gradient(90deg, #FFD600, #FF8C42, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">música latino-americana</span></h1>
+        <p style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1em, 2vw, 1.2em); font-weight: 500; color: #555; margin-bottom: 24px; letter-spacing: 0.5px;">O som define a experiência.</p>
+        <div class="hero-actions" style="justify-content: center; flex-direction: column; align-items: center; gap: 8px;">
+            <a href="#musica" class="btn-primary" onclick="openGenreModal(); return false;">
+                Começar com música →
             </a>
-        </div>
+            </div>
     </div>
 </section>
 
 <!-- MUSICA QUE ENSINA -->
 <section id="musica" style="padding: 64px 48px; text-align: center; background: linear-gradient(180deg, #E8FFF4 0%, #F0FFF8 50%, #F8FFF8 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="section-inner" style="max-width: 800px; margin: 0 auto;">
-        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8em, 3.5vw, 2.8em); font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 16px;">Uma Jornada Evolutiva</h2>
-        <p style="font-size: 1.05em; color: var(--text-muted); line-height: 1.75;">O atalho mais direto para o seu progresso</p>
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8em, 3.5vw, 2.8em); font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 16px;">Música que ensina<br>Ciência que comprova</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); line-height: 1.75; margin-bottom: 4px;">O som é o caminho mais direto para uma língua.</p>
+        <p style="font-size: 1.05em; color: var(--text-muted); line-height: 1.75;">A EVO estruturou isso com ciência.</p>
         
-    </div>
-</section>
-
-<!-- COMO FUNCIONA -->
-<section style="background: #fff;">
-    <div class="section-inner">
-        <h2 class="section-title" style="text-align: left;">Como Funciona</h2>
-
         <div class="method-grid">
             <div class="method-card">
-                <div class="method-icon">1</div>
+                <div style="width:44px;height:44px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
                 <h3>Acesso</h3>
-                
+                <p>Acesso 100% digital e assíncrono. Defina quando e como avança.</p>
             </div>
             <div class="method-card">
-                <div class="method-icon">2</div>
-                <h3>Prática</h3>
+                <div style="width:44px;height:44px;background:#FF8C42;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+                <h3>Imersão</h3>
                 <p>Música e flashcards no mesmo lugar. Memorização e absorção do idioma de forma simultânea.</p>
             </div>
             <div class="method-card">
-                <div class="method-icon">3</div>
-                <h3>IA</h3>
+                <div style="width:44px;height:44px;background:#4ECDC4;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <h3>Interação</h3>
                 <p>Pratique espanhol ou português em conversas guiadas por IA, com base na sua playlist.</p>
             </div>
         </div>
     </div>
 </section>
 
+<!-- COMO FUNCIONA -->
+<section style="background: #fff;">
+    <div class="section-inner">
+        <h2 class="section-title" style="text-align: center;">Como Funciona</h2>
+        
+        <div style="display: flex; justify-content: center; align-items: stretch; gap: 0; margin: 48px auto 0; max-width: 900px;">
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1;">
+                <div style="width:64px;height:64px;background:#FFD600;border:2px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:4px 4px 0 #0a0a0a;">
+                    <span style="font-size:1.8em;">🎧</span>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0a0a0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Ouvir</div>
+                <div style="font-size:14px;color:#666;max-width:160px;">Selecione o seu estilo musical</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;padding:0 12px;color:#ccc;font-size:1.5em;margin-top:-20px;">→</div>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1;">
+                <div style="width:64px;height:64px;background:#FF8C42;border:2px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:4px 4px 0 #0a0a0a;">
+                    <span style="font-size:1.8em;">🗣</span>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0a0a0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">TREINAR</div>
+                <div style="font-size:14px;color:#666;max-width:160px;">A cada trecho, uma imersão de sons</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;padding:0 12px;color:#ccc;font-size:1.5em;margin-top:-20px;">→</div>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1;">
+                <div style="width:64px;height:64px;background:#FF6B6B;border:2px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:4px 4px 0 #0a0a0a;">
+                    <span style="font-size:1.8em;">🔓</span>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0a0a0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Desbloquear</div>
+                <div style="font-size:14px;color:#666;max-width:160px;">Complete os desafios para desbloquear</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;padding:0 12px;color:#ccc;font-size:1.5em;margin-top:-20px;">→</div>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1;">
+                <div style="width:64px;height:64px;background:#4ECDC4;border:2px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:4px 4px 0 #0a0a0a;">
+                    <span style="font-size:1.8em;">🚀</span>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0a0a0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">PROGREDIR</div>
+                <div style="font-size:14px;color:#666;max-width:160px;">Sistema adapta-se ao seu nível</div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- CIÊNCIA -->
 <section class="science-section" style="background: linear-gradient(180deg, #E8F4FC 0%, #D0E8F5 50%, #F0F8FF 100%);">
+ <div class="section-inner">
+ <h2 class="section-title" style="text-align: right;">Não é método.<br>É um sistema.</h2>
+ <p class="section-sub" style="text-align: right; max-width: 100%;">Quatro princípios que a ciência da linguagem já comprovou aplicados através da música.</p>
+
+ <div class="science-grid">
+ <div class="science-card">
+ <div style="width:36px;height:36px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">1</div>
+ <h3>Revisão espaçada</h3>
+ <p>Memória se fortalece com prática ao longo do tempo. Flashcards organizam essa repetição.</p>
+ </div>
+ <div class="science-card">
+ <div style="width:36px;height:36px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">2</div>
+ <h3>Input compreensível</h3>
+ <p>Aprendemos quando entendemos o contexto. A música cria esse ambiente natural.</p>
+ </div>
+ <div class="science-card">
+ <div style="width:36px;height:36px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">3</div>
+ <h3>Recuperação ativa</h3>
+ <p>Lembrar é mais eficaz do que reler. Você usa o idioma em vez de apenas estudá-lo.</p>
+ </div>
+ <div class="science-card">
+ <div style="width:36px;height:36px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">4</div>
+ <h3>Consistência</h3>
+ <p>A aprendizagem depende de repetição diária. O sistema foi desenhado para 30 minutos por dia.</p>
+ </div>
+ </div>
+ </div>
+</section>
+
+
+<!-- CIÊNCIA -->
+<section class="science-section" style="display:none;background: linear-gradient(180deg, #E8F4FC 0%, #D0E8F5 50%, #F0F8FF 100%);">
     <div class="section-inner">
-        <div class="section-tag" style="display:none;">Ciência</div>
+        <div class="section-tag" style="position:relative;background:#FFFFFF;border:2px solid #0a0a0a;border-radius:16px;" style="display:none;">Ciência</div>/div>
         <h2 class="section-title" style="text-align: right;">Não é método.<br>É um sistema.</h2>
         <p class="section-sub" style="text-align: right; max-width: 100%;">Quatro princípios que a ciência da linguagem já comprovou aplicados através da música.</p>
 
@@ -656,16 +876,18 @@
 <section style="text-align: center; background: #fff;">
     <div class="section-inner">
         <h2 class="section-title" style="text-align: center;">Para quem é?</h2>
-        <p style="text-align: center; font-size: 1em; color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto;">Para jovens e adultos que queiram falar espanhol ou português. O progresso é guiado por competências, não por níveis fixos — você avança pelo que realmente consegue fazer.</p>
+        <p style="text-align: center; font-size: 1em; color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto;">Jovens e adultos que queiram aprender espanhol ou português.</p>
+        <p style="text-align: center; font-size: 1em; color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto;">Progresso guiado por competências, não por níveis fixos.</p>
+        <p style="text-align: center; font-size: 1em; color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto;">Imersão através de música latino-americana — com sotaques, gírias, expressões e cultura cotidiana.</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 680px; margin: 40px auto 0;">
             <div style="background: #fff; border: 2px solid #0a0a0a; border-radius: 16px; padding: 28px 24px; text-align: center; transition: all 0.3s; box-shadow: 4px 4px 0px #0a0a0a;">
                 <div style="width:40px;height:40px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">🇧🇷</div>
-                <div style="font-size: 11px; font-weight: 800; color: #0a0a0a; display: inline-block; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;">Português do Brasil <span style="font-size:0.8em;">↔</span> Espanhol latino-americano</div>
+                <div style="font-size: 11px; font-weight: 800; color: #0a0a0a; display: inline-block; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;">Português do Brasil</div>
             </div>
             <div style="background: #fff; border: 2px solid #0a0a0a; border-radius: 16px; padding: 28px 24px; text-align: center; transition: all 0.3s; box-shadow: 4px 4px 0px #0a0a0a;">
                 <div style="width:40px;height:40px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.85em;color:#0a0a0a;">🌎</div>
-                <div style="font-size: 11px; font-weight: 800; color: #0a0a0a; display: inline-block; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;">Espanhol latino-americano <span style="font-size:0.8em;">↔</span> Português do Brasil</div>
+                <div style="font-size: 11px; font-weight: 800; color: #0a0a0a; display: inline-block; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;">Espanhol latino-americano</div>
             </div>
     </div>
 </section>
@@ -673,26 +895,27 @@
 <!-- ROTINA -->
 <section class="routine-section" style="background: #FFF0F0;">
     <div class="section-inner">
-        <h2 class="section-title">Sua Rotina Diária</h2>
-        <p style="font-size: 1em; color: var(--text-muted); font-weight: 600; text-align: center;">Apenas 30 minutos por dia para construir fluência real. Tudo fica salvo automaticamente.</p>
+        <h2 class="section-title">Sua Rotina</h2>
+        <p style="font-size: 1.05em; color: var(--text-muted); line-height: 1.75; text-align: center; margin-bottom: 0;">Comece com alguns minutos.</p>
+<p style="font-size: 1.05em; color: var(--text-muted); line-height: 1.75; text-align: center; margin-top: 0;">Continue de onde parou — seu progresso fica salvo.</p>
 
         <div class="routine-flow">
             <div class="routine-step">
-                <div class="routine-time">15 min</div>
+                <div class="routine-time">5–15 MIN</div>
                 <div class="routine-title">Flashcards</div>
                 <div class="routine-desc">memória ativa</div>
             </div>
             <div class="routine-sep">+</div>
             <div class="routine-step">
-                <div class="routine-time">15 min</div>
+                <div class="routine-time">5–15 MIN</div>
                 <div class="routine-title">Imersão</div>
-                <div class="routine-desc">imersão natural</div>
+                <div class="routine-desc">aprenda com música e fluência natural</div>
             </div>
             <div class="routine-sep">=</div>
-            <div class="routine-step" style="padding: 20px;">
-                <div class="routine-time">30 min</div>
-                <div class="routine-title" style="font-size: 0.9em;">Evolução real</div>
-                <div class="routine-desc" style="font-size: 0.75em;">todos os dias</div>
+            <div class="routine-step">
+                <div class="routine-time"></div>
+                <div class="routine-title">Evolução real</div>
+                
             </div>
         </div>
 
@@ -702,40 +925,31 @@
 <!-- EVOLUÇÃO INTELIGENTE -->
 <section style="background: #fff;">
     <div class="section-inner">
-        <h2 class="section-title" style="text-align: center;">O sistema acompanha o seu ritmo</h2>
-        <p class="section-sub" style="text-align: center; max-width: 600px; margin: 0 auto 12px;">Cada sessão ajusta a próxima. A próxima música, outro desafio, uma nova conversa.</p>
-        <p style="text-align: center; font-size: 0.95em; color: #555; line-height: 1.7; max-width: 600px; margin: 0 auto 32px;">O que ainda não firmou volta. O que você já domina avança.</p>
+        <h2 class="section-title" style="text-align: center;">Um sistema que acompanha o seu ritmo</h2>
+        <p class="section-sub" style="text-align: center; max-width: 600px; margin: 0 auto 12px;">Cada sessão ajustada ao seu progresso.</p>
 
         <div class="evo-grid">
             <div class="evo-card">
                 <div style="width:44px;height:44px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9 12l2 2 4-4"/>
-                    </svg>
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
                 </div>
                 <p>Músicas no ponto certo de desafio</p>
             </div>
             <div class="evo-card">
                 <div style="width:44px;height:44px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2">
-                        <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/>
-                        <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/>
-                    </svg>
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
                 </div>
-                <p>Reforço automático do que precisa fixar</p>
+                <p>Reforço automático do que precisa melhorar</p>
             </div>
             <div class="evo-card">
                 <div style="width:44px;height:44px;background:#FFD600;border:1.5px solid #0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                    </svg>
+                    <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                 </div>
                 <p>Variedade constante para manter a motivação</p>
             </div>
         </div>
 
+    </div>
 </section>
 
 <!-- PLAYLIST -->
@@ -745,104 +959,120 @@
         <p class="section-sub" style="text-align: center; max-width: 600px; margin: 0 auto 32px;">Uma seleção de música latino-americana organizada por nível e contexto. Comece pela primeira faixa e o sistema ajusta o seu ritmo.</p>
 
         <div class="playlist-filters">
-            <span>Filtrar por:</span>
-            <button style="border:1.5px solid #0a0a0a;background:#fff;color:#0a0a0a;font-weight:700;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;" class="filter-btn active" onclick="filterPlaylist('all', this)">Todas</button>
-            <button style="border:1.5px solid #0a0a0a;background:#fff;color:#0a0a0a;font-weight:700;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('VEN', this)">🇻🇪 Venezuela</button>
-            <button style="border:1.5px solid #0a0a0a;background:#fff;color:#0a0a0a;font-weight:700;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('PRI', this)">🇵🇷 Porto Rico</button>
-            <button style="border:1.5px solid #0a0a0a;background:#fff;color:#0a0a0a;font-weight:700;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('ARG', this)">🇦🇷 Argentina</button>
-            <button style="border:1.5px solid #0a0a0a;background:#fff;color:#0a0a0a;font-weight:700;border-radius:20px;padding:8px 14px;font-size:12px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('COL', this)">🇨🇴 Colômbia</button>
+            <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0a0a0a;">Filtrar por:</span>
+            <span style="font-size:12px;font-weight:700;color:#0a0a0a;padding:4px 10px;background:#fff;border:1.5px solid #0a0a0a;border-radius:12px;letter-spacing:0.5px;">PAÍSES</span>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn active" onclick="filterPlaylist('all', this)">Todas</button>
+ <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('VEN', this)">🇻🇪 Venezuela</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('PRI', this)">🇵🇷 Porto Rico</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('ARG', this)">🇦🇷 Argentina</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('COL', this)">🇨🇴 Colômbia</button>
+            </div>
+ <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;">
+ <span style="font-size:11px;font-weight:700;color:#0a0a0a;padding:3px 8px;background:#fff;border:1.5px solid #0a0a0a;border-radius:10px;letter-spacing:0.5px;">GÊNERO</span>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('all', this)">Todas</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('REGGAE', this)">🎧 Reggaeton</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('POPLAT', this)">🎤 Pop Latino</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('HH', this)">🎶 Hip-Hop</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('REGGAE1', this)">🌴 Reggae</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('SALSA', this)">💃 Salsa</button>
+            <button style="border:1.5px solid #0a0a0a;background:#FFD600;color:#0a0a0a;font-weight:700;border-radius:20px;padding:6px 12px;font-size:11px;cursor:pointer;" class="filter-btn" onclick="filterPlaylist('BACH', this)">💚 Bachata</button>
         </div>
 
         <div class="playlist-grid">
-            <a href="EVOLUCAO_01_Naguara_Bloco2.html" class="playlist-card" data-country="VEN">
+            <a href="EVOLUCAO_01_Naguara_Bloco2.html" class="playlist-card" data-country="VEN" data-tips="1. A banda vem da Venezuela, pais do norte da America do Sul | 2. Misturam pop psicadelico com reggae eletronico | 3. Um dos membros ganhou fama solo recentemente">
                 <img class="playlist-thumb" src="https://img.youtube.com/vi/F5HUxyWja_Q/mqdefault.jpg" alt="Naguará">
                 <div class="playlist-title">Naguará</div>
-                <div class="playlist-artist">Rawayana</div>
+                <div class="playlist-artist" style="display:none;">Rawayana</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
-                    <span style="font-size:1.1em;">🇻🇪</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
+                    <span style="opacity:0;">🇻🇪</span>
+                </div>
+                <div class="tips-container">
+                    <div class="tip-item">💡 A banda vem da Venezuela</div>
+                    <div class="tip-item">💡 Misturam pop psicadélico com reggae</div>
+                    <div class="tip-item">💡 Um membro ganhou fama solo</div>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="PRI">
-                <img class="playlist-thumb" src="https://img.youtube.com/vi/OSUxrSe5GbI/mqdefault.jpg" alt="Mía">
-                <div class="playlist-title">Mía</div>
-                <div class="playlist-artist">Bad Bunny</div>
+            <a href="#" class="playlist-card" data-country="PRI" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
+<div style="position:absolute;inset:0;background:rgba(255,255,255,0.95);z-index:10;display:flex;align-items:center;justify-content:center;border-radius:14px;"><span style="font-size:2.2em;">🔒</span></div><img class="playlist-thumb" src="https://img.youtube.com/vi/OSUxrSe5GbI/mqdefault.jpg" style="display:none;" alt="Mía">
+<div class="playlist-title" style="display:none;">Mía</div>
+                <div class="playlist-artist" style="display:none;">Bad Bunny</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Médio</span>
-                    <span style="font-size:1.1em;">🇵🇷</span>
+                    <span class="playlist-tag" style="opacity:0;">Médio</span>
+                    <span style="opacity:0;">🇵🇷</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="PRI">
-                <img class="playlist-thumb" src="https://img.youtube.com/vi/TmKh7lAwnBI/mqdefault.jpg" alt="Dákiti">
-                <div class="playlist-title">Dákiti</div>
-                <div class="playlist-artist">Bad Bunny</div>
+            <a href="#" class="playlist-card" data-country="PRI" data-index="3" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
+                <div style="position:absolute;inset:0;background:rgba(255,255,255,0.95);z-index:10;display:flex;align-items:center;justify-content:center;border-radius:14px;"><span style="font-size:2.2em;">🔒</span></div><img class="playlist-thumb" src="https://img.youtube.com/vi/TmKh7lAwnBI/mqdefault.jpg" style="display:none;" alt="Dákiti" style="display:none;">
+                <div class="playlist-title" style="display:none;">Dákiti</div>
+                <div class="playlist-artist" style="display:none;">Bad Bunny</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Médio</span>
-                    <span style="font-size:1.1em;">🇵🇷</span>
+                    <span class="playlist-tag" style="opacity:0;">Médio</span>
+                    <span style="opacity:0;">🇵🇷</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="ARG">
-                <img class="playlist-thumb" src="https://img.youtube.com/vi/LxzDkFpWTW4/mqdefault.jpg" alt="Malportada">
-                <div class="playlist-title">Malportada</div>
-                <div class="playlist-artist">Nathhy Peluso</div>
+            <a href="#" class="playlist-card" data-country="ARG" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
+                <div style="position:absolute;inset:0;background:rgba(255,255,255,0.95);z-index:10;display:flex;align-items:center;justify-content:center;border-radius:14px;"><span style="font-size:2.2em;">🔒</span></div><img class="playlist-thumb" src="https://img.youtube.com/vi/LxzDkFpWTW4/mqdefault.jpg" style="display:none;" alt="Malportada" style="display:none;">
+                <div class="playlist-title" style="display:none;">Malportada</div>
+                <div class="playlist-artist" style="display:none;">Nathhy Peluso</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Médio</span>
+                    <span class="playlist-tag" style="opacity:0;">Médio</span>
                     <span style="font-size:1.1em;">🇦🇷</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="VEN">
-                <img class="playlist-thumb" src="https://img.youtube.com/vi/zCLK89kWHxc/mqdefault.jpg" alt="Aquí">
-                <div class="playlist-title">Aquí</div>
-                <div class="playlist-artist">Rawayana</div>
+            <a href="#" class="playlist-card" data-country="VEN" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
+                <div style="position:absolute;inset:0;background:rgba(255,255,255,0.95);z-index:10;display:flex;align-items:center;justify-content:center;border-radius:14px;"><span style="font-size:2.2em;">🔒</span></div><img class="playlist-thumb" src="https://img.youtube.com/vi/zCLK89kWHxc/mqdefault.jpg" style="display:none;" alt="Aquí" style="display:none;">
+                <div class="playlist-title" style="display:none;">Aquí</div>
+                <div class="playlist-artist" style="display:none;">Rawayana</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
-                    <span style="font-size:1.1em;">🇻🇪</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
+                    <span style="opacity:0;">🇻🇪</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="PRI">
-                <img class="playlist-thumb" src="https://img.youtube.com/vi/Cxl19JAaSOU/mqdefault.jpg" alt="Qué rico PR!">
+            <a href="#" class="playlist-card" data-country="PRI" data-index="3" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
+                <div style="position:absolute;inset:0;background:rgba(255,255,255,0.95);z-index:10;display:flex;align-items:center;justify-content:center;border-radius:14px;"><span style="font-size:2.2em;">🔒</span></div><img class="playlist-thumb" src="https://img.youtube.com/vi/Cxl19JAaSOU/mqdefault.jpg" style="display:none;" alt="Qué rico PR!">
                 <div class="playlist-title">Qué rico PR!</div>
-                <div class="playlist-artist">Rawayana</div>
+                <div class="playlist-artist" style="display:none;">Rawayana</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
-                    <span style="font-size:1.1em;">🇵🇷</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
+                    <span style="opacity:0;">🇵🇷</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="PRI">
+            <a href="#" class="playlist-card" data-country="PRI" data-index="3" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
                 <img class="playlist-thumb" src="https://img.youtube.com/vi/S1vmPmK4q6Q/mqdefault.jpg" alt="La Llorona">
                 <div class="playlist-title">La Llorona</div>
                 <div class="playlist-artist">Justin Quiles</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Médio</span>
-                    <span style="font-size:1.1em;">🇵🇷</span>
+                    <span class="playlist-tag" style="opacity:0;">Médio</span>
+                    <span style="opacity:0;">🇵🇷</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="COL">
+            <a href="#" class="playlist-card" data-country="COL" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
                 <img class="playlist-thumb" src="https://img.youtube.com/vi/BeUOBoSPWvA/mqdefault.jpg" alt="Qlona">
                 <div class="playlist-title">Qlona</div>
                 <div class="playlist-artist">Karol G</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
                     <span style="font-size:1.1em;">🇨🇴</span>
                 </div>
             </a>
 
-            <a href="#" class="playlist-card" data-country="COL">
+            <a href="#" class="playlist-card" data-country="COL" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
                 <img class="playlist-thumb" src="https://img.youtube.com/vi/QCZZwZQ4qNs/mqdefault.jpg" alt="Modelo">
                 <div class="playlist-title">Modelo</div>
                 <div class="playlist-artist">Sebastian</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
                     <span style="font-size:1.1em;">🇨🇴</span>
                 </div>
             </a>
-            <a href="#" class="playlist-card" data-country="PRI">
+            <a href="#" class="playlist-card" data-country="PRI" data-index="3" style="position:relative;background:#fff;border:2px solid #0a0a0a;border-radius:14px;">
                 <img class="playlist-thumb" src="https://img.youtube.com/vi/gpIBmED4oss/mqdefault.jpg" alt="Chambea">
                 <div class="playlist-title">Chambea</div>
-                <div class="playlist-artist">Bad Bunny</div>
+                <div class="playlist-artist" style="display:none;">Bad Bunny</div>
                 <div class="playlist-meta">
-                    <span class="playlist-tag">Fácil</span>
-                    <span style="font-size:1.1em;">🇵🇷</span>
+                    <span class="playlist-tag" style="opacity:0;">Fácil</span>
+                    <span style="opacity:0;">🇵🇷</span>
                 </div>
             </a>
                 </div>
@@ -904,5 +1134,118 @@ window.addEventListener('scroll', function() {
     document.getElementById('scrollBar').style.width = progress + '%';
 });
 </script>
-<script>function filterPlaylist(country,btn){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');document.querySelectorAll('.playlist-card').forEach(function(card){if(country==='all'||card.dataset.country===country){card.style.display='block'}else{card.style.display='none'}})}</script></body>
+<script>
+function filterPlaylist(c,btn){
+document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+if(btn)btn.classList.add('active');
+var cs=document.querySelectorAll('.playlist-card');
+for(var i=0;i<cs.length;i++){
+cs[i].style.display=(i<5)?"block":"none";
+}
+}
+</script>
+<script>window.onload=function(){filterPlaylist('all')}</script>
+<script>
+var evoLang = localStorage.getItem('evo_lang') || 'pt';
+var translations = {'O primeiro': 'El primero', 'sistema de idiomas guiado pela': 'sistema de idiomas guiado por', 'música latino-americana': 'música latinoamericana', 'Música que ensina<br>Ciência que comprova': 'La música enseña<br>La ciencia lo demuestra', 'O som é o caminho mais direto para uma língua. A EVO estruturou isso com ciência.': 'El sonido es el camino más directo hacia un idioma. EVO lo estructuró con ciencia.', 'Para quem é a EVO?': '¿Para quién es EVO?', 'Falantes de português': 'Hablantes de portugués', 'que querem aprender espanhol de forma natural, através da música.': 'que quieren aprender español de forma natural, a través de la música.', 'Falantes de espanhol': 'Hablantes de español', 'que querem aprender português, com uma abordagem única e culturalmente rica.': 'que quieren aprender portugués, con un enfoque único y culturalmente rico.', 'O Método EVO': 'El Método EVO', 'Como funciona': 'Cómo funciona', 'Músicas que funcionam como pontes entre idiomas.': 'Canciones que funcionan como puentes entre idiomas.', 'flashcard': 'flashcard', 'sistemáticas para fixar vocabulário e gramática.': 'sistemáticas para fijar vocabulario y gramática.', 'Prática com IA para treinar conversação.': 'Práctica con IA para entrenar conversación.', 'Sua Rotina': 'Tu Rutina Diaria', 'De 5 a 30 minutos — no seu ritmo. Tudo fica salvo automaticamente.': 'Solo 30 minutos al día para construir fluidez real. Todo se guarda automáticamente.', 'Evolução real': 'Evolución real', 'Resultados que vais ver ao longo do tempo.': 'Resultados que verás con el tiempo.', 'Tudo começa no play': 'Todo empieza con play', 'Começar a Aprender Grátis': 'Comenzar a Aprender Gratis', 'Conheça Evo': 'Conoce Evo'};
+
+function toggleLang() {
+    evoLang = evoLang === 'pt' ? 'es' : 'pt';
+    localStorage.setItem('evo_lang', evoLang);
+    document.documentElement.setAttribute('data-lang', evoLang);
+    document.getElementById('langToggle').textContent = evoLang === 'pt' ? 'ES' : 'PT';
+    applyTranslations();
+}
+
+function applyTranslations() {
+    var dict = translations;
+    if (evoLang === 'pt') {
+        // Restore original - page is in PT by default
+        location.reload();
+        return;
+    }
+    document.querySelectorAll('h1, h2, h3, p, span, a, button').forEach(function(el) {
+        var text = el.innerHTML.trim();
+        if (dict[text]) {
+            el.innerHTML = dict[text];
+        }
+    });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('evo_lang');
+    if (saved) {
+        evoLang = saved;
+        document.documentElement.setAttribute('data-lang', saved);
+        document.getElementById('langToggle').textContent = saved === 'pt' ? 'ES' : 'PT';
+        if (saved === 'es') applyTranslations();
+    }
+});
+</script>
+
+    <!-- Genre Selection Modal -->
+    <div class="genre-modal-overlay hidden" id="genreModal">
+        <div class="genre-modal">
+            <h2>Escolhe o teu estilo musical</h2>
+            <p>Selecione um ou mais gêneros para personalizar a sua experiência</p>
+            
+            <div class="genres">
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🎧</span>
+                    <span class="name">Reggaeton</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🎤</span>
+                    <span class="name">Pop Latino</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🎶</span>
+                    <span class="name">Hip-Hop</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🌴</span>
+                    <span class="name">Reggae</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">💃</span>
+                    <span class="name">Salsa</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">💚</span>
+                    <span class="name">Bachata</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🤠</span>
+                    <span class="name">Regional</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🔊</span>
+                    <span class="name">Trap</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🎵</span>
+                    <span class="name">Baladas</span>
+                </div>
+                <div class="genre-card" onclick="this.classList.toggle('selected')">
+                    <span class="icon">🎲</span>
+                    <span class="name">Surpresa</span>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="closeGenreModal()">Começar</button>
+            <div class="skip" onclick="closeGenreModal()">Prefiro não escolher</div>
+        </div>
+    </div>
+
+    <script>
+    function openGenreModal() {
+        document.getElementById('genreModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeGenreModal() {
+        document.getElementById('genreModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    </script>
+</body>
 </html>
