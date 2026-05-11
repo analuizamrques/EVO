@@ -40,7 +40,9 @@ button.danger:hover{background:#d32f2f}
 <div id="info-bar">
 <div id="turn-indicator">🎮 Vez: <span id="whose-turn">-</span></div>
 <div>Pontos — Você: <span id="my-score">0</span> | Oponente: <span id="opp-score">0</span></div>
-<button onclick="newGame()" style="padding:4px 10px;font-size:12px;">Nova Partida</button>
+<button onclick="newGame()">Nova</button>
+<button onclick="shareGame()">📤 Enviar</button>
+<button onclick="loadGame()">📥 Receber</button> style="padding:4px 10px;font-size:12px;">Nova Partida</button>
 <button onclick="shareState()" style="padding:4px 10px;font-size:12px;background:#128c7e;">📱 Partilhar</button>
 </div>
 <div style="background:rgba(0,0,0,0.2);padding:4px 8px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
@@ -102,6 +104,9 @@ let mp=1,lu=null;
 function sv(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{method:'PATCH',headers:{apikey:AK,Authorization:'Bearer '+AK,ContentType:'application/json'},body:JSON.stringify({conteudo:JSON.stringify({p1:JSON.stringify(p1Hand),p2:JSON.stringify(p2Hand),b:JSON.stringify(board),by:JSON.stringify(boneyard),cp:mp===1?2:1,sc:[p1Score,p2Score],up:Date.now()}})})}
 function chk(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){let s=JSON.parse(d[0].conteudo);if(s.up&&s.up!==lu&&s.cp===mp){lu=s.up;p1Hand=JSON.parse(s.p1);p2Hand=JSON.parse(s.p2);board=JSON.parse(s.b||'[]');boneyard=JSON.parse(s.by||'[]');currentPlayer=s.cp;p1Score=s.sc[0];p2Score=s.sc[1];render();setMsg('Jogada do outro! Vez tua.')}})}
 function init(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){const s=JSON.parse(d[0].conteudo);mp=s.cp===1?2:1}else{mp=1;newGame()}setInterval(chk,1500)})}
+
+function shareGame(){const s=JSON.stringify({p1:JSON.stringify(p1Hand),p2:JSON.stringify(p2Hand),b:JSON.stringify(board),by:JSON.stringify(boneyard),cp:currentPlayer,sc:[p1Score,p2Score]});fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{method:'PATCH',headers:{apikey:AK,Authorization:'Bearer '+AK,ContentType:'application/json'},body:JSON.stringify({conteudo:s})}).then(()=>setMsg('Jogo guardado! Envia link ao outro.'))}
+function loadGame(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){const s=JSON.parse(d[0].conteudo);p1Hand=JSON.parse(s.p1);p2Hand=JSON.parse(s.p2);board=JSON.parse(s.b||'[]');boneyard=JSON.parse(s.by||'[]');currentPlayer=s.cp;p1Score=s.sc[0];p2Score=s.sc[1];render();setMsg('Jogo carregado!')}})}
 init();
 newGame();
 </script>
