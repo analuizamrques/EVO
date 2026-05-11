@@ -3,111 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dominó EVO</title>
+<title>Dominó EVO - 2 Jogadores</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#1a472a;min-height:100vh;user-select:none}
-#game{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-#info-bar{background:rgba(0,0,0,0.4);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;font-size:13px;flex-shrink:0}
-#info-bar span{font-weight:600}
+#game{display:flex;flex-direction:column;height:100vh}
+#info-bar{background:rgba(0,0,0,0.4);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;font-size:14px}
 #board-area{flex:1;overflow:auto;position:relative;padding:10px}
-#board{position:absolute;display:flex;align-items:center;flex-wrap:nowrap;min-width:200px;min-height:100px}
-#players-area{background:rgba(0,0,0,0.3);padding:8px;flex-shrink:0}
-#my-hand{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:4px;min-height:80px}
-#controls{background:rgba(0,0,0,0.5);padding:8px 16px;display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0}
-#msg{color:#ffeb3b;font-size:13px;text-align:center;font-weight:600;flex:1}
-.dom-piece{display:inline-flex;flex-direction:column;background:#fffde7;border:2px solid #333;border-radius:4px;cursor:pointer;box-shadow:2px 2px 4px rgba(0,0,0,0.5);transition:transform .15s;position:relative;flex-shrink:0}
+#board{display:flex;align-items:center;min-width:200px;min-height:100px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+#my-hand{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px;background:rgba(0,0,0,0.3)}
+#controls{background:rgba(0,0,0,0.5);padding:10px;display:flex;gap:10px;justify-content:center}
+#msg{color:#ffeb3b;font-size:14px;text-align:center;flex:1}
+.dom-piece{display:inline-flex;flex-direction:column;background:#fffde7;border:2px solid #333;border-radius:4px;cursor:pointer;box-shadow:2px 2px 4px rgba(0,0,0,0.5)}
 .dom-piece:hover{transform:translateY(-4px)}
-.dom-piece.selected{border-color:#f44336;box-shadow:0 0 0 3px #f44336;transform:translateY(-6px)}
-.dom-piece.on-board{cursor:default}
+.dom-piece.selected{border-color:#f44336;box-shadow:0 0 0 3px #f44336}
 .dom-piece.horizontal{flex-direction:row}
-.half{width:36px;height:36px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:3px;padding:4px}
+.half{width:36px;height:36px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2px}
 .divider-v{width:100%;height:2px;background:#333}
 .divider-h{height:100%;width:2px;background:#333}
-.pip{width:7px;height:7px;background:#222;border-radius:50%;flex-shrink:0}
-button{background:#2e7d32;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600}
+.pip{width:7px;height:7px;background:#222;border-radius:50%}
+button{background:#2e7d32;color:#fff;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:600}
 button:hover{background:#388e3c}
-button:disabled{background:#555;cursor:not-allowed}
-button.danger{background:#c62828}
-button.danger:hover{background:#d32f2f}
-.opp-back{width:32px;height:52px;background:#1565c0;border:2px solid #0d47a1;border-radius:4px;flex-shrink:0}
-#opp-area{display:flex;gap:4px;justify-content:center;padding:4px;flex-shrink:0}
-#turn-indicator{padding:4px 8px;background:rgba(255,255,255,0.15);border-radius:12px;font-size:12px}
+.opp-back{width:32px;height:52px;background:#1565c0;border:2px solid #0d47a1;border-radius:4px}
 </style>
 </head>
 <body>
 <div id="game">
 <div id="info-bar">
-<div id="turn-indicator">🎮 Vez: <span id="whose-turn">-</span></div>
-<div>Pontos — Você: <span id="my-score">0</span> | Oponente: <span id="opp-score">0</span></div>
-<button onclick="newGame()">Nova</button>
-<button onclick="shareGame()">📤 Enviar</button>
-<button onclick="loadGame()">📥 Receber</button> style="padding:4px 10px;font-size:12px;">Nova Partida</button>
-<button onclick="shareState()" style="padding:4px 10px;font-size:12px;background:#128c7e;">📱 Partilhar</button>
+<div>🎮 <span id="whose-turn">-</span></div>
+<div>Pontos: <span id="my-score">0</span> | <span id="opp-score">0</span></div>
+<button onclick="newGame()" style="padding:6px 12px;">🔄 Nova</button>
 </div>
-<div style="background:rgba(0,0,0,0.2);padding:4px 8px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
-<span style="color:#ccc;font-size:12px;">Oponente (<span id="opp-count">0</span> peças):</span>
-<div id="opp-area"></div>
+<div style="background:rgba(0,0,0,0.2);padding:8px;text-align:center;">
+Oponente (<span id="opp-count">0</span> peças)
 </div>
+<div id="opp-area" style="display:flex;gap:4px;justify-content:center;padding:8px;"></div>
 <div id="board-area"><div id="board"></div></div>
-<div style="background:rgba(0,0,0,0.2);padding:4px 8px;text-align:center;flex-shrink:0;">
-<span style="color:#aed581;font-size:12px;">Sua mão (<span id="my-count">0</span> peças) — selecione e clique a ponta:</span>
+<div style="background:rgba(0,0,0,0.2);padding:8px;text-align:center;">
+Sua mão (<span id="my-count">0</span>)
 </div>
-<div id="players-area"><div id="my-hand"></div></div>
+<div id="my-hand"></div>
 <div id="controls">
 <div id="msg">Carregando...</div>
-<button id="btn-left" onclick="placePiece('left')" disabled>⬅️ Esquerda</button>
-<button id="btn-right" onclick="placePiece('right')" disabled>Direita ➡️</button>
-<button id="btn-draw" onclick="drawTile()" disabled>🎴 Comprar</button>
-<button id="btn-pass" onclick="passTurn()" disabled class="danger">⏩ Passar</button>
+<button onclick="placePiece('left')" id="btn-left">⬅️</button>
+<button onclick="placePiece('right')" id="btn-right">➡️</button>
+<button onclick="drawTile()" id="btn-draw">🎴</button>
+<button onclick="passTurn()" id="btn-pass" class="danger">⏩</button>
 </div>
 </div>
 <script>
-const PIP_LAYOUTS={0:[],1:[[1,1]],2:[[0,0],[2,2]],3:[[0,0],[1,1],[2,2]],4:[[0,0],[2,0],[0,2],[2,2]],5:[[0,0],[2,0],[1,1],[0,2],[2,2]],6:[[0,0],[2,0],[0,1],[2,1],[0,2],[2,2]]};
-let boneyard,myHand,oppHand,board,myTurn,selectedIdx,boardLeftEnd,boardRightEnd;
-let myScore=0,oppScore=0,gameOver=false,canPass=false;
+const PIP=[[],[1],[0,2],[0,1,2],[0,2,0,2],[0,2,1,2,0,2],[0,2,0,1,1,1,0,2,0,2]];
+let myHand,oppHand,board,boneyard,myTurn,selectedIdx,myScore=0,oppScore=0,gameOver=false,canPass=false;
 function makeDomino(a,b){return{a,b}}
-function createAllTiles(){const t=[];for(let i=0;i<=6;i++)for(let j=i;j<=6;j++)t.push(makeDomino(i,j));return t}
-function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
-function newGame(){gameOver=false;selectedIdx=null;canPass=false;const all=shuffle(createAllTiles());myHand=all.slice(0,7);oppHand=all.slice(7,14);boneyard=all.slice(14);board=[];boardLeftEnd=null;boardRightEnd=null;const myMax=myHand.reduce((m,t)=>t.a===t.b&&t.a>m?t.a:m,-1);const oppMax=oppHand.reduce((m,t)=>t.a===t.b&&t.a>m?t.a:m,-1);myTurn=myMax>=oppMax;setMsg(myTurn?"Você começa! Selecione uma peça.":"Oponente começa...");render();if(!myTurn)setTimeout(oppMove,900)}
-function render(){renderBoard();renderMyHand();renderOpp();updateCounts();updateButtons();document.getElementById('my-score').innerText=myScore;document.getElementById('opp-score').innerText=oppScore;document.getElementById('whose-turn').innerText=myTurn?'Você':'Oponente'}
-function renderHalf(val){const div=document.createElement('div');div.className='half';const layout=PIP_LAYOUTS[val]||[];const grid=Array(3).fill(null).map(()=>Array(3).fill(0));layout.forEach(([r,c])=>grid[r][c]=1);div.style.display='grid';div.style.gridTemplateColumns='repeat(3,7px)';div.style.gridTemplateRows='repeat(3,7px)';div.style.gap='3px';div.style.padding='4px';for(let r=0;r<3;r++)for(let c=0;c<3;c++){const cell=document.createElement('div');if(grid[r][c]){cell.className='pip';cell.style.margin='0'}div.appendChild(cell)}return div}
-function createPieceEl(tile,horiz,idx,clickable){const el=document.createElement('div');el.className='dom-piece'+(horiz?' horizontal':'')+(clickable?'':' on-board');if(horiz){el.appendChild(renderHalf(tile.a));const d=document.createElement('div');d.className='divider-h';el.appendChild(d);el.appendChild(renderHalf(tile.b))}else{el.appendChild(renderHalf(tile.a));const d=document.createElement('div');d.className='divider-v';el.appendChild(d);el.appendChild(renderHalf(tile.b))}if(clickable&&idx!==undefined){if(idx===selectedIdx)el.classList.add('selected');el.addEventListener('click',()=>selectTile(idx))}return el}
-function renderMyHand(){const c=document.getElementById('my-hand');c.innerHTML='';myHand.forEach((t,i)=>c.appendChild(createPieceEl(t,false,i,true)))}
-function renderOpp(){const c=document.getElementById('opp-area');c.innerHTML='';oppHand.forEach(()=>{const d=document.createElement('div');d.className='opp-back';c.appendChild(d)})}
-function renderBoard(){const b=document.getElementById('board');b.innerHTML='';if(!board.length){b.style.left='50%';b.style.top='50%';b.style.transform='translate(-50%,-50%)';return}b.style.left='20px';b.style.top='50%';b.style.transform='translateY(-50%)';board.forEach(e=>b.appendChild(createPieceEl(e.tile,true,null,false)))}
-function updateCounts(){document.getElementById('my-count').innerText=myHand.length;document.getElementById('opp-count').innerText=oppHand.length}
-function updateButtons(){if(gameOver){['btn-left','btn-right','btn-draw','btn-pass'].forEach(id=>document.getElementById(id).disabled=true);return}const canPlace=myTurn&&selectedIdx!==null;document.getElementById('btn-left').disabled=!canPlace;document.getElementById('btn-right').disabled=!canPlace;document.getElementById('btn-draw').disabled=!(myTurn&&boneyard.length>0&&!canPass);document.getElementById('btn-pass').disabled=!(myTurn&&canPass)}
-function selectTile(i){if(!myTurn||gameOver)return;selectedIdx=(selectedIdx===i)?null:i;render()}
-function tileEnds(tile,side){if(side==='left'){if(boardLeftEnd===null)return tile;if(tile.b===boardLeftEnd)return tile;if(tile.a===boardLeftEnd)return{a:tile.b,b:tile.a};return null}else{if(boardRightEnd===null)return tile;if(tile.a===boardRightEnd)return tile;if(tile.b===boardRightEnd)return{a:tile.b,b:tile.a};return null}}
-function placePiece(side){if(!myTurn||selectedIdx===null||gameOver)return;const tile=myHand[selectedIdx];const oriented=tileEnds(tile,side);if(!oriented){setMsg('Essa peça não encaixa!');return}if(board.length===0){board.push({tile:oriented});boardLeftEnd=oriented.a;boardRightEnd=oriented.b}else if(side==='left'){board.unshift({tile:oriented});boardLeftEnd=oriented.a}else{board.push({tile:oriented});boardRightEnd=oriented.b}myHand.splice(selectedIdx,1);selectedIdx=null;canPass=false;if(myHand.length===0){endGame('Você venceu! 🎉');return}myTurn=false;render();setMsg('Oponente jogando...');setTimeout(oppMove,900)}
-function canPlayTile(tile){if(!board.length)return true;return tile.a===boardLeftEnd||tile.b===boardLeftEnd||tile.a===boardRightEnd||tile.b===boardRightEnd}
-function oppMove(){if(gameOver)return;let played=false;for(let i=0;i<oppHand.length;i++){const t=oppHand[i];const orientedR=tileEnds(t,'right');if(orientedR){if(board.length===0){board.push({tile:t});boardLeftEnd=t.a;boardRightEnd=t.b}else{board.push({tile:orientedR});boardRightEnd=orientedR.b}oppHand.splice(i,1);played=true;break}const orientedL=tileEnds(t,'left');if(orientedL){board.unshift({tile:orientedL});boardLeftEnd=orientedL.a;oppHand.splice(i,1);played=true;break}}if(!played){if(boneyard.length>0){oppHand.push(boneyard.pop());setMsg('Oponente comprou...');render();setTimeout(oppMove,700);return}else{setMsg('Oponente passou.');myTurn=true;canPass=false;const myCanPlay=myHand.some(t=>canPlayTile(t));if(!myCanPlay&&boneyard.length===0){endByBlock();return}render();if(!myCanPlay){canPass=true;setMsg('Sem jogadas! Passe.');updateButtons()}else setMsg('Sua vez!');return}}if(oppHand.length===0){endGame('Oponente venceu! 😢');return}myTurn=true;canPass=false;render();const myCanPlay=myHand.some(t=>canPlayTile(t));if(!myCanPlay){if(boneyard.length>0)setMsg('Compre uma peça!');else{canPass=true;setMsg('Sem jogadas! Passe.');updateButtons()}}else setMsg('Sua vez! Selecione uma peça.')}
-function drawTile(){if(!myTurn||boneyard.length===0||gameOver)return;myHand.push(boneyard.pop());if(myHand.some(t=>canPlayTile(t))){setMsg('Peça comprada! Agora jogue.')}else if(boneyard.length===0){canPass=true;setMsg('Sem mais peças! Passe.')}else setMsg('Ainda sem jogada. Compre ou passe.');render()}
-function passTurn(){if(!canPass||gameOver)return;canPass=false;myTurn=false;selectedIdx=null;setMsg('Você passou. Oponente jogando...');render();setTimeout(oppMove,900)}
-function sumHand(hand){return hand.reduce((s,t)=>s+t.a+t.b,0)}
-function endGame(msg){gameOver=true;const oppSum=sumHand(oppHand);const mySum=sumHand(myHand);if(mySum<oppSum)myScore+=oppSum;else if(oppSum<mySum)oppScore+=mySum;setMsg(msg+' | '+mySum+' vs '+oppSum);render()}
-function endByBlock(){gameOver=true;const myS=sumHand(myHand),oppS=sumHand(oppHand);if(myS<oppS){myScore+=oppS;setMsg('Bloqueou! Você vence! 🎉')}else if(oppS<myS){oppScore+=myS;setMsg('Bloqueou! Oponente vence! 😢')}else setMsg('Empate!');render()}
-function setMsg(m){document.getElementById('msg').innerText=m}
-function shareState() {
-  const s = '♟️ DOMINÓ EVO
-🎮 Vez: ' + (myTurn ? 'Você' : 'Oponente') + '
-📦 Peças: ' + myHand.length + ' (vs ' + oppHand.length + ')
-🃏 Mesa: ' + board.length;
-  navigator.clipboard.writeText(s).then(() => setMsg('Copiado!'));
-}
-
-// REAL-TIME SYNC
-const SU='https://lwcwtwdmfruwjdvpwlbf.supabase.co';
-const AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3Y3d0d2RtZnJ1d2pkdnB3bGJmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODA5NzY4OCwiZXhwIjoyMDkzNjczNjg4fQ.OO84IplykShXn342L0rzAfNQejeVYMFgWQlzwPByMb8';
-let mp=1,lu=null;
-function sv(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{method:'PATCH',headers:{apikey:AK,Authorization:'Bearer '+AK,ContentType:'application/json'},body:JSON.stringify({conteudo:JSON.stringify({p1:JSON.stringify(p1Hand),p2:JSON.stringify(p2Hand),b:JSON.stringify(board),by:JSON.stringify(boneyard),cp:mp===1?2:1,sc:[p1Score,p2Score],up:Date.now()}})})}
-function chk(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){let s=JSON.parse(d[0].conteudo);if(s.up&&s.up!==lu&&s.cp===mp){lu=s.up;p1Hand=JSON.parse(s.p1);p2Hand=JSON.parse(s.p2);board=JSON.parse(s.b||'[]');boneyard=JSON.parse(s.by||'[]');currentPlayer=s.cp;p1Score=s.sc[0];p2Score=s.sc[1];render();setMsg('Jogada do outro! Vez tua.')}})}
-function init(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){const s=JSON.parse(d[0].conteudo);mp=s.cp===1?2:1}else{mp=1;newGame()}setInterval(chk,1500)})}
-
-function shareGame(){const s=JSON.stringify({p1:JSON.stringify(p1Hand),p2:JSON.stringify(p2Hand),b:JSON.stringify(board),by:JSON.stringify(boneyard),cp:currentPlayer,sc:[p1Score,p2Score]});fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{method:'PATCH',headers:{apikey:AK,Authorization:'Bearer '+AK,ContentType:'application/json'},body:JSON.stringify({conteudo:s})}).then(()=>setMsg('Jogo guardado! Envia link ao outro.'))}
-function loadGame(){fetch(SU+'/rest/v1/evo_docs?id=eq.domino_game',{headers:{apikey:AK,Authorization:'Bearer '+AK}}).then(r=>r.json()).then(d=>{if(d[0]&&d[0].conteudo){const s=JSON.parse(d[0].conteudo);p1Hand=JSON.parse(s.p1);p2Hand=JSON.parse(s.p2);board=JSON.parse(s.b||'[]');boneyard=JSON.parse(s.by||'[]');currentPlayer=s.cp;p1Score=s.sc[0];p2Score=s.sc[1];render();setMsg('Jogo carregado!')}})}
-init();
+function createAll(){const t=[];for(let i=0;i<=6;i++)for(let j=i;j<=6;j++)t.push(makeDomino(i,j));return t}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function newGame(){gameOver=false;selectedIdx=null;canPass=false;const all=shuffle(createAll());myHand=all.slice(0,7);oppHand=all.slice(7,14);boneyard=all.slice(14);board=[];myTurn=myHand[0].a==myHand[0].b;render();document.getElementById('msg').innerText=myTurn?'Você começa!':'Oponente beg'}
+function renderHalf(v){const d=document.createElement('div');d.className='half';PIP[v].forEach(i=>{const p=document.createElement('div');p.className='pip';d.appendChild(p)});return d}
+function createPiece(t,h,i){const e=document.createElement('div');e.className='dom-piece'+(h?' horizontal':'');if(h){e.appendChild(renderHalf(t.a));e.appendChild(renderHalf(t.b))}else{e.appendChild(renderHalf(t.a));const d=document.createElement('div');d.className='divider-v';e.appendChild(d);e.appendChild(renderHalf(t.b))}if(i!==undefined){if(i===selectedIdx)e.classList.add('selected');e.onclick=()=>{if(myTurn&&!gameOver){selectedIdx=(selectedIdx===i)?null:i;render()}}}return e}
+function render(){document.getElementById('my-hand').innerHTML='';myHand.forEach((t,i)=>document.getElementById('my-hand').appendChild(createPiece(t,false,i)));document.getElementById('opp-area').innerHTML='';oppHand.forEach(()=>{document.getElementById('opp-area').appendChild(document.createElement('div'))});document.getElementById('opp-area').innerHTML=Array(oppHand.length).fill('<div class="opp-back"></div>').join('');document.getElementById('board').innerHTML='';board.forEach(e=>document.getElementById('board').appendChild(createPiece(e.tile,true)));document.getElementById('my-count').innerText=myHand.length;document.getElementById('opp-count').innerText=oppHand.length;document.getElementById('my-score').innerText=myScore;document.getElementById('opp-score').innerText=oppScore;document.getElementById('whose-turn').innerText=myTurn?'Sua vez':'Aguarde';document.getElementById('btn-left').disabled=!(myTurn&&selectedIdx!==null);document.getElementById('btn-right').disabled=!(myTurn&&selectedIdx!==null);document.getElementById('btn-draw').disabled=!(myTurn&&boneyard.length>0&&!canPass);document.getElementById('btn-pass').disabled=!(myTurn&&canPass)}
+function tileEnds(t,s){if(!board.length)return t;if(s==='left')return t.b===board[0].tile.a?{a:t.b,b:t.a}:t.a===board[0].tile.a?{a:t.a,b:t.b}:null;else return t.a===board[board.length-1].tile.b?{a:t.b,b:t.a}:t.b===board[board.length-1].tile.b?{a:t.a,b:t.b}:null}
+function placePiece(s){if(!myTurn||selectedIdx===null||gameOver)return;const t=myHand[selectedIdx];const o=tileEnds(t,s);if(!o){document.getElementById('msg').innerText='Não encaixa!';return}if(!board.length){board.push({tile:o})}else if(s==='left'){board.unshift({tile:o})}else{board.push({tile:o})}myHand.splice(selectedIdx,1);selectedIdx=null;canPass=false;if(myHand.length===0){endGame('Você venceu!');return}myTurn=false;render();setTimeout(oppMove,800)}
+function drawTile(){if(!myTurn||boneyard.length===0||gameOver)return;myHand.push(boneyard.pop());myTurn=false;render();setTimeout(oppMove,800)}
+function passTurn(){if(!canPass||gameOver)return;myTurn=false;canPass=false;render();setTimeout(oppMove,800)}
+function endGame(m){gameOver=true;const os=oppHand.reduce((s,t)=>s+t.a+t.b,0);const ms=myHand.reduce((s,t)=>s+t.a+t.b,0);if(ms<os)myScore+=os;else if(os<ms)oppScore+=ms;document.getElementById('msg').innerText=m+' ('+ms+' vs '+os+')';render()}
+function oppMove(){if(gameOver)return;let p=false;for(let i=0;i<oppHand.length;i++){const o=oppHand[i];if(board.length===0||o.a===board[board.length-1].tile.b||o.b===board[board.length-1].tile.b){board.push({tile:o});oppHand.splice(i,1);p=true;break}}if(!p&&boneyard.length>0){oppHand.push(boneyard.pop());document.getElementById('msg').innerText='Oponente comprou...';render();setTimeout(oppMove,500);return}if(!p){document.getElementById('msg').innerText='Oponente passou.';myTurn=true;canPass=false;render();return}if(oppHand.length===0){endGame('Oponente venceu!');return}myTurn=true;canPass=false;document.getElementById('msg').innerText='Sua vez!';render()}
 newGame();
 </script>
 </body>
