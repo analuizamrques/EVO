@@ -144,6 +144,12 @@ function getRandomWord() {
   return word;
 }
 
+
+// Normalize: remove accents for comparison
+function normalize(word) {
+  return word.replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u').replace(/ü/g,'u').replace(/ñ/g,'n');
+}
+
 function initGame() {
   targetWord = getRandomWord();
   console.log('Palavra:', targetWord);
@@ -260,10 +266,10 @@ function submitGuess() {
   var word = getCurrentWord();
   console.log('Word:', word, 'length:', word.length);
   if (word.length < 5) { showToast('Faltam letras!'); shakeRow(); return; }
-  if (!validWords.has(word)) { showToast('Palavra inválida!'); shakeRow(); return; }
+  if (!validWords.has(word) && !validWords.has(normalize(word))) { showToast('Palavra inválida!'); shakeRow(); return; }
   guesses.push(word);
   evaluate(word);
-  if (word === targetWord) {
+  if (normalize(word) === normalize(targetWord)) {
     gameOver = true;
     wins++;
     played++;
@@ -297,11 +303,11 @@ function evaluate(word) {
   var guessArr = word.split('');
   var result = ['absent', 'absent', 'absent', 'absent', 'absent'];
   for (var i = 0; i < 5; i++) {
-    if (guessArr[i] === targetArr[i]) { result[i] = 'correct'; targetArr[i] = null; }
+    if (normalize(guessArr[i]) === normalize(targetArr[i])) { result[i] = 'correct'; targetArr[i] = null; }
   }
   for (var i = 0; i < 5; i++) {
     if (result[i] === 'correct') continue;
-    var idx = targetArr.indexOf(guessArr[i]);
+    var idx = targetArr.indexOf(normalize(guessArr[i]));
     if (idx !== -1) { result[i] = 'present'; targetArr[idx] = null; }
   }
   var status = {};
@@ -350,11 +356,11 @@ async function loadDictionary() {
     var response = await fetch('palabras_de_cinco_letras.txt');
     var text = await response.text();
     var words = text.split('\n').map(function(w) { return w.trim().toUpperCase(); }).filter(function(w) { return w.length === 5; });
-    words.forEach(function(w) { validWords.add(w); });
-    VOCAB.forEach(function(w) { validWords.add(w); });
+    words.forEach(function(w) { validWords.add(w); validWords.add(normalize(w)); });
+    VOCAB.forEach(function(w) { validWords.add(w); validWords.add(normalize(w)); });
   } catch(e) {
     console.log('Offline mode');
-    VOCAB.forEach(function(w) { validWords.add(w); });
+    VOCAB.forEach(function(w) { validWords.add(w); validWords.add(normalize(w)); });
   }
   initGame();
   
