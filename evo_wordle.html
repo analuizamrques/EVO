@@ -299,15 +299,15 @@ function submitGuess() {
 }
 
 function evaluate(word) {
-  var targetArr = targetWord.split('');
+  var targetArr = targetWord.split('').map(normalize);
   var guessArr = word.split('');
   var result = ['absent', 'absent', 'absent', 'absent', 'absent'];
   for (var i = 0; i < 5; i++) {
-    if (normalize(guessArr[i]) === normalize(targetArr[i])) { result[i] = 'correct'; targetArr[i] = null; }
+    if (guessArr[i].toLowerCase() === targetArr[i]) { result[i] = 'correct'; targetArr[i] = null; }
   }
   for (var i = 0; i < 5; i++) {
     if (result[i] === 'correct') continue;
-    var idx = targetArr.indexOf(normalize(guessArr[i]));
+    var idx = targetArr.indexOf(guessArr[i].toLowerCase());
     if (idx !== -1) { result[i] = 'present'; targetArr[idx] = null; }
   }
   var status = {};
