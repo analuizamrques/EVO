@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎯 EVO Wordle - EVO</title>
+<meta name="theme-color" content="#f0b429">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #0d1117; --surface: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --gold: #f0b429; --gold-dim: #b8962e; --gold-glow: rgba(240, 180, 41, 0.3); --correct: #3fb950; --present: #d29922; --red: #f85149; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { touch-action: manipulation; }
+body { font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #0d1117 0%, #1a1f29 50%, #0d1117 100%); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+header { background: linear-gradient(180deg, rgba(240,180,41,0.15) 0%, transparent 100%); padding: 20px; text-align: center; border-bottom: 1px solid var(--border); }
+header h1 { font-family: 'Nunito', serif; font-size: 28px; background: linear-gradient(135deg, var(--gold), #fff5cc, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+header .tagline { color: var(--muted); font-size: 12px; margin-top: 5px; }
+.stats-bar { display: flex; justify-content: center; gap: 25px; padding: 12px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.stats-bar .stat { text-align: center; }
+.stats-bar .val { font-size: 18px; font-weight: 700; color: var(--gold); }
+.stats-bar .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+.game { flex: 1; display: flex; align-items: center; justify-content: center; padding: 15px; }
+.board { display: grid; grid-template-rows: repeat(6, 1fr); gap: 6px; }
+.row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.tile { width: 54px; height: 54px; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 800; text-transform: uppercase; }
+.tile.active { border-color: var(--gold); box-shadow: 0 0 12px var(--gold-glow); }
+.tile.correct { background: var(--correct); border-color: var(--correct); }
+.tile.present { background: var(--present); border-color: var(--present); }
+.tile.absent { background: var(--border); border-color: var(--border); }
+.keyboard { padding: 15px; gap: 6px; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; width: 100%; }
+.key-row { display: flex; gap: 5px; justify-content: center; }
+.key { flex: 1; height: 54px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; cursor: pointer; text-transform: uppercase; }
+.key:active { transform: scale(0.95); background: var(--border); }
+.key.wide { flex: 1.4; font-size: 11px; }
+.key.correct { background: var(--correct); border-color: var(--correct); }
+.key.present { background: var(--present); border-color: var(--present); }
+.key.absent { background: var(--border); opacity: 0.5; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-content { background: var(--surface); border: 2px solid var(--gold); border-radius: 16px; padding: 25px; max-width: 400px; width: 90%; text-align: center; }
+.modal h2 { font-family: 'Nunito', serif; color: var(--gold); font-size: 22px; margin-bottom: 15px; }
+.modal p { margin-bottom: 10px; line-height: 1.5; color: var(--text); }
+.modal button { background: var(--gold); color: #0d1117; border: none; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; width: 100%; }
+.modal button.secondary { background: var(--surface); border: 1px solid var(--gold); color: var(--gold); margin-top: 8px; }
+.modal .stat .val { font-size: 26px; font-weight: 700; color: var(--gold); }
+.modal .stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+.rules-intro { font-size: 13px; margin-bottom: 20px; text-align: left; }
+.color-tiles { display: flex; gap: 8px; margin: 20px 0; justify-content: center; }
+.game-tile { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; border-radius: 4px; flex-shrink: 0; }
+.game-tile.correct { background: var(--correct); }
+.game-tile.present { background: var(--present); }
+.game-tile.absent { background: var(--border); }
+.rules-box { text-align: left; margin: 12px 0; padding: 12px; background: var(--bg); border-radius: 8px; }
+.rules-box .color-name { font-weight: 700; margin-bottom: 4px; }
+.rules-box .color-name.green { color: var(--correct); }
+.rules-box .color-name.yellow { color: var(--present); }
+.rules-box .color-name.gray { color: var(--border); }
+.rules-box .color-desc { font-size: 12px; color: var(--muted); }
+.strategy { margin-top: 15px; padding: 12px; background: rgba(240,180,41,0.1); border-radius: 8px; border: 1px solid var(--gold-dim); text-align: left; }
+.strategy h4 { color: var(--gold); font-size: 12px; margin-bottom: 8px; }
+.strategy p { font-size: 11px; color: var(--muted); margin: 5px 0; }
+#toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; display: none; z-index: 1001; }
+.help-btn { position: fixed; top: 15px; left: 15px; background: none; border: none; font-size: 22px; cursor: pointer; z-index: 100; }
+@keyframes flip { 0% { transform: rotateX(0deg); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0deg); } }
+.flip { animation: flip 0.4s ease; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+.shake { animation: shake 0.4s ease; }
+</style>
+</head>
+<body>
+<button class="help-btn" onclick="showRules()">❓</button>
+<header>
+  <h1>🎯 EVO Wordle</h1>
+  <p class="tagline">Adivinha a palavra de 5 letras em 6 tentativas</p>
+</header>
+<div class="stats-bar">
+  <div class="stat"><div class="val" id="wins">0</div><div class="lbl">Vitórias</div></div>
+  <div class="stat"><div class="val" id="played">0</div><div class="lbl">Jogados</div></div>
+  <div class="stat"><div class="val" id="streak">0</div><div class="lbl">Sequência</div></div>
+</div>
+<div class="game"><div class="board" id="board"></div></div>
+<div class="keyboard" id="keyboard"></div>
+<div id="toast"></div>
+<div class="modal" id="winModal">
+  <div class="modal-content">
+    <h2>🎉 Você acertou!</h2>
+    <p>em <strong id="winAttempts">X</strong> tentativas</p>
+    <p id="secretWord" style="font-size:24px;font-weight:800;letter-spacing:6px;color:var(--gold);margin:15px 0"></p>
+    <div style="display:flex;justify-content:center;gap:30px;margin:15px 0;padding:15px;background:var(--bg);border-radius:8px">
+      <div class="stat"><div class="val" id="winTime">0:00</div><div class="lbl">Tempo</div></div>
+      <div class="stat"><div class="val" id="newStreak">0</div><div class="lbl">Sequência</div></div>
+    </div>
+    <button onclick="nextWord()">Próxima palavra ➡️</button>
+    <button class="secondary" onclick="closeModalStay()">Fechar</button>
+  </div>
+</div>
+<div class="modal" id="loseModal">
+  <div class="modal-content">
+    <h2>😔 Palavra não descoberta</h2>
+    <p>A palavra era:</p>
+    <p id="loseWord" style="font-size:24px;font-weight:800;letter-spacing:6px;color:var(--red);margin:15px 0"></p>
+    <button onclick="nextWord()">Tentar novamente ➡️</button>
+  </div>
+</div>
+<div class="modal" id="rulesModal">
+  <div class="modal-content">
+    <h2>Como Jogar</h2>
+    <div class="rules-intro">O objetivo é descobrir uma palavra de 5 letras em 6 tentativas. O jogo indica se as letras estão corretas através de cores.</div>
+    <div class="color-tiles"><div class="game-tile correct">V</div><div class="game-tile correct">E</div><div class="game-tile correct">R</div><div class="game-tile correct">D</div><div class="game-tile correct">E</div></div>
+    <div class="rules-box"><div class="color-name green">VERDE</div><div class="color-desc">A letra faz parte da palavra e está no lugar certo.</div></div>
+    <div class="color-tiles"><div class="game-tile present">R</div><div class="game-tile present">O</div><div class="game-tile present">J</div><div class="game-tile" style="background:var(--surface);border:2px solid var(--border)"></div><div class="game-tile" style="background:var(--surface);border:2px solid var(--border)"></div></div>
+    <div class="rules-box"><div class="color-name yellow">AMARELO</div><div class="color-desc">A letra está na palavra, mas no lugar errado.</div></div>
+    <div class="color-tiles"><div class="game-tile absent">X</div><div class="game-tile absent">W</div><div class="game-tile absent">Q</div><div class="game-tile" style="background:var(--surface);border:2px solid var(--border)"></div><div class="game-tile" style="background:var(--surface);border:2px solid var(--border)"></div></div>
+    <div class="rules-box"><div class="color-name gray">CINZA</div><div class="color-desc">A letra não está na palavra.</div></div>
+    <div class="strategy"><h4>💡 Estratégia</h4><p>• Começa com palavras com vogais diferentes</p><p>• Cores diferentes = letras diferentes</p><p>• O tabuleiro mostra apenas o melhor resultado de cada letra</p></div>
+    <button onclick="closeRules()">Jogar</button>
+  </div>
+</div>
+<script>
+// VOCABULÁRIO ~600 palavras
+var VOCAB = ['acabó', 'adiós', 'algún', 'andré', 'atrás', 'ayudó', 'añejo', 'bahía', 'borró', 'botón', 'cansé', 'cantó', 'cobré', 'cogía', 'césar', 'daría', 'darío', 'decía', 'demás', 'dueño', 'dónde', 'elías', 'espía', 'están', 'estás', 'estén', 'estés', 'falló', 'forró', 'fríos', 'fábio', 'fácil', 'fénix', 'grabé', 'había', 'hacés', 'hacía', 'haría', 'jamás', 'jesús', 'limón', 'llamó', 'llegó', 'lucía', 'lápiz', 'línea', 'lópez', 'magín', 'mandé', 'maría', 'metío', 'montó', 'murió', 'ncómo', 'niños', 'nsalí', 'ojalá', 'ortíz', 'otoño', 'oíste', 'oñate', 'peleé', 'pensé', 'perdí', 'podré', 'podés', 'podía', 'pérez', 'quedó', 'quité', 'quién', 'ramón', 'ratón', 'razón', 'rompí', 'rubén', 'sabía', 'salió', 'saltó', 'salvó', 'salón', 'saqué', 'saraí', 'seguí', 'sentí', 'serán', 'sería', 'simón', 'sofía', 'solía', 'solís', 'soñar', 'sueñe', 'sueño', 'tañón', 'tenés', 'tenía', 'tingó', 'trapé', 'vacía', 'vacío', 'valía', 'venío', 'verás', 'zenón', 'ácido', 'álbum', 'ángel', 'épico', 'érika', 'éxito', 'única', 'único'];
+'ADIOS','AHORA','AIRE','ALMA','AMOR','ANTES','AQUI','BAILA','BAILAR','BEBER','BEBES','BUSCA','CALLE','CALMA','CALOR','CAMINAR','CANTAR','CANTOS','CERCA','CIELO','CLARO','COLOR','COMO','CONOCER','CORTO','CUANDO','DANCA','DECIR','DESDE','DICES','DONDE','DUELO','ESTAS','ESTOY','FINAL','FIRME','FLACO','FLORA','FRENO','FRESA','FRUTA','FUEGO','FUGA','FURIA','GAFAS','GALGO','GAMBA','GANAS','GANGA','GASE','GATO','GENIO','GENTE','GIRAR','GOLFO','GOLPE','GOMAS','GOZAR','GRANDE','GRASA','GRIPE','GRISA','GRITO','GRUPO','GUAPO','GUSTA','GUSTO','HABLAR','HALAS','HALOS','HARINA','HASER','HASTA','HECHO','HIELO','HOJAS','HONGO','HONOR','HOTEL','HUECO','HUEVO','HURRA','HURTO','IDEAS','IGUAL','INDIA','INDIO','INFLA','INGO','IRANO','IRON','ISLA','ITALO','IZOTE','JABON','JAULA','JEANS','JESUS','JOTAS','JOVEN','JOYAS','JUEGA','JUEGO','JUGAR','JUSTO','JUZGA','LABIO','LENTO','LEY','LIBRE','LLEGA','LLEGAR','LLEGO','LOCO','LUGAR','MANOS','MEDIO','MIEDO','MIRAR','MIRAS','MISMO','MUCHO','NADIE','NEGRO','NOCHE','NUEVO','NUNCA','OLVIDAR','PARA','PASAR','PAZ','PENSAR','PERRO','PISTA','PLANO','PLATA','PLATO','PLAYA','PLAZA','POCO','PODER','PUEDO','QUEDA','QUEDAR','QUERER','QUIERO','RARO','REY','RITMO','RUIDO','SABER','SABES','SALDO','SALIR','SEGUIR','SENTIR','SUELO','SUEÑO','TANTO','TENGO','TODO','TODOS','VAMOS','VER','VIDA','VIEJO','ACABA','ACERO','ACUDE','AGUAS','AHORA','AIRES','ALA','ALBA','ALBOS','ALCE','ALEJA','ALERO','ALGUN','ALIEN','ALMAS','ALOJA','ALTAR','ALTOS','ARBOL','ARENA','ARIDO','ARMAS','ASILO','ASTAS','AUDIO','AUGUR','AUNQUE','AUREO','AUTOR','AVION','AYUDA','BARCO','BARRA','BEBES','BEBID','BELLO','BESOS','BICHO','BINGO','BLUSA','BOCAS','BOLSA','BONGO','BONOS','BRUJA','BRUJO','BUENA','BUENO','BUQUE','BURLA','BUSCA','BUSTO','BUZON','CABRA','CABRO','CACAS','CACAO','CADAS','CAJAS','CALAS','CALMA','CALOR','CALOS','CAMAS','CAMPO','CANAL','CANTO','CAPAZ','CARAS','CARGO','CARNE','CARTA','CASAS','CASOS','CATRE','CAZAR','CAZAS','CEDER','CEDRO','CENAS','CERCA','CERDO','CERRO','CIELO','CIFRA','CINCO','CITAS','CLARO','CLASE','CLAVO','COBRO','COCHE','COCOA','COCOS','COLAS','COMAS','COMUN','CONEJO','COPAS','CORAL','CORRE','CORTA','CORTE','COSTA','CREMA','CRUDA','CRUEL','CRUZA','CUBOS','CUERO','CULPA','CULTOS','CURAR','CURAS','CURVA','CUSAS','CUSOS','DAMAS','DATOS','DECIR','DEDOS','DEJAR','DELAS','DELTA','DESDE','DEUDA','DEVAS','DICHA','DICHE','DICHO','DOLOR','DONDE','DORAR','DORAS','DORSO','DOSIS','DOTES','DRAGO','DROGA','DUDAR','DUELO','DUQUE','DURAS','DUROS','ECHAS','ECHOS','EDAD','EGIPTO','ELLAS','ELLOS','EMB','EMPIA','EMPuj','ENA','ENANO','ENE','ENERO','ENFAS','ENGAN','ENODE','ENSA','EPOCA','ERROR','ESCALA','ESCOM','ESTAR','ESTAS','ESTOS','EXITO','EXTRA','FALSA','FALSO','FAROL','FAUNA','FAVOR','FECHA','FELIZ','FERIA','FIBRA','FIERA','FIGO','FINAL','FIRMA','FISCAL','FITOS','FLACO','FLORA','FLUJO','FONDO','FORMA','FOTON','FRASE','FRENO','FRESA','FRUTA','FUEGO','FUGA','FURIA','GAFAS','GALGO','GAMBA','GAMBO','GANAS','GANGA','GAPON','GASES','GATO','GENIO','GENTE','GOLFO','GOLPE','GOMAS','Gorra','GOZAR','GRADO','GRASA','GRIPE','GRISA','GRITO','GRUPO','GUAJE','GUALA','GUAPO','GUSTO','HALAS','HALOS','HANDS','HARINA','HASER','HASTA','HECHO','HIELO','HISTO','HOJAS','HONGO','HONOR','HOTEL','HUECO','HUEVO','HURRA','HURTO','IDEAS','IGUAL','INDIA','INDIO','INFLA','INGO','IRANO','IRON','ISLA','ITALO','IZOTE','IZQ','JABON','JAULA','JAZZ','JEANS','JESUS','JOYAS','JOTAS','JOVEN','JUEGA','JUEGO','JUGAR','JUSTO','JUZGA','LABIO','LABOR','LACAR','LACEO','LACRA','LAGOS','LAPIZ','LARGO','LAVAR','LECHE','LENTO','LEONA','LEONO','LIBRE','LIBRO','LIDER','LIMA','LIMON','LINEA','LLANO','LLUVIA','LOCOS','LODOS','LOGRO','LUGAR','LUNAR','LUNAS','LUSTRO','MADRE','MAGIA','MALAS','MALES','MALOS','MAMBO','MANDI','MANGA','MANOS','MANTO','MARCA','MARCO','MAREA','MARES','MARIO','MARTE','MARZO','MASAS','MASA','MATAR','MAYOR','MEDIA','MEDIO','MEJOR','MENOS','MENTE','MESES','METAL','METRO','MICRO','MIEDO','MIGAS','MINAS','MIRAR','MISMA','MISMO','MODA','MODO','MOLER','MONTE','MORAL','MORIR','MORSO','MOTOR','MOVIL','MUCHO','MUNDO','MUSEO','MUSLO','MUYER','NACER','NACIO','NADAR','NATA','NAVES','NAVIDA','NEGRO','NIEVE','NIVEL','NOBLE','NOCHE','NODOS','NORIA','NORMA','NORTE','NOVIO','NUBES','NULOS','NUNCA','NURIA','NUTRE','OBRAS','OBVIO','OCASO','OCIOS','ODIAR','OESTE','OIDOS','OJEAR','ONDAS','OPERA','ORDEN','OREJA','OTRAS','OTROS','OVIEDO','OXIDO','OYENTE','PADRE','PAJES','PALOS','PANDA','PAPEL','PARED','PARES','PARIR','PARO','PARTE','PASAR','PASO','PASTA','PATAS','PATIO','PAUSA','PECES','PECIO','PEDIR','PEGAS','PEINA','PENAS','PERAS','PEROL','PERRO','PESAS','PICAZ','PICOS','PISTA','PLANA','PLANO','PLATA','PLATO','PLAYA','PLAZA','PLEBE','PLENO','PLUMA','POBLAR','POCO','PODER','POETA','POLVO','PONER','POPUL','PORCO','POSAR','POSTE','POZO','PRACT','PRECIO','PREGU','PRESA','PRIMA','PRIMO','PRISA','PROBA','PROFE','PROLE','PROM','PRONT','PROTA','PRUEB','PUBRE','PUEDO','PUERTA','PUNT','PUPILA','PUREZ','PURGA','PUSO','QUEDA','QUEMA','QUESO','QUIEN','QUILA','QUILO','QUITA','QUITO','RADAR','RADIO','RAIZ','RANGO','RARO','RASGO','RATON','RAYAS','RAZON','REAL','REBAN','REBAJA','REGIO','REJAS','RELOJ','REMAR','REMOL','RENTA','RESTO','REYES','RIEGO','RISA','RITMO','ROBOT','ROCAS','RODEA','ROJAZ','ROJOS','ROLES','ROMAN','ROMPO','ROPAS','ROSAS','ROSTRO','RUEDA','RUIDO','RUMBO','RUTAS','RUTINA','SABER','SABOR','SACAR','SALDO','SALIR','SALMO','SALON','SALSA','SALTO','SALUD','SALVA','SAMBA','SANTA','SANTO','SAPO','SECAR','SELLO','SENAS','SENOR','SERIA','SERIE','SERIO','SETAS','SIDRA','SIGLO','SIGNO','SIGUE','SILBA','SILLO','SITIO','SOBRE','SOCIO','SOLAR','SOLOS','SOPLA','SORDO','SUBIR','SUDAN','SUELO','SUEÑO','SUERO','SUMA','SUPER','TABA','TACOS','TALES','TALLA','TANGO','TANTA','TANTO','TAPA','TAPAS','TARJE','TASAS','TECLA','TELAS','TEMAS','TEMOR','TENER','TENIS','TENSO','TERCO','TERRA','TESIS','TIBIO','TIENE','TIGRE','TIMA','TIMBA','TINTA','TIPOS','TIRAR','TITAN','TITUL','TOCAR','TONTO','TOPES','TOQUE','TORO','TORRE','TOTAL','TOXINA','TRAMA','TRAMO','TRAPO','TRATA','TRATO','TRAZO','TRECE','TRENA','TRIGO','TROCO','TRONA','TROVA','TRUCI','TUBER','TUBO','TUMBA','TUNEL','TURBO','TURNO','TUTOR','ULCER','ULTRA','UNDAS','UNICO','UNION','UNTAR','URBANO','USTED','UTIL','UTOPIA','VACAS','VACIO','VAMOS','VAPOR','VARIA','VARIO','VASOS','VECES','VEGAS','VEJEZ','VELAS','VELOS','VENAS','VENIR','VENTA','VERANO','VERDE','VERSO','VIAJE','VIDAS','VIDRIO','VIEJA','VIEJO','VIGOR','VINCA','VINO','VIOLA','VIRUS','VISAR','VISTA','VITAL','VIVAS','VIVEN','VIVIR','VIVOS','VOCES','VOLAR','VOLCA','VOLCO','VOLTA','VOLVER','VOTAR','VUELO','VULGO','XENON','XILOF','YATES','YERBA','YERNO','YOGUR','YOYO','ZANJA','ZETAS','ZONAS','ZORRO','ZURDO'];
+
+// Filter: only 5 letters
+VOCAB = VOCAB.filter(function(w) { return w.length === 5; });
+
+// ==================== GAME STATE ====================
+var validWords = new Set();
+var startTime = Date.now();
+var targetWord = '';
+var currentRow = 0;
+var currentTile = 0;
+var guesses = [];
+var gameOver = false;
+var wins = 0;
+var played = 0;
+var streak = 0;
+var usedWords = [];
+
+// ==================== KEY FUNCTIONS ====================
+function getRandomWord() {
+  var available = VOCAB.filter(function(w) { return usedWords.indexOf(w) === -1; });
+  if (available.length === 0) { usedWords = []; available = VOCAB.slice(); }
+  var word = available[Math.floor(Math.random() * available.length)];
+  usedWords.push(word);
+  return word;
+}
+
+function initGame() {
+  targetWord = getRandomWord();
+  console.log('Palavra:', targetWord);
+  currentRow = 0;
+  currentTile = 0;
+  guesses = [];
+  gameOver = false;
+  startTime = Date.now();
+  document.getElementById('wins').textContent = wins;
+  document.getElementById('played').textContent = played;
+  document.getElementById('streak').textContent = streak;
+  initBoard();
+}
+
+function initBoard() {
+  var board = document.getElementById('board');
+  board.innerHTML = '';
+  for (var r = 0; r < 6; r++) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    row.id = 'row-' + r;
+    for (var c = 0; c < 5; c++) {
+      var tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.id = 'tile-' + r + '-' + c;
+      row.appendChild(tile);
+    }
+    board.appendChild(row);
+  }
+  buildKeyboard();
+  // KEYBOARD HANDLER - ADDED ONCE at startup
+}
+
+function buildKeyboard() {
+  var keyboard = document.getElementById('keyboard');
+  keyboard.innerHTML = '';
+  var rows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+  rows.forEach(function(row) {
+    var rowDiv = document.createElement('div');
+    rowDiv.className = 'key-row';
+    row.split('').forEach(function(key) {
+      var btn = document.createElement('button');
+      btn.className = 'key';
+      btn.textContent = key;
+      btn.onclick = function() { addLetter(key); };
+      btn.id = 'key-' + key;
+      rowDiv.appendChild(btn);
+    });
+    keyboard.appendChild(rowDiv);
+  });
+  var bottomRow = document.createElement('div');
+  bottomRow.className = 'key-row';
+  var back = document.createElement('button');
+  back.className = 'key wide';
+  back.innerHTML = '⌫';
+  back.onclick = function() { removeLetter(); };
+  var enter = document.createElement('button');
+  enter.className = 'key wide';
+  enter.textContent = 'ENTER';
+  enter.onclick = function() { submitGuess(); };
+  bottomRow.appendChild(back);
+  bottomRow.appendChild(enter);
+  keyboard.appendChild(bottomRow);
+}
+
+// ==================== KEYBOARD HANDLER ====================
+// Defined BEFORE being used - moved to top
+function handleKey(e) {
+  if (gameOver) return;
+  var key = e.key.toUpperCase();
+  console.log('Key pressed:', key); // Debug log
+  if (key === 'ENTER') { 
+    e.preventDefault(); 
+    console.log('ENTER pressed, calling submitGuess');
+    submitGuess(); 
+  }
+  else if (key === 'BACKSPACE') { 
+    e.preventDefault(); 
+    console.log('BACKSPACE pressed, calling removeLetter');
+    removeLetter(); 
+  }
+  else if (/^[A-Z]$/.test(key)) {
+    addLetter(key);
+  }
+}
+
+function addLetter(letter) {
+  console.log('addLetter:', letter, 'currentTile:', currentTile);
+  if (currentTile >= 5 || gameOver) return;
+  var tile = document.getElementById('tile-' + currentRow + '-' + currentTile);
+  tile.textContent = letter;
+  tile.classList.add('active');
+  currentTile++;
+}
+
+function removeLetter() {
+  console.log('removeLetter, currentTile before:', currentTile);
+  if (currentTile <= 0 || gameOver) return;
+  currentTile--;
+  var tile = document.getElementById('tile-' + currentRow + '-' + currentTile);
+  tile.textContent = '';
+  tile.classList.remove('active');
+}
+
+function getCurrentWord() {
+  var word = '';
+  for (var i = 0; i < 5; i++) word += document.getElementById('tile-' + currentRow + '-' + i).textContent;
+  return word;
+}
+
+function submitGuess() {
+  console.log('submitGuess called, gameOver:', gameOver);
+  if (gameOver) return;
+  var word = getCurrentWord();
+  console.log('Word:', word, 'length:', word.length);
+  if (word.length < 5) { showToast('Faltam letras!'); shakeRow(); return; }
+  if (!validWords.has(word)) { showToast('Palavra inválida!'); shakeRow(); return; }
+  guesses.push(word);
+  evaluate(word);
+  if (word === targetWord) {
+    gameOver = true;
+    wins++;
+    played++;
+    streak++;
+    var time = Math.floor((Date.now() - startTime) / 1000);
+    var mins = Math.floor(time / 60);
+    var secs = time % 60;
+    document.getElementById('wins').textContent = wins;
+    document.getElementById('played').textContent = played;
+    document.getElementById('streak').textContent = streak;
+    document.getElementById('winAttempts').textContent = currentRow + 1;
+    document.getElementById('secretWord').textContent = targetWord;
+    document.getElementById('winTime').textContent = mins + ':' + secs.toString().padStart(2, '0');
+    document.getElementById('newStreak').textContent = streak;
+    setTimeout(function() { document.getElementById('winModal').classList.add('show'); }, 600);
+  } else if (currentRow >= 5) {
+    gameOver = true;
+    played++;
+    streak = 0;
+    document.getElementById('played').textContent = played;
+    document.getElementById('streak').textContent = streak;
+    document.getElementById('loseWord').textContent = targetWord;
+    document.getElementById('loseModal').classList.add('show');
+  }
+  currentRow++;
+  currentTile = 0;
+}
+
+function evaluate(word) {
+  var targetArr = targetWord.split('');
+  var guessArr = word.split('');
+  var result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+  for (var i = 0; i < 5; i++) {
+    if (guessArr[i] === targetArr[i]) { result[i] = 'correct'; targetArr[i] = null; }
+  }
+  for (var i = 0; i < 5; i++) {
+    if (result[i] === 'correct') continue;
+    var idx = targetArr.indexOf(guessArr[i]);
+    if (idx !== -1) { result[i] = 'present'; targetArr[idx] = null; }
+  }
+  var status = {};
+  for (var i = 0; i < 5; i++) {
+    var tile = document.getElementById('tile-' + (guesses.length - 1) + '-' + i);
+    tile.classList.add(result[i]);
+    tile.classList.add('flip');
+    var letter = guessArr[i];
+    if (!status[letter]) status[letter] = result[i];
+  }
+  for (var letter in status) {
+    var key = document.getElementById('key-' + letter);
+    if (key) {
+      if (status[letter] === 'correct') key.className = 'key correct';
+      else if (status[letter] === 'present' && !key.className.includes('correct')) key.className = 'key present';
+      else if (status[letter] === 'absent' && !key.className.includes('correct') && !key.className.includes('present')) key.className = 'key absent';
+    }
+  }
+}
+
+function shakeRow() {
+  var row = document.getElementById('row-' + currentRow);
+  row.classList.add('shake');
+  setTimeout(function() { row.classList.remove('shake'); }, 400);
+}
+
+function showToast(msg) {
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  setTimeout(function() { toast.style.display = 'none'; }, 2500);
+}
+
+function showRules() { document.getElementById('rulesModal').classList.add('show'); }
+function closeRules() { document.getElementById('rulesModal').classList.remove('show'); }
+function closeModalStay() { document.getElementById('winModal').classList.remove('show'); }
+
+function nextWord() {
+  document.getElementById('winModal').classList.remove('show');
+  document.getElementById('loseModal').classList.remove('show');
+  initGame();
+}
+
+async function loadDictionary() {
+  try {
+    var response = await fetch('palabras_de_cinco_letras.txt');
+    var text = await response.text();
+    var words = text.split('\n').map(function(w) { return w.trim().toUpperCase(); }).filter(function(w) { return w.length === 5; });
+    words.forEach(function(w) { validWords.add(w); });
+    VOCAB.forEach(function(w) { validWords.add(w); });
+  } catch(e) {
+    console.log('Offline mode');
+    VOCAB.forEach(function(w) { validWords.add(w); });
+  }
+  initGame();
+  
+  // ADD KEYBOARD LISTENER ONCE after dictionary loads
+  document.addEventListener('keydown', handleKey);
+  console.log('Keyboard listener added');
+}
+
+// ==================== START GAME ====================
+loadDictionary();
+</script>
+</body>
+</html>
