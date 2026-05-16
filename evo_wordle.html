@@ -186,7 +186,7 @@ function initBoard() {
 function buildKeyboard() {
   var keyboard = document.getElementById('keyboard');
   keyboard.innerHTML = '';
-  var rows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+  var rows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNMÑ'];
   rows.forEach(function(row) {
     var rowDiv = document.createElement('div');
     rowDiv.className = 'key-row';
@@ -231,7 +231,7 @@ function handleKey(e) {
     console.log('BACKSPACE pressed, calling removeLetter');
     removeLetter(); 
   }
-  else if (/^[A-Z]$/.test(key)) {
+  else if (/^[A-ZÑ]$/.test(key)) {
     addLetter(key);
   }
 }
