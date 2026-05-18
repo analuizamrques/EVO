@@ -469,9 +469,22 @@
             const word = swipe.map(i => letters[i]).join('');
             const msg = document.getElementById('msg');
             
-            if (word.length < 2) return;
+            if (word.length < 3) {
+                show('Min 3 letras!', 'error');
+                return;
+            }
             
-            if (targets.includes(word) && !found.includes(word)) {
+            if (!DICT.has(word)) {
+                show('No existe!', 'error');
+                return;
+            }
+            
+            if (found.includes(word)) {
+                show('Ya usado!', 'error');
+                return;
+            }
+            
+            if (targets.includes(word)) {
                 found.push(word);
                 score += word.length * 10;
                 show('✓ ' + word, 'success');
