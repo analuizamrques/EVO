@@ -74,25 +74,27 @@
             transition: width 0.3s ease;
         }
         
+        /* TOP: Crossword grid */
         .crossword {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 2px;
-            padding: 8px;
+            padding: 6px;
             background: var(--surface);
-            border-radius: 10px;
-            margin-bottom: 8px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            max-width: 220px;
         }
         
         .cw-cell {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             background: var(--card);
-            border-radius: 4px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -105,32 +107,31 @@
             animation: pop 0.3s ease;
         }
         
-        .cw-cell.bonus { background: var(--blue); color: white; }
-        
         @keyframes pop {
             0% { transform: scale(0.7); }
             50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
         
+        /* Current word - between crossword and wheel */
         .current {
             display: flex;
             justify-content: center;
-            gap: 3px;
-            min-height: 36px;
-            margin-bottom: 8px;
+            gap: 2px;
+            min-height: 32px;
+            margin-bottom: 6px;
         }
         
         .curr-letter {
-            width: 28px;
-            height: 36px;
+            width: 24px;
+            height: 32px;
             background: var(--surface);
             border-bottom: 2px solid var(--gold);
-            border-radius: 4px 4px 0 0;
+            border-radius: 3px 3px 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--gold);
         }
@@ -140,11 +141,13 @@
             border-bottom-color: var(--card);
         }
         
+        /* BOTTOM: Letter wheel */
         .wheel {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin-bottom: 8px;
+            width: 220px;
+            height: 220px;
+            margin-top: auto;
+            margin-bottom: 6px;
         }
         
         .wheel-bg {
@@ -176,14 +179,14 @@
         
         .letter {
             position: absolute;
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             background: var(--card);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.08s ease;
@@ -364,8 +367,8 @@
             const wheel = document.getElementById('wheel');
             wheel.querySelectorAll('.letter').forEach(l => l.remove());
             
-            const center = 120;
-            const radius = 80;
+            const center = 110;
+            const radius = 70;
             
             letters.forEach((letter, i) => {
                 const angle = (i * 360 / letters.length - 90) * Math.PI / 180;
@@ -408,8 +411,8 @@
         function end() {}
         
         function update() {
-            const center = 120;
-            const radius = 80;
+            const center = 110;
+            const radius = 70;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
                 el.classList.toggle('active', swipe.includes(i));
@@ -512,7 +515,7 @@
             const cw = document.getElementById('crossword');
             cw.innerHTML = '';
             
-            const gridSize = 8;
+            const gridSize = 6;
             const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
             const wordLocs = [];
             
