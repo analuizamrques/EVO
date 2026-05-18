@@ -386,6 +386,11 @@
             wheel.addEventListener('pointerup', end);
         }
         
+        function isAdjacent(a, b) {
+            const diff = Math.abs(a - b);
+            return diff === 1 || diff === letters.length - 1;
+        }
+        
         function start(i) {
             swipe = [i];
             update();
@@ -396,7 +401,11 @@
             const el = document.elementFromPoint(e.clientX, e.clientY);
             if (el && el.classList.contains('letter')) {
                 const i = parseInt(el.dataset.index);
-                if (!swipe.includes(i)) {
+                // Can't reuse same letter
+                if (swipe.includes(i)) return;
+                // Must be adjacent in wheel
+                const last = swipe[swipe.length - 1];
+                if (!isAdjacent(last, i)) return;
                     swipe.push(i);
                     update();
                 }
