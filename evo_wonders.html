@@ -530,42 +530,46 @@
             document.getElementById('progress').style.width = pct + '%';
             document.getElementById('score').textContent = score;
             
-            // Crossword - place first word horizontally, others vertically
-            const cw = document.getElementById('crossword');
-            cw.innerHTML = '';
+            // Crossword with position and direction
+            // Store word data: {word, x, y, direction}
+            const wordData = [];
+            
+            // Place first word horizontally at center
             const gridSize = 8;
-            const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
-            
-            // Place first word horizontally in middle
             const word0 = targets[0] || 'casa';
-            const row0 = Math.floor(gridSize / 2);
-            const col0 = Math.floor((gridSize - word0.length) / 2);
-            for (let i = 0; i < word0.length; i++) {
-                grid[row0][col0 + i] = { letter: word0[i], found: found.includes(word0), target: word0 };
-            }
+            const startX = Math.floor((gridSize - word0.length) / 2);
+            const startY = Math.floor(gridSize / 2);
+            wordData.push({ word: word0, x: startX, y: startY, direction: 'horizontal' });
             
-            // Place other words vertically, crossing shared letters
+            // Place other words crossing at shared letters
             for (let w = 1; w < targets.length; w++) {
                 const word = targets[w];
-                // Find intersection with first word
                 for (let i = 0; i < word.length; i++) {
                     for (let j = 0; j < word0.length; j++) {
                         if (word[i] === word0[j]) {
-                            // Found intersection - place vertically
-                            const r = row0 - i;
-                            const c = col0 + j;
-                            if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
-                                for (let k = 0; k < word.length; k++) {
-                                    if (r + k < gridSize && !grid[r + k]?.[c]) {
-                                        grid[r + k][c] = { letter: word[k], found: found.includes(word), target: word };
-                                    }
-                                }
+                            // Vertical word at intersection
+                            const vx = startX + j;
+                            const vy = startY - i;
+                            if (vy >= 0 && vy + word.length <= gridSize) {
+                                wordData.push({ word: word, x: vx, y: vy, direction: 'vertical' });
                                 break;
                             }
                         }
                     }
                 }
             }
+            
+            // Build grid from word positions
+            const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
+            wordData.forEach(wd => {
+                for (let i = 0; i < wd.word.length; i++) {
+                    const cx = wd.direction === 'horizontal' ? wd.x + i : wd.x;
+                    const cy = wd.direction === 'horizontal' ? wd.y : wd.y + i;
+                    if (cx >= 0 && cx < gridSize && cy >= 0 && cy < gridSize) {
+                        grid[cy][cx] = { letter: wd.word[i], found: found.includes(wd.word), target: wd.word };
+                    }
+                }
+            });
             
             for (let r = 0; r < gridSize; r++) {
                 for (let c = 0; c < gridSize; c++) {
