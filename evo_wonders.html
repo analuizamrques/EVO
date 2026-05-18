@@ -530,18 +530,42 @@
             document.getElementById('progress').style.width = pct + '%';
             document.getElementById('score').textContent = score;
             
-            // Crossword (simple)
+            // Crossword - place first word horizontally, others vertically
             const cw = document.getElementById('crossword');
             cw.innerHTML = '';
-            const gridSize = 6;
+            const gridSize = 8;
             const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
-            targets.forEach((w, wi) => {
-                const row = Math.floor(wi * 1.5) + 1;
-                const col = 1;
-                for (let i = 0; i < w.length; i++) {
-                    if (col + i < gridSize) grid[row][col + i] = { letter: w[i], found: found.includes(w) };
+            
+            // Place first word horizontally in middle
+            const word0 = targets[0] || 'casa';
+            const row0 = Math.floor(gridSize / 2);
+            const col0 = Math.floor((gridSize - word0.length) / 2);
+            for (let i = 0; i < word0.length; i++) {
+                grid[row0][col0 + i] = { letter: word0[i], found: found.includes(word0), target: word0 };
+            }
+            
+            // Place other words vertically, crossing shared letters
+            for (let w = 1; w < targets.length; w++) {
+                const word = targets[w];
+                // Find intersection with first word
+                for (let i = 0; i < word.length; i++) {
+                    for (let j = 0; j < word0.length; j++) {
+                        if (word[i] === word0[j]) {
+                            // Found intersection - place vertically
+                            const r = row0 - i;
+                            const c = col0 + j;
+                            if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
+                                for (let k = 0; k < word.length; k++) {
+                                    if (r + k < gridSize && !grid[r + k]?.[c]) {
+                                        grid[r + k][c] = { letter: word[k], found: found.includes(word), target: word };
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
                 }
-            });
+            }
             
             for (let r = 0; r < gridSize; r++) {
                 for (let c = 0; c < gridSize; c++) {
