@@ -530,75 +530,51 @@
             document.getElementById('progress').style.width = pct + '%';
             document.getElementById('score').textContent = score;
             
-            // Crossword Strategy:
-            // 1. Sort by length (longest first)
-            // 2. Place first horizontally at center
-            // 3. Try to cross at matching letters, avoid collisions
-            // 4. Validate connectivity
-            
+            // Simple crossword: place longest first, then cross at matching letters
             const gridSize = 8;
             const sorted = [...targets].sort((a, b) => b.length - a.length);
             
             const wordData = [];
             const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
             
-            // Place longest word horizontally in center
-            const word0 = sorted[0];
-            const startX = Math.floor((gridSize - word0.length) / 2);
-            const startY = Math.floor(gridSize / 2);
-            wordData.push({ word: word0, x: startX, y: startY, direction: 'horizontal' });
+            // Place longest at center
+            const first = sorted[0];
+            const cx = Math.floor((gridSize - first.length) / 2);
+            const cy = Math.floor(gridSize / 2);
+            wordData.push({ word: first, x: cx, y: cy, dir: 'h' });
+            for (let i = 0; i < first.length; i++) grid[cy][cx + i] = first[i];
             
-            // Mark on grid
-            for (let i = 0; i < word0.length; i++) {
-                grid[startY][startX + i] = word0[i];
-            }
-            
-            // Try to place other words crossing at shared letters
-            for (let w = 1; w < sorted.length; w++) {
-                const word = sorted[w];
-                let placed = false;
-                
-                // Find crossing with placed words
-                for (const placedWord of wordData) {
-                    for (let i = 0; i < word.length && !placed; i++) {
-                        for (let j = 0; j < placedWord.word.length && !placed; j++) {
-                            if (word[i] === placedWord.word[j]) {
-                                // Calculate position
-                                const dx = placedWord.direction === 'horizontal' ? placedWord.x + j : placedWord.x;
-                                const dy = placedWord.direction === 'horizontal' ? placedWord.y : placedWord.y + j;
-                                const dir = placedWord.direction === 'horizontal' ? 'vertical' : 'horizontal';
+            // Try placing other words crossing existing letters
+            for (const word of sorted.slice(1)) {
+                for (const placed of wordData) {
+                    for (let i = 0; i < word.length; i++) {
+                        for (let j = 0; j < placed.word.length; j++) {
+                            if (word[i] === placed.word[j]) {
+                                const dx = placed.dir === 'h' ? placed.x + j : placed.x;
+                                const dy = placed.dir === 'h' ? placed.y : placed.y + j;
+                                const dir = placed.dir === 'h' ? 'v' : 'h';
                                 
-                                // Check bounds and no collision
-                                if (dir === 'vertical') {
-                                    if (dy - i >= 0 && dy - i + word.length <= gridSize) {
-                                        let ok = true;
-                                        for (let k = 0; k < word.length; k++) {
-                                            const gy = dy - i + k;
-                                            if (grid[gy]?.[dx] && grid[gy][dx] !== word[k]) ok = false;
-                                        }
-                                        if (ok) {
-                                            wordData.push({ word, x: dx, y: dy - i, direction: 'vertical' });
-                                            for (let k = 0; k < word.length; k++) grid[dy - i + k][dx] = word[k];
-                                            placed = true;
-                                        }
-                                    }
-                                } else {
-                                    if (dx - j >= 0 && dx - j + word.length <= gridSize) {
-                                        let ok = true;
-                                        for (let k = 0; k < word.length; k++) {
-                                            const gx = dx - j + k;
-                                            if (grid[dy]?.[gx] && grid[dy][gx] !== word[k]) ok = false;
-                                        }
-                                        if (ok) {
-                                            wordData.push({ word, x: dx - j, y: dy, direction: 'horizontal' });
-                                            for (let k = 0; k < word.length; k++) grid[dy][dx - j + k] = word[k];
-                                            placed = true;
-                                        }
-                                    }
+                                // Check if fits
+                                let fits = true;
+                                const positions = [];
+                                for (let k = 0; k < word.length; k++) {
+                                    const px = dir === 'h' ? dx + k : dx;
+                                    const py = dir === 'h' ? dy : dy + k;
+                                    if (px < 0 || px >= gridSize || py < 0 || py >= gridSize) fits = false;
+                                    else if (grid[py]?.[px] && grid[py][px] !== word[k]) fits = false;
+                                    positions.push({x: px, y: py});
+                                }
+                                
+                                if (fits) {
+                                    wordData.push({ word, x: dx, y: dy, dir });
+                                    for (const p of positions) grid[p.y][p.x] = word[positions.indexOf(p)];
+                                    break;
                                 }
                             }
                         }
+                        if (wordData.find(w => w.word === word)) break;
                     }
+                    if (wordData.find(w => w.word === word)) break;
                 }
             }
             
