@@ -459,8 +459,8 @@
             
             letters.forEach((letter, i) => {
                 const angle = (i * 360 / n - 90) * Math.PI / 180;
-                const x = cx + r * Math.cos(angle) - 22;
-                const y = cx + r * Math.sin(angle) - 22;
+                const x = cx + r * Math.cos(angle);
+                const y = cx + r * Math.sin(angle);
                 
                 const el = document.createElement('div');
                 el.className = 'letter';
