@@ -470,17 +470,18 @@
             const msg = document.getElementById('msg');
             
             if (word.length < 3) {
-                show('Min 3 letras!', 'error');
-                return;
-            }
-            
-            if (!DICT.has(word)) {
-                show('No existe!', 'error');
+                show('Mín 3 letras!', 'error');
                 return;
             }
             
             if (found.includes(word)) {
                 show('Ya usado!', 'error');
+                return;
+            }
+            
+            // Check dictionary first
+            if (!DICT.has(word)) {
+                show('No está!', 'error');
                 return;
             }
             
