@@ -9,20 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0d1117;
-            --surface: #161b22;
-            --surface-light: #21262d;
-            --border: #30363d;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --gold: #f0b429;
-            --gold-dim: #b8962e;
-            --green: #3fb950;
-            --pink: #f778ba;
-            --blue: #58a6ff;
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --card: #2a2a2a;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --gold: #ffc107;
+            --gold-dark: #ffb300;
+            --green: #4caf50;
         }
         
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Outfit', sans-serif;
@@ -32,276 +29,244 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
+            padding: 16px;
             overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
         }
         
         /* Header */
         header {
-            width: 100%;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         header h1 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--gold), var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+        
+        header .level {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 4px;
         }
         
         /* Wonder Card */
-        .wonder-card {
-            background: linear-gradient(135deg, var(--surface), var(--surface-light));
-            border: 2px solid var(--gold);
+        .wonder {
+            background: var(--surface);
             border-radius: 16px;
-            padding: 12px 20px;
-            margin-bottom: 12px;
+            padding: 20px 32px;
+            margin-bottom: 16px;
             text-align: center;
             width: 100%;
             max-width: 340px;
-            box-shadow: 0 4px 20px rgba(240, 180, 41, 0.15);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
-        .wonder-card .emoji {
-            font-size: 36px;
-            line-height: 1.2;
+        .wonder .icon {
+            font-size: 48px;
+            line-height: 1.1;
         }
         
-        .wonder-card .name {
-            font-size: 1rem;
+        .wonder .name {
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--gold);
-            margin-top: 2px;
+            margin-top: 8px;
         }
         
-        .wonder-card .hint {
-            color: var(--muted);
-            font-size: 11px;
-            margin-top: 2px;
+        .wonder .country {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 4px;
         }
         
-        /* Progress Bar */
-        .progress-bar {
+        /* Progress */
+        .progress-container {
             width: 100%;
             max-width: 340px;
-            height: 6px;
+            margin-bottom: 16px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
             background: var(--surface);
-            border-radius: 3px;
-            margin-bottom: 12px;
+            border-radius: 4px;
             overflow: hidden;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--gold), var(--pink));
-            border-radius: 3px;
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
         }
         
-        /* Stats */
-        .stats {
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        
+        /* Answer Row */
+        .answer-row {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            width: 100%;
-            max-width: 340px;
+            gap: 6px;
+            min-height: 52px;
+            margin-bottom: 20px;
         }
         
-        .stat {
+        .letter-slot {
+            width: 44px;
+            height: 52px;
             background: var(--surface);
-            padding: 8px 14px;
+            border: 2px solid var(--card);
             border-radius: 10px;
-            border: 1px solid var(--border);
-            font-size: 12px;
-            flex: 1;
-            text-align: center;
-        }
-        
-        .stat strong {
-            color: var(--gold);
-            display: block;
-            font-size: 16px;
-            margin-top: 2px;
-        }
-        
-        /* Answer Preview */
-        .answer-preview {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            margin-bottom: 16px;
-            min-height: 44px;
-        }
-        
-        .preview-letter {
-            width: 38px;
-            height: 44px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            transition: all 0.15s ease;
+            color: var(--text);
         }
         
-        .preview-letter.filled {
+        .letter-slot.filled {
             border-color: var(--gold);
-            background: rgba(240, 180, 41, 0.15);
             animation: popIn 0.15s ease;
         }
         
         @keyframes popIn {
-            0% { transform: scale(0.7); }
+            0% { transform: scale(0.8); }
             100% { transform: scale(1); }
         }
         
         /* Letter Wheel */
         .letter-wheel {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 6px;
-            max-width: 280px;
-            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 320px;
+            margin-bottom: 24px;
         }
         
         .wheel-letter {
-            width: 46px;
-            height: 46px;
-            background: var(--surface);
-            border: 2px solid var(--border);
+            width: 52px;
+            height: 52px;
+            background: var(--card);
+            border: none;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
+            color: var(--text);
             cursor: pointer;
-            transition: all 0.12s ease;
-            user-select: none;
-        }
-        
-        .wheel-letter:hover {
-            border-color: var(--gold);
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(240, 180, 41, 0.3);
+            transition: all 0.1s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
         
         .wheel-letter:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
             background: var(--gold);
             color: var(--bg);
         }
         
         .wheel-letter.used {
-            opacity: 0.2;
-            pointer-events: none;
-            transform: none;
-            border-color: var(--border);
-            box-shadow: none;
+            opacity: 0.15;
+            transform: scale(1);
         }
         
         .wheel-letter.correct {
             background: var(--green);
-            border-color: var(--green);
-            color: var(--bg);
-            animation: bounce 0.4s ease;
+            color: white;
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.25); }
-        }
-        
-        /* Controls */
-        .controls {
+        /* Buttons */
+        .buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
-        .ctrl-btn {
-            background: var(--surface);
-            color: var(--text);
-            border: 1px solid var(--border);
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 14px;
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s ease;
-        }
-        
-        .ctrl-btn:hover {
-            border-color: var(--muted);
-            transform: scale(1.05);
-        }
-        
-        .ctrl-btn.submit {
-            background: var(--gold);
-            color: var(--bg);
             border: none;
         }
         
-        .ctrl-btn.submit:hover {
-            box-shadow: 0 0 20px rgba(240, 180, 41, 0.4);
+        .btn-clear {
+            background: var(--surface);
+            color: var(--text);
         }
         
-        /* Word Grid */
-        .word-grid {
+        .btn-submit {
+            background: var(--gold);
+            color: var(--bg);
+            min-width: 100px;
+        }
+        
+        .btn-submit:hover {
+            background: var(--gold-dark);
+        }
+        
+        /* Word List */
+        .word-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 4px;
-            max-width: 340px;
+            gap: 6px;
+            max-width: 320px;
         }
         
-        .word-cell {
+        .word-item {
             background: var(--surface);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
         }
         
-        .word-cell.correct {
+        .word-item.found {
             background: var(--green);
-            color: var(--bg);
-            border-color: var(--green);
+            color: white;
         }
         
-        .word-cell.hidden {
+        .word-item.hidden {
             background: transparent;
-            border-style: dashed;
-            color: var(--muted);
+            border: 1px dashed var(--card);
         }
         
-        /* Message Overlay */
+        /* Message */
         #message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            padding: 20px 36px;
+            padding: 20px 40px;
             border-radius: 16px;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 1.5rem;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             z-index: 100;
-            text-align: center;
         }
         
         #message.show {
@@ -311,300 +276,236 @@
         
         #message.success {
             background: var(--green);
-            color: var(--bg);
-            box-shadow: 0 10px 40px rgba(63, 185, 80, 0.4);
+            color: white;
         }
         
         #message.error {
-            background: #f85149;
+            background: #f44336;
             color: white;
-            box-shadow: 0 10px 40px rgba(248, 81, 73, 0.4);
         }
         
         #message.win {
-            background: linear-gradient(135deg, var(--gold), var(--pink));
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--bg);
-            font-size: 24px;
-            box-shadow: 0 10px 40px rgba(240, 180, 41, 0.5);
-        }
-        
-        /* Tutorial Modal */
-        #tutorial {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            padding: 20px;
-        }
-        
-        #tutorial.hidden {
-            display: none;
-        }
-        
-        .tutorial-content {
-            background: var(--surface);
-            border: 2px solid var(--gold);
-            border-radius: 20px;
-            padding: 24px;
-            max-width: 340px;
-            text-align: center;
-        }
-        
-        .tutorial-content h2 {
-            color: var(--gold);
-            margin-bottom: 16px;
-        }
-        
-        .tutorial-content p {
-            color: var(--muted);
-            font-size: 14px;
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-        
-        .tutorial-content .example {
-            background: var(--bg);
-            padding: 12px;
-            border-radius: 10px;
-            margin: 16px 0;
-        }
-        
-        .tutorial-content .example-word {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 4px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🔥 EVO - Wonders</h1>
+        <h1>🔥 EVO</h1>
+        <div class="level">Nivel <span id="level">1</span></div>
     </header>
     
-    <div class="wonder-card">
-        <div class="emoji" id="wonder-emoji">🗼</div>
-        <div class="name" id="wonder-name">Torre Eiffel</div>
-        <div class="hint">Nivel <span id="level-num">1</span> • <span id="country">Paris</span></div>
+    <div class="wonder">
+        <div class="icon" id="icon">🗼</div>
+        <div class="name" id="name">Torre Eiffel</div>
+        <div class="country" id="country">Paris, Francia</div>
     </div>
     
-    <div class="progress-bar">
-        <div class="progress-fill" id="progress" style="width: 0%"></div>
-    </div>
-    
-    <div class="stats">
-        <div class="stat">
-            <span id="found-count">0</span>/<span id="total-count">5</span>
-            <strong>Palavras</strong>
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
         </div>
-        <div class="stat">
-            <span id="points">0</span>
-            <strong>Pontos</strong>
-        </div>
-        <div class="stat">
-            <span id="level">1</span>
-            <strong>Nivel</strong>
+        <div class="progress-text">
+            <span><span id="found">0</span>/<span id="total">5</span> palavras</span>
+            <span><span id="score">0</span> pts</span>
         </div>
     </div>
     
-    <div class="answer-preview" id="answer-preview"></div>
+    <div class="answer-row" id="answer"></div>
     
-    <div class="letter-wheel" id="letter-wheel"></div>
+    <div class="letter-wheel" id="wheel"></div>
     
-    <div class="controls">
-        <button class="ctrl-btn" onclick="clearAnswer()">🗑️ Limpar</button>
-        <button class="ctrl-btn" onclick="scrambleLetters()">🔀 Misturar</button>
-        <button class="ctrl-btn submit" onclick="submitWord()">✓ OK</button>
+    <div class="buttons">
+        <button class="btn btn-clear" onclick="clearIt()">🗑️</button>
+        <button class="btn btn-submit" onclick="submit()">OK</button>
     </div>
     
-    <div class="word-grid" id="word-grid"></div>
+    <div class="word-list" id="words"></div>
     
     <div id="message"></div>
     
-    <div id="tutorial" onclick="this.classList.add('hidden')">
-        <div class="tutorial-content">
-            <h2>Como Jogar</h2>
-            <p>Use as letras para formar palavras. Encontre todas as palavras possíveis!</p>
-            <div class="example">
-                <div class="example-word">C A S A</div>
-                <p style="margin-top: 8px; font-size: 12px;">CASA ✓</p>
-            </div>
-            <p>Toque numa letra para seleccioná-la. Toque em OK para submeter.</p>
-            <p style="color: var(--gold);">Toque para começar!</p>
-        </div>
-    </div>
-    
     <script>
-        // Extended word bank
-        const WORDS = [
-            // 3 letters
-            'ace', 'ada', 'ado', 'agua', 'ala', 'alo', 'alta', 'ante', 'arte', 'asi',
-            'ayer', 'azul', 'baja', 'bajo', 'bala', 'banco', 'beso', 'bien', 'bizcocho',
-            'brazo', 'buena', 'bueno', 'buque', 'cabo', 'caca', 'cafe', 'calle', 'calma',
-            'calor', 'cama', 'camino', 'campo', 'canto', 'cara', 'carne', 'carta', 'casa',
-            'caso', 'caza', 'ciao', 'coco', 'cola', 'color', 'cosa', 'costa', 'crema',
-            'cria', 'cruz', 'cuadrado', 'cual', 'cuarto', 'cuatro', 'cuerpo', 'cumbre', 'cupid',
-            'daño', 'dar', 'data', 'datum', 'dazo', 'deber', 'dedo', 'deja', 'desde',
-            'dia', 'dicho', 'dolor', 'donde', 'donut', 'ducha', 'duelo', 'dulce', 'duque',
-            'duro', 'eco', 'edad', 'ella', 'ello', 'embar', 'empat', 'enojo', 'epoca',
-            'error', 'escoba', 'espalda', 'espana', 'espanol', 'especial', 'esperar', 'estar',
-            'esto', 'etapa', 'facil', 'falso', 'falta', 'fama', 'familia', 'favor', 'fecha',
-            'feliz', 'feria', 'feroz', 'fibra', 'fiesta', 'figura', 'fijo', 'firma',
-            'flaco', 'flor', 'flujo', 'fondo', 'forma', 'forte', 'fortuna', 'fotos', 'fra',
-            'fresa', 'fria', 'frio', 'frito', 'fuego', 'fuente', 'fuerza', 'fuga',
-            'funda', 'futuro', 'gala', 'gallo', 'gama', 'gamba', 'ganga', 'garra', 'gato',
-            'gemelo', 'gen', 'genio', 'gente', 'gorra', 'gota', 'gozo', 'grado', 'grande',
-            'grasia', 'grasa', 'gratis', 'grito', 'grupo', 'guapo', 'guerra', 'gustar',
-            'haber', 'hacha', 'hacer', 'hacia', 'halas', 'hasta', 'haver', 'hecho', 'helado',
-            'henry', 'heroe', 'hector', 'hijo', 'himno', 'hoja', 'hombre', 'hora', 'hotel',
-            'huevo', 'humo', 'idea', 'iglesia', 'igual', 'image', 'imper', 'ir', 'isla', 'israel',
-            'jardin', 'jefe', 'jerga', 'jota', 'joven', 'juez', 'jugar', 'junio', 'junto',
-            'justo', 'labio', 'lado', 'lago', 'lana', 'lapa', 'largar', 'largo', 'lava', 'leche',
-            'lector', 'leer', 'legal', 'lejos', 'lengua', 'lennon', 'lento', 'leon', 'letra',
-            'libre', 'libro', 'liga', 'limon', 'limpio', 'linea', 'lista', 'lobo', 'loco',
-            'logro', 'lucha', 'lugar', 'lujo', 'lumad', 'luz', 'madera', 'madre',
-            'magia', 'mago', 'makila', 'mala', 'malo', 'mama', 'mamm', 'manda', 'manejar',
-            'manera', 'mano', 'mapa', 'mar', 'marca', 'marco', 'mare', 'marido', 'marina',
-            'mariposa', 'masa', 'matamos', 'mayor', 'mecha', 'media', 'medico', 'medir',
-            'medio', 'mejor', 'melena', 'melon', 'menos', 'mente', 'mesa', 'metal',
-            'metro', 'miedo', 'miel', 'milla', 'mimar', 'minuto', 'mirada', 'mirar',
-            'misa', 'mismo', 'moda', 'modo', 'molar', 'mono', 'monte', 'moral', 'morir',
-            'mosca', 'motear', 'motor', 'mover', 'mucha', 'mucho', 'muerte', 'mujer', 'mundo',
-            'musica', 'nacer', 'nada', 'nadie', 'nariz', 'nata', 'natur', 'nave', 'negro',
-            'nervio', 'niebla', 'nieve', 'nivel', 'noche', 'nombre', 'norma', 'norte',
-            'nota', 'novel', 'nube', 'nudo', 'nunca', 'nutri', 'obra', 'ocean', 'octavo',
-            'ocupa', 'oficial', 'ogano', 'ojete', 'ojo', 'ola', 'omega', 'once', 'opera',
-            'optar', 'orden', 'oreo', 'oro', 'oso', 'otro', 'oveja', 'padre', 'pagar', 'pais',
-            'palabra', 'paleta', 'palma', 'pan', 'panda', 'panel', 'papel', 'par', 'para', 'parar',
-            'pared', 'parte', 'pasar', 'paso', 'pasta', 'paternal', 'patio', 'pato', 'patria',
-            'paz', 'pecho', 'pedir', 'pelaje', 'pelar', 'pelear', 'pelota', 'pena', 'pensar',
-            'peque', 'pera', 'perder', 'perro', 'pesca', 'pez', 'piano', 'picar', 'pico',
-            'pie', 'piedra', 'piel', 'pierna', 'pieza', 'pila', 'pin', 'pino', 'pintor',
-            'piper', 'pizza', 'plana', 'plano', 'planta', 'plata', 'playa', 'plaza',
-            'pleno', 'pluma', 'pobre', 'poco', 'poder', 'poeta', 'polen', 'polilla',
-            'polo', 'polvo', 'poner', 'portal', 'posar', 'poster', 'potty', 'precio', 'prensa',
-            'primo', 'probar', 'pronto', 'propio', 'prorro', 'prueba', 'pupila', 'pupilo',
-            'puzzle', 'quedar', 'quema', 'quenar', 'querer', 'queso', 'quien', 'quieto',
-            'quijote', ' quilate', 'quimera', 'quinto', 'quitar', 'rabo', 'rana', 'rapaz',
-            'rapido', 'raro', 'rasgo', 'raspar', 'rata', 'raton', 'rayo', 'raza', 'razon',
-            'real', 'rebano', 'receta', 'red', 'regalo', 'regio', 'regla', 'reino', 'relax',
-            'relieve', 'remar', 'renal', 'repetir', 'resto', 'rey', 'rico', 'riego',
-            'rima', 'rincon', 'rio', 'ritmo', 'robar', 'robin', 'robot', 'roca', 'rodar',
-            'rodear', 'rodilla', 'rojo', 'romper', 'ronco', 'ropa', 'rostro', 'rubia',
-            'rubio', 'rueda', 'ruido', 'rumbo', 'rural', 'ruso', 'sabatico', 'sable',
-            'sabor', 'sacar', 'sal', 'saldo', 'salir', 'salmo', 'salon', 'salp',
-            'salud', 'salvar', 'samba', 'sano', 'santo', 'seda', 'seguir', 'seis',
-            'selva', 'senor', 'senal', 'sepult', 'ser', 'seria', 'serie', 'servir', 'siete',
-            'siglo', 'signo', 'silbar', 'silla', 'simple', 'since', 'sino', 'sip',
-            'sistema', 'sitio', 'sobre', 'social', 'soga', 'sol', 'solar', 'solo',
-            'soltar', 'sombra', 'sonar', 'sonido', 'sonreir', 'soñar', 'soplar',
-            'sordo', 'sorpresa', 'subir', 'suelo', 'sueño', 'suerte', 'suficiente', 'sufrir',
-            'super', 'suponer', 'sur', 'tabaco', 'tabla', 'tacto', 'tala', 'talco',
-            'talla', 'talon', 'tango', 'tapa', 'tarde', 'tarea', 'tasa', 'taxi',
-            'taza', 'teatro', 'techo', 'tela', 'tema', 'temer', 'temor', 'tender',
-            'tener', 'tenis', 'tenso', 'teoria', 'tercero', 'terco', 'terminar', 'terror',
-            'tesis', 'tesoro', 'tibia', 'tigre', 'tijera', 'tilde', 'timbal', 'timo',
-            'tinto', 'tipo', 'tirar', 'tiro', 'titulo', 'tocar', 'tomar', 'tono',
-            'toque', 'torre', 'torta', 'total', 'toxina', 'traer', 'tramo', 'tratar',
-            'trauma', 'trebol', 'treint', 'tren', 'tres', 'tribu', 'trigo', 'triste',
-            'triunfo', 'trivial', 'troco', 'tropa', 'trono', 'trotar', 'trueque',
-            'tubo', 'tumba', 'tumor', 'tunel', 'turbo', 'tutor', 'ultra', 'unico',
-            'unir', 'usar', 'uso', 'uva', 'vaca', 'vago', 'valer', 'valle', 'valor',
-            'vapor', 'vara', 'variar', 'vaso', 'vecino', 'veinte', 'vela', 'vena',
-            'venir', 'venta', 'verano', 'verbo', 'verdad', 'verde', 'verso', 'vestir',
-            'vez', 'viaje', 'viajero', 'vida', 'viejo', 'viento', 'vino', 'virus',
-            'visita', 'vista', 'vivir', 'vivo', 'volar', 'volver', 'voto', 'voz', 'vuelo',
-            'wagon', 'yate', 'yema', 'yoga', 'yunque', 'zapato', 'zona', 'zoom',
-            // 4+ letters
-            'adios', 'ahora', 'amigo', 'amor', 'agua', 'aire', 'alto', 'ante', 'arbol',
-            'avion', 'bello', 'bien', 'bajo', 'blusa', 'brazo', 'buen', 'bueno', 'cabal',
-            'caballo', 'cabeza', 'cabo', 'cada', 'cafe', 'calle', 'calma', 'calor',
-            'cama', 'camino', 'campo', 'canta', 'canto', 'cara', 'carne', 'carta', 'casa',
-            'caso', 'caza', 'celo', 'cerca', 'cielo', 'cinco', 'clase', 'clima', 'coco',
-            'color', 'cosa', 'costa', 'crema', 'cruz', 'cuadro', 'cual', 'cuarto', 'cuatro',
-            'cuerpo', 'cumbre', 'curva', 'chico', 'china', 'chino', 'choco', 'daño', 'dato',
-            'deber', 'decir', 'dedo', 'desde', 'dicho', 'dolor', 'donde', 'duelo', 'dulce',
-            'duque', 'duro', 'edad', 'elite', 'ella', 'ello', 'empat', 'enojo', 'epoca',
-            'error', 'escena', 'espalda', 'espanol', 'esperar', 'estar', 'esto', 'etapa',
-            'exact', 'exito', 'falso', 'falta', 'fama', 'familia', 'favor', 'fecha',
-            'feliz', 'feria', 'feroz', 'fibra', 'fiesta', 'figura', 'firma', 'flaco', 'flor',
-            'flujo', 'fondo', 'forma', 'forte', 'fortuna', 'fresa', 'fria', 'frio', 'fuego',
-            'fuente', 'fuerza', 'fuga', 'funda', 'futuro', 'gallo', 'gama', 'gamba', 'ganga',
-            'garra', 'gato', 'genio', 'gente', 'gorra', 'gota', 'gozo', 'grado', 'grande',
-            'grasa', 'grito', 'grupo', 'guapo', 'haber', 'hacer', 'hacia', 'hasta', 'hecho',
-            'helado', 'henry', 'heroe', 'hijo', 'himno', 'hoja', 'hombre', 'honesto',
-            'honor', 'hora', 'horno', 'hotel', 'huevo', 'humo', 'idea', 'iglesia', 'igual',
-            'imagen', 'isla', 'israel', 'jardin', 'jefe', 'joven', 'juez', 'jugar',
-            'junto', 'justo', 'labio', 'lado', 'lago', 'lana', 'largo', 'lava', 'leche',
-            'lector', 'leer', 'legal', 'lejos', 'lengua', 'lento', 'leon', 'letra',
-            'libre', 'libro', 'liga', 'limon', 'limpio', 'linea', 'lista', 'lobo', 'loco',
-            'logro', 'lucha', 'lugar', 'lujo', 'luz', 'madera', 'madre', 'magia',
-            'mago', 'mala', 'malo', 'manda', 'manera', 'mano', 'mapa', 'mar', 'marca',
-            'marco', 'marido', 'marina', 'mariposa', 'masa', 'mayor', 'media', 'medico',
-            'medio', 'mejor', 'melena', 'melon', 'menos', 'mente', 'mesa', 'metal', 'metro',
-            'miedo', 'miel', 'milla', 'minuto', 'mirada', 'mirar', 'misa', 'mismo',
-            'moda', 'modo', 'molar', 'mono', 'monte', 'moral', 'morir', 'mostrar', 'mover',
-            'mucha', 'mucho', 'muerte', 'mujer', 'mundo', 'musica', 'nacer', 'nada', 'nadie',
-            'nariz', 'nata', 'natur', 'nave', 'negro', 'nervio', 'niebla', 'nieve',
-            'nivel', 'noche', 'nombre', 'norma', 'norte', 'nota', 'nube', 'nunca',
-            'obra', 'ocean', 'ocupa', 'oficial', 'ojala', 'ola', 'omega', 'opera', 'optar',
-            'orden', 'oreo', 'oro', 'otro', 'oveja', 'padre', 'pagar', 'pais', 'palabra',
-            'paleta', 'palma', 'pan', 'panda', 'panel', 'papel', 'para', 'parar', 'pared',
-            'parte', 'pasar', 'paso', 'pasta', 'paternal', 'patio', 'pato', 'paz',
-            'pecho', 'pedir', 'pelota', 'pena', 'pensar', 'pera', 'perder', 'perro',
-            'pesca', 'pez', 'piano', 'picar', 'pico', 'pie', 'piedra', 'piel',
-            'pierna', 'pieza', 'pila', 'pino', 'pintor', 'piso', 'pizza', 'plana',
-            'plano', 'planta', 'plata', 'playa', 'plaza', 'pleno', 'pluma', 'pobre',
-            'poco', 'poder', 'poeta', 'polen', 'polo', 'polvo', 'poner', 'portal',
-            'posar', 'precio', 'prensa', 'primo', 'probar', 'pronto', 'prueba', 'pueblo',
-            'puerta', 'pues', 'puesto', 'punto', 'pupila', 'pure', 'puro', 'quedar',
-            'querer', 'queso', 'quien', 'quieto', 'quinto', 'quitar', 'rabo', 'rana',
-            'rapaz', 'rapido', 'raro', 'rasgo', 'rata', 'raton', 'rayo', 'raza', 'razon',
-            'real', 'receta', 'red', 'regalo', 'regio', 'regla', 'reino', 'relax',
-            'relieve', 'remar', 'renal', 'resto', 'rey', 'rico', 'rima', 'rincon',
-            'rio', 'ritmo', 'robar', 'robot', 'roca', 'rodar', 'rodear', 'rojo',
-            'romper', 'ropa', 'rostro', 'rubia', 'rubio', 'rueda', 'ruido', 'rumbo',
-            'rural', 'ruso', 'saber', 'sacar', 'sal', 'saldo', 'salir', 'salmo',
-            'salon', 'salud', 'salvar', 'samba', 'sano', 'santo', 'seda', 'seguir',
-            'seis', 'selva', 'senal', 'senor', 'sepal', 'ser', 'serie', 'servir', 'sexto',
-            'siglo', 'signo', 'silbar', 'silla', 'simple', 'sino', 'sistema', 'sitio',
-            'sobre', 'social', 'soga', 'sol', 'solar', 'solo', 'soltar', 'sombra',
-            'sonar', 'sonido', 'sonreir', 'soñar', 'soplar', 'sordo', 'sorpresa',
-            'subir', 'suelo', 'sueño', 'suerte', 'suficiente', 'sufrir', 'super',
-            'suponer', 'sur', 'tabla', 'tacto', 'talla', 'talon', 'tango', 'tapa',
-            'tarde', 'tarea', 'tasa', 'taxi', 'taza', 'teatro', 'techo', 'tela',
-            'tema', 'temer', 'temor', 'tender', 'tener', 'tenis', 'tenso', 'teoria',
-            'terco', 'terminar', 'terror', 'tesis', 'tesoro', 'tibia', 'tigre', 'tijera',
-            'timo', 'tinto', 'tipo', 'tirar', 'tiro', 'titulo', 'tocar', 'tomar',
-            'tono', 'toque', 'torre', 'torta', 'total', 'toxina', 'traer', 'tramo',
-            'tratar', 'trauma', 'trebol', 'tren', 'tres', 'trigo', 'triste', 'triunfo',
-            'trivial', 'tropa', 'tubo', 'tumba', 'tumor', 'tunel', 'turbo', 'tutor',
-            'ultra', 'unico', 'unir', 'usar', 'uso', 'uva', 'vaca', 'vago', 'valer',
-            'valle', 'valor', 'vapor', 'vara', 'vaso', 'vecino', 'veinte', 'vela',
-            'vena', 'venir', 'venta', 'verano', 'verbo', 'verdad', 'verde', 'verso',
-            'vestir', 'vez', 'viaje', 'viajero', 'vida', 'viejo', 'viento', 'vino',
-            'virus', 'visita', 'vista', 'vivir', 'vivo', 'volar', 'volver', 'voto',
-            'voz', 'vuelo', 'yate', 'yema', 'yoga', 'yunque', 'zapato', 'zona'
+        const WONDS = [
+            { icon: '🗼', name: 'Torre Eiffel', country: 'Paris, Francia' },
+            { icon: '🗽', name: 'Estatua Liberdade', country: 'Nueva York' },
+            { icon: '🕌', name: 'Taj Mahal', country: 'India' },
+            { icon: '🏛️', name: 'Partenon', country: 'Grecia' },
+            { icon: '🗿', name: 'Moai', country: 'Isla Pascua' },
+            { icon: '🏰', name: 'Castelo', country: 'Francia' },
+            { icon: '🕰️', name: 'Big Ben', country: 'Londres' },
+            { icon: '🏜️', name: 'Piramides', country: 'Egipto' },
+            { icon: '⛩️', name: 'Templo', country: 'Japon' },
+            { icon: '🏟️', name: 'Coliseo', country: 'Roma' },
+            { icon: '🗿', name: 'Cristo Redentor', country: 'Rio' },
+            { icon: '🏯', name: 'Castelo Fuji', country: 'Japon' },
+            { icon: '🌉', name: 'Golden Gate', country: 'San Francisco' },
+            { icon: '🗿', name: 'Gran Muralla', country: 'China' },
+            { icon: '🕌', name: 'Mezquita', country: 'Estambul' }
         ];
         
-        const WONDERS = [
-            { emoji: '🗼', name: 'Torre Eiffel', country: 'Paris' },
-            { emoji: '🗽', name: 'Estátua Liberdade', country: 'NYC' },
-            { emoji: '🕌', name: 'Taj Mahal', country: 'India' },
-            { emoji: '🏛️', name: 'Partenon', country: 'Grecia' },
-            { emoji: '🗿', name: 'Moai', country: 'Pascoa' },
-            { emoji: '🏰', name: 'Castelo', country: 'Franca' },
-            { emoji: '🕰️', name: 'Big Ben', country: 'Londres' },
-            { emoji: '🏜️', name: 'Piramides', country: 'Egito' },
-            { emoji: '⛩️', name: 'Templo', country: 'Japao' },
-            { emoji: '🏟️', name: 'Coliseu', country: 'Roma' },
-            { emoji: '🗿', name: 'Estatua Cristo', country: 'Rio' },
-            { emoji: '🏯', name: 'Castelo Fuji', country: 'Japao' },
-            { emoji: '🕌', name: 'Mesquita', country: 'Istambul' },
-            { emoji: '🏛️', name: 'Panteon', country: 'Roma' },
-            { emoji: '🌉', name: 'Golden Gate', country: 'SF' }
+        const WORDS = [
+            'casa', 'cosa', 'vida', 'noche', 'dia', 'amor', 'agua', 'aire', 'alto', 'ante',
+            'arbol', 'arte', 'avion', 'bajo', 'bello', 'bien', 'blusa', 'brazo', 'bueno',
+            'caballo', 'cabeza', 'cabo', 'cada', 'cafe', 'calle', 'calma', 'calor', 'cama',
+            'camino', 'campo', 'canto', 'cara', 'carne', 'carta', 'caso', 'caza',
+            'cerca', 'cielo', 'cinco', 'clase', 'color', 'cosa', 'costa', 'crema',
+            'cruz', 'cuarto', 'cuatro', 'cuerpo', 'chico', 'china', 'chino', 'dia',
+            'dicho', 'dolor', 'donde', 'dulce', 'duro', 'edad', 'ella', 'ello', 'epoca',
+            'error', 'espalda', 'estar', 'esto', 'falso', 'falta', 'fama', 'favor',
+            'fecha', 'feliz', 'feria', 'fiesta', 'figura', 'firma', 'flor', 'fondo',
+            'forma', 'fuego', 'fuente', 'fuerza', 'frio', 'gallo', 'gama', 'ganga',
+            'gato', 'genio', 'gente', 'gota', 'gozo', 'grado', 'grande', 'grito', 'grupo',
+            'guapo', 'haber', 'hacer', 'hacia', 'hasta', 'hecho', 'helado', 'heroe',
+            'hijo', 'hoja', 'hombre', 'hora', 'hotel', 'huevo', 'idea', 'igual', 'isla',
+            'jardin', 'jefe', 'joven', 'juez', 'jugar', 'junto', 'lado', 'lago', 'lana',
+            'largo', 'leche', 'leer', 'legal', 'lejos', 'lengua', 'leon', 'letra',
+            'libre', 'libro', 'linea', 'lista', 'lobo', 'loco', 'lucha', 'lugar', 'luz',
+            'madera', 'madre', 'mago', 'mala', 'malo', 'mana', 'mano', 'mapa', 'mar',
+            'marca', 'marco', 'marido', 'masa', 'mayor', 'media', 'medio', 'mejor',
+            'menos', 'mente', 'mesa', 'metal', 'metro', 'miedo', 'miel', 'milla',
+            'mirada', 'mirar', 'mismo', 'moda', 'modo', 'mono', 'monte', 'moral', 'morir',
+            'mover', 'mucho', 'muerte', 'mujer', 'mundo', 'nacer', 'nada', 'nadie',
+            'nariz', 'nata', 'nave', 'negro', 'nieve', 'nivel', 'noche', 'nombre',
+            'norte', 'nota', 'nube', 'nunca', 'obra', 'oceano', 'ocupa', 'oficial',
+            'ojala', 'ola', 'opera', 'orden', 'oro', 'otro', 'oveja', 'padre', 'pagar',
+            'pais', 'palabra', 'palma', 'pan', 'panel', 'papel', 'para', 'parar', 'pared',
+            'parte', 'pasar', 'paso', 'pasta', 'paz', 'pecho', 'pedir', 'pelota',
+            'pena', 'pensar', 'pera', 'perder', 'perro', 'pesca', 'pie', 'piedra',
+            'piel', 'pierna', 'pieza', 'pila', 'pino', 'pintor', 'piso', 'plana',
+            'plano', 'planta', 'plata', 'playa', 'plaza', 'pluma', 'pobre', 'poco',
+            'poder', 'poeta', 'polo', 'poner', 'portal', 'precio', 'prensa', 'primo',
+            'probar', 'pronto', 'prueba', 'pueblo', 'puerta', 'pues', 'puesto', 'punto',
+            'puro', 'quedar', 'querer', 'quien', 'quinto', 'quitar', 'rabo', 'rana',
+            'rapido', 'raro', 'rasgo', 'rata', 'raton', 'rayo', 'raza', 'razon',
+            'real', 'receta', 'red', 'regio', 'regla', 'reino', 'relax', 'reloj',
+            'remar', 'resto', 'rey', 'rico', 'rima', 'rincon', 'rio', 'ritmo',
+            'robar', 'roca', 'rodar', 'rodear', 'rojo', 'romper', 'ropa', 'rostro',
+            'rubio', 'rueda', 'ruido', 'rumbo', 'rural', 'saber', 'sacar', 'sal',
+            'saldo', 'salir', 'salud', 'salvar', 'samba', 'sano', 'santo', 'seda',
+            'seguir', 'seis', 'selva', 'senal', 'senor', 'ser', 'serie', 'servir',
+            'sexto', 'siglo', 'signo', 'silla', 'simple', 'sino', 'sistema', 'sitio',
+            'sobre', 'social', 'sol', 'solar', 'solo', 'soltar', 'sombra', 'sonar',
+            'sonido', 'sonreir', 'sonar', 'soplar', 'sordo', 'sorpresa', 'subir', 'suelo',
+            'suelo', 'sueco', 'suerte', 'suficiente', 'sufrir', 'super', 'suponer', 'sur',
+            'tabla', 'tacto', 'talla', 'talon', 'tango', 'tapa', 'tarde', 'tarea',
+            'tasa', 'taxi', 'taza', 'teatro', 'techo', 'tela', 'tema', 'temer',
+            'temor', 'tender', 'tener', 'tenis', 'teoria', 'terco', 'terminar',
+            'tesoro', 'tibia', 'tigre', 'tipo', 'tirar', 'titulo', 'tocar',
+            'tomar', 'tono', 'toque', 'torre', 'torta', 'total', 'traer', 'tramo',
+            'tratar', 'tren', 'tres', 'trigo', 'triste', 'triunfo', 'trova',
+            'tubo', 'tumba', 'tumor', 'tutor', 'ultra', 'unico', 'unir', 'usar',
+            'uva', 'vaca', 'vago', 'valer', 'valle', 'valor', 'vapor', 'vara',
+            'vaso', 'vecino', 'veinte', 'vela', 'vena', 'venir', 'ventana', 'verano',
+            'verbo', 'verdad', 'verde', 'verso', 'vestir', 'vez', 'viaje', 'vida',
+            'viejo', 'viento', 'vino', 'virus', 'visita', 'vista', 'vivir', 'vivo',
+            'volar', 'volver', 'voz', 'vuelo', 'yate', 'yema', 'yoga', 'yunque',
+            'zapato', 'zona', 'adios', 'ahora', 'amigo', 'anda', 'anza', 'arroz',
+            'barro', 'berro', 'bodas', 'brote', 'bruma', 'burro', 'busca', 'caballo',
+            'cafe', 'callo', 'calle', 'capaz', 'caracol', 'caraza', 'cardenal',
+            'carruaje', 'caserio', 'casulla', 'cazador', 'cercano', 'cercano', 'cerro',
+            'cipres', 'ciruela', 'clavel', 'cobertor', 'cobre', 'cocina', 'codo',
+            'colcha', 'collar', 'corral', 'corrida', 'cotorra', 'crecida', 'cria', 'cruz',
+            'cueca', 'cuello', 'cuento', 'cultura', 'cumbre', 'curita', 'danza', 'decir',
+            'delta', 'desfile', 'desierto', 'diario', 'diesel', 'difer', 'dignidad',
+            'diner', 'dinero', 'director', 'dormir', 'dulceria', 'duende', 'ejercito',
+            'empeigne', 'empresario', 'endulzar', 'energia', 'enfermo', 'entrada', 'epoca',
+            'equipo', 'error', 'escoba', 'escritor', 'escultura', 'espalda', 'espanol',
+            'especies', 'espiritu', 'estable', 'estado', 'estrella', 'estudio', 'evento',
+            'fabrica', 'falsedad', 'familia', 'famoso', 'fanfarron', 'farola', 'fatiga',
+            'favorito', 'fealdad', 'felicidad', 'feracidad', 'feria', 'ferocidad',
+            'fibra', 'fiebre', 'fiesta', 'figura', 'fijacion', 'fila', 'filete',
+            'filosofia', 'filtrar', 'finura', 'firma', 'fisica', 'flamenco', 'flanco',
+            'floracion', 'florero', 'floresta', 'fluidez', 'fm', 'foca', 'fondo',
+            'format', 'freno', 'fresa', 'friega', 'frijol', 'frontera', 'frotar', 'fruta',
+            'fuego', 'fuente', 'fuerza', 'fundir', 'futuro', 'gacela', 'gallo',
+            'ganaderia', 'ganar', 'ganga', 'garra', 'garrapata', 'gato', 'gemelo',
+            'genio', 'gente', 'gorra', 'gotera', 'gozo', 'grada', 'grande',
+            'gratitud', 'grifo', 'grillo', 'grisa', 'grito', 'grúa', 'guanche',
+            'guapo', 'guardia', 'guerra', 'guiar', 'guiso', 'gustar', 'haber',
+            'habilidad', 'hacer', 'hallar', 'hamaca', 'harina', 'hastio', 'hechizo',
+            'heredar', 'herencia', 'herir', 'heroe', 'hidro', 'historia', 'hobby',
+            'hombre', 'honestidad', 'honor', 'hora', 'horno', 'hospital', 'hotel',
+            'hueco', 'huevo', 'humildad', 'humo', 'idea', 'iglesia', 'igualdad',
+            'imagen', 'imperio', 'indice', 'industria', 'infeccion', 'inmigran',
+            'insecto', 'isla', 'jardin', 'jefe', 'jerga', 'jornada', 'joyero',
+            'juez', 'jugar', 'junio', 'junto', 'labor', 'lado', 'lagrima', 'lamentar',
+            'lana', 'langosta', 'lapiz', 'largo', 'lectura', 'leche', 'lector', 'leer',
+            'legal', 'leon', 'letra', 'levantar', 'leyenda', 'libertad', 'libre',
+            'libre', 'libre', 'libre', 'linea', 'liquid', 'lista', 'literatura', 'llaga',
+            'llama', 'llano', 'llanto', 'llavero', 'llegada', 'llenar', 'llevar',
+            'lluvia', 'lobo', 'logro', 'lucha', 'lugar', 'luna', 'lustrar',
+            'luz', 'madera', 'madre', 'magia', 'maldad', 'males', 'malo', 'mandar',
+            'manera', 'mano', 'mantel', 'manzana', 'mapa', 'mar', 'marca', 'marzo',
+            'mas', 'masa', 'masacre', 'matadero', 'material', 'mayor', 'meastro',
+            'medic', 'medio', 'mejilla', 'mejor', 'melodia', 'menor', 'menos',
+            'mente', 'mentira', 'mes', 'mesa', 'metal', 'metro', 'mied', 'mied',
+            'miel', 'migrana', 'milla', 'mimo', 'mineral', 'ministerio', 'minuto',
+            'misa', 'mismo', 'mitin', 'moda', 'modo', 'moho', 'mojar', 'molar',
+            'mono', 'monte', 'morada', 'mordaza', 'morir', 'mosca', 'mostrar', 'mote',
+            'motor', 'mover', 'muerte', 'mujer', 'mundo', 'musica', 'nabo',
+            'nacer', 'nada', 'nadie', 'nariz', 'narrar', 'nata', 'nave',
+            'navegar', 'negro', 'nervio', 'niebla', 'nieto', 'nieve', 'nivel',
+            'noche', 'nombre', 'norma', 'norte', 'nota', 'noticia', 'novela', 'nube',
+            'nudo', 'nuera', 'nuevo', 'nunca', 'nutrir', 'obra', 'observar',
+            'obtener', 'oceano', 'ocho', 'ocupar', 'oficial', 'ojeada', 'ojete',
+            'ojo', 'ola', 'olor', 'olvidar', 'once', 'opera', 'opinion', 'optar',
+            'orden', 'oreo', 'oro', 'orquesta', 'oscuro', 'ostra', 'otro',
+            'oveja', 'pacer', 'padre', 'pagar', 'paisaje', 'pajaro', 'palabra',
+            'paladar', 'palco', 'paleta', 'palma', 'palom', 'pan', 'pandilla',
+            'panel', 'papel', 'par', 'para', 'paraguas', 'parar', 'pared', 'paris',
+            'parlamento', 'parpado', 'parte', 'pasaje', 'pasar', 'paseo', 'paso',
+            'pasta', 'paternal', 'patio', 'pato', 'pavon', 'paz', 'pecho',
+            'pedir', 'peina', 'pelaje', 'pelar', 'pelear', 'pelicano', 'pelota',
+            'peluche', 'pena', 'pensar', 'pequeno', 'pera', 'perder', 'perilla',
+            'perro', 'pesca', 'piano', 'picar', 'picnic', 'pie', 'piedra',
+            'piel', 'pierna', 'pieza', 'piloto', 'pimienta', 'pin', 'pina',
+            'pineda', 'pinguino', 'pino', 'pintor', 'piper', 'pirata', 'piso',
+            'pitillo', 'pizarra', 'plaga', 'plan', 'plana', 'plano', 'planta',
+            'playa', 'plaza', 'plazo', 'pluma', 'plus', 'pobre', 'poco',
+            'poeta', 'polea', 'polen', 'polilla', 'polo', 'pollito', 'polvo',
+            'ponche', 'poner', 'portal', 'posada', 'posar', 'precio', 'predecir',
+            'prensa', 'preparar', 'presa', 'presto', 'prima', 'primo', 'princesa',
+            'principe', 'privar', 'proa', 'probar', 'pronto', 'proteger', 'proximo',
+            'prueba', 'psicologo', 'publicar', 'pueblo', 'puente', 'puerta',
+            'pues', 'puesto', 'pulso', 'puma', 'punta', 'punto', 'pupila',
+            'puro', 'quedar', 'quema', 'quitar', 'quimera', 'quinto', 'radio',
+            'raiz', 'rama', 'rango', 'rapaz', 'rapido', 'raro', 'rasgo',
+            'raspar', 'rata', 'raton', 'rayo', 'raza', 'razon', 'real',
+            'receta', 'red', 'reducir', 'regalo', 'region', 'regla', 'reino',
+            'relax', 'reloj', 'remar', 'repetir', 'repleta', 'resto', 'rey',
+            'riego', 'rima', 'rincon', 'rio', 'ritmo', 'robar', 'robot',
+            'roca', 'rodar', 'rodear', 'rodilla', 'rojo', 'romper', 'ronco',
+            'ropa', 'rostro', 'rubia', 'rubio', 'rueda', 'rugido', 'ruido',
+            'rumbo', 'rural', 'sable', 'sabor', 'sacar', 'saga', 'sal',
+            'salir', 'salmo', 'salon', 'salp', 'salud', 'salvar', 'samba',
+            'sanar', 'sano', 'santo', 'seda', 'seguir', 'seis', 'selva',
+            'semana', 'senor', 'separar', 'ser', 'serena', 'serie', 'servir',
+            'sexto', 'sigilo', 'siglo', 'signo', 'silbar', 'silla', 'silueta',
+            'simple', 'sincero', 'sino', 'sistema', 'sitio', 'sobre', 'social',
+            'sofia', 'soga', 'sol', 'solar', 'soldado', 'soledad', 'solo',
+            'soltar', 'sombra', 'sonar', 'sonde', 'sonido', 'sonreir', 'soñar',
+            'soplar', 'sordo', 'sorpresa', 'subir', 'sudar', 'suelo', 'sueco',
+            'suegra', 'suela', 'suelo', 'sueño', 'sueno', 'suerte', 'suficiente',
+            'sufrir', 'super', 'suponer', 'sur', 'tabla', 'tacto', 'talla',
+            'talon', 'tango', 'tapa', 'tarde', 'tarea', 'tasa', 'tatuar',
+            'taxi', 'taza', 'teatro', 'techo', 'tela', 'tema', 'temer',
+            'temor', 'tender', 'tener', 'tenis', 'tenso', 'teoria', 'terco',
+            'terminar', 'terror', 'tesis', 'tesoro', 'tibia', 'tigre', 'tijera',
+            'tilde', 'timbal', 'tino', 'tinto', 'tipo', 'tirar', 'tirita',
+            'titulo', 'tocar', 'tomar', 'tono', 'toque', 'torre', 'torta',
+            'total', 'toxina', 'traer', 'tramo', 'tratar', 'trauma', 'trebol',
+            'tregua', 'treint', 'tren', 'tres', 'trigo', 'triste', 'triunfo',
+            'trivial', 'trocar', 'tropa', 'tropezar', 'tubo', 'tumba', 'tumor',
+            'tunel', 'turno', 'tutor', 'ultimo', 'unico', 'unir', 'usar', 'utensilio',
+            'uva', 'vaca', 'vacuna', 'vago', 'valer', 'valle', 'valor', 'vapor',
+            'variable', 'vara', 'variar', 'vario', 'vaso', 'vecino', 'veinte',
+            'vela', 'venas', 'venir', 'ventana', 'verano', 'verbo', 'verdad',
+            'verde', 'verso', 'vestir', 'vez', 'viaje', 'viajero', 'vida',
+            'viejo', 'viento', 'vino', 'violin', 'virgen', 'virtud', 'virus',
+            'visita', 'vista', 'vivir', 'vivo', 'volar', 'voltaje', 'volver',
+            'vomito', 'voto', 'voz', 'vuelo', 'yate', 'yema', 'yerba',
+            'yoga', 'yunque', 'zapato', 'zebra', 'zona'
         ];
         
         let level = 0;
@@ -613,23 +514,6 @@
         let found = [];
         let current = '';
         let score = 0;
-        
-        function getWords(letterSet) {
-            const dict = {};
-            const setStr = [...letterSet].sort().join('');
-            
-            for (let word of WORDS) {
-                if (word.length < 3) continue;
-                const uniqueLetters = [...new Set(word)];
-                if (uniqueLetters.every(l => letterSet.includes(l)) && word.length >= 3) {
-                    const key = [...uniqueLetters].sort().join('');
-                    if (!dict[key] || word.length > dict[key].length) {
-                        dict[key] = word;
-                    }
-                }
-            }
-            return Object.values(dict).filter(w => w).slice(0, 10);
-        }
         
         function randItem(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
@@ -644,18 +528,29 @@
             return a;
         }
         
-        function init() {
-            const w = WONDERS[level % WONDERS.length];
-            document.getElementById('wonder-emoji').textContent = w.emoji;
-            document.getElementById('wonder-name').textContent = w.name;
-            document.getElementById('level-num').textContent = level + 1;
-            document.getElementById('country').textContent = w.country;
-            
-            // Generate 7 random letters from different words
-            const used = new Set();
-            for (let i = 0; i < 20; i++) {
-                used.add(randItem(WORDS)[0]);
+        function getWords(letterSet) {
+            const dict = {};
+            for (let word of WORDS) {
+                if (word.length < 3) continue;
+                const unique = [...new Set(word)];
+                if (unique.every(l => letterSet.has(l))) {
+                    const key = [...unique].sort().join('');
+                    if (!dict[key] || word.length > dict[key].length) {
+                        dict[key] = word;
+                    }
+                }
             }
+            return Object.values(dict).slice(0, 10);
+        }
+        
+        function init() {
+            const w = WONDS[level % WONDS.length];
+            document.getElementById('icon').textContent = w.icon;
+            document.getElementById('name').textContent = w.name;
+            document.getElementById('country').textContent = w.country;
+            document.getElementById('level').textContent = level + 1;
+            
+            const used = new Set();
             while (used.size < 7) {
                 used.add(String.fromCharCode(97 + Math.floor(Math.random() * 26)));
             }
@@ -666,108 +561,73 @@
             current = '';
             
             render();
-            updateProgress();
         }
         
         function render() {
-            // Answer preview
-            const preview = document.getElementById('answer-preview');
-            preview.innerHTML = '';
-            const maxLen = targets[found.length] ? Math.max(...targets.map(t => t.length)) : 4;
+            const maxLen = targets.length ? Math.max(...targets.map(t => t.length)) : 4;
             
-            for (let i = 0; i < maxLen + 2; i++) {
-                const el = document.createElement('div');
-                el.className = 'preview-letter' + (current[i] ? ' filled' : '');
-                el.textContent = current[i] || '';
-                el.onclick = () => removeLetter(i);
-                preview.appendChild(el);
+            const answer = document.getElementById('answer');
+            answer.innerHTML = '';
+            for (let i = 0; i < maxLen + 1; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'letter-slot' + (current[i] ? ' filled' : '');
+                slot.textContent = current[i] || '';
+                answer.appendChild(slot);
             }
             
-            // Letter wheel
-            const wheel = document.getElementById('letter-wheel');
+            const wheel = document.getElementById('wheel');
             wheel.innerHTML = '';
             letters.forEach((letter, i) => {
-                const el = document.createElement('div');
-                el.className = 'wheel-letter';
-                el.textContent = letter.toUpperCase();
-                el.onclick = () => addLetter(i);
-                wheel.appendChild(el);
+                const btn = document.createElement('div');
+                btn.className = 'wheel-letter';
+                btn.textContent = letter.toUpperCase();
+                btn.onclick = () => add(i);
+                wheel.appendChild(btn);
             });
             
-            // Word grid
-            const grid = document.getElementById('word-grid');
-            grid.innerHTML = '';
+            const words = document.getElementById('words');
+            words.innerHTML = '';
             targets.forEach(word => {
                 const el = document.createElement('div');
-                el.className = 'word-cell' + (found.includes(word) ? ' correct' : ' hidden');
+                el.className = 'word-item' + (found.includes(word) ? ' found' : ' hidden');
                 el.textContent = found.includes(word) ? word.toUpperCase() : '?'.repeat(word.length);
-                grid.appendChild(el);
+                words.appendChild(el);
             });
             
-            // Stats
-            document.getElementById('total-count').textContent = targets.length;
-            document.getElementById('found-count').textContent = found.length;
-            document.getElementById('points').textContent = score;
+            document.getElementById('found').textContent = found.length;
+            document.getElementById('total').textContent = targets.length;
+            document.getElementById('score').textContent = score;
             document.getElementById('level').textContent = level + 1;
-        }
-        
-        function updateProgress() {
+            
             const pct = targets.length ? (found.length / targets.length) * 100 : 0;
             document.getElementById('progress').style.width = pct + '%';
         }
         
-        function addLetter(index) {
+        function add(index) {
             current += letters[index];
             document.querySelectorAll('.wheel-letter')[index].classList.add('used');
             render();
         }
         
-        function removeLetter(index) {
-            if (index < current.length) {
-                const letter = current[index];
-                current = current.slice(0, index) + current.slice(index + 1);
-                
-                // Free letter
-                const btns = document.querySelectorAll('.wheel-letter');
-                for (let i = 0; i < letters.length; i++) {
-                    if (letters[i] === letter && btns[i].classList.contains('used')) {
-                        const usedCount = current.split(letter).length - 1;
-                        const total = letters.join('').split(letter).length - 1;
-                        if (usedCount < total) {
-                            btns[i].classList.remove('used');
-                            break;
-                        }
-                    }
-                }
-                render();
-            }
-        }
-        
-        function clearAnswer() {
-            document.querySelectorAll('.wheel-letter').forEach(l => l.classList.remove('used'));
+        function clearIt() {
+            document.querySelectorAll('.wheel-letter').forEach(l => l.classList.remove('used', 'correct'));
             current = '';
             render();
         }
         
-        function scrambleLetters() {
-            letters = shuffle(letters);
-            render();
-        }
-        
-        function submitWord() {
+        function submit() {
             const msg = document.getElementById('message');
             
             if (current.length < 3) {
-                showMsg('Min 3 letras!', 'error');
+                show('Mín 3 letras!', 'error');
                 return;
             }
             
             if (targets.includes(current) && !found.includes(current)) {
                 found.push(current);
-                score += current.length * 15;
-                showMsg(`✓ ${current.toUpperCase()}!`, 'success');
+                score += current.length * 20;
+                show('✓ ' + current.toUpperCase(), 'success');
                 
-                // Animate letters
                 document.querySelectorAll('.wheel-letter').forEach(l => {
                     if ([...current].includes(l.textContent.toLowerCase())) {
                         l.classList.add('correct');
@@ -776,40 +636,30 @@
                 
                 if (found.length === targets.length) {
                     setTimeout(() => {
-                        showMsg('🎉 NIVEL COMPLETO!', 'win');
+                        show('🎉 NIVEL COMPLETO!', 'win');
                         setTimeout(() => {
                             level++;
+                            clearIt();
                             init();
                         }, 2000);
                     }, 500);
                 }
             } else if (found.includes(current)) {
-                showMsg('Ja encontrado!', 'error');
+                show('Já encontrado!', 'error');
             } else {
-                showMsg('Tenta de novo!', 'error');
+                show('Tenta de novo!', 'error');
             }
             
-            clearAnswer();
+            clearIt();
         }
         
-        function showMsg(text, type) {
+        function show(text, type) {
             const msg = document.getElementById('message');
             msg.textContent = text;
             msg.className = 'show ' + type;
             setTimeout(() => msg.classList.remove('show'), 1500);
         }
         
-        // Keyboard support
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Enter') submitWord();
-            if (e.key === 'Backspace') current = current.slice(0, -1);
-            if (e.key >= 'a' && e.key <= 'z') {
-                const idx = letters.indexOf(e.key);
-                if (idx >= 0) addLetter(idx);
-            }
-        });
-        
-        // Start game
         init();
     </script>
 </body>
