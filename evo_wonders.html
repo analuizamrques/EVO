@@ -8,15 +8,14 @@
     <style>
         :root {
             --bg: #0a0a0a;
-            --surface: #161616;
-            --card: #222;
+            --surface: #141414;
+            --card: #1f1f1f;
             --text: #fff;
-            --text-dim: #666;
+            --text-dim: #555;
             --gold: #ffc107;
-            --gold-glow: rgba(255, 193, 7, 0.25);
+            --gold-dark: #ff9800;
             --green: #4caf50;
             --blue: #2196f3;
-            --purple: #9c27b0;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,65 +28,36 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
-            overflow: hidden;
+            padding: 8px;
             -webkit-user-select: none;
             touch-action: none;
+            overflow: hidden;
         }
         
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             width: 100%;
             max-width: 360px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
-        header h1 {
-            font-size: 1.2rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--gold), #ff9800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        header .stats {
-            display: flex;
-            gap: 12px;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-        }
-        
-        header .stats strong {
-            color: var(--gold);
-        }
+        header h1 { font-size: 1.1rem; font-weight: 800; color: var(--gold); }
+        header .info { font-size: 0.8rem; color: var(--text-dim); }
+        header .info strong { color: var(--gold); }
         
         .location {
             background: var(--surface);
-            border: 1px solid var(--card);
-            border-radius: 12px;
-            padding: 10px 20px;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 8px 16px;
+            margin-bottom: 8px;
             text-align: center;
             width: 100%;
             max-width: 360px;
         }
         
-        .location .icon {
-            font-size: 28px;
-        }
-        
-        .location .name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--gold);
-        }
-        
-        .location .level {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-        }
+        .location .icon { font-size: 24px; }
+        .location .name { font-size: 0.9rem; font-weight: 700; color: var(--gold); }
         
         .progress {
             width: 100%;
@@ -95,53 +65,44 @@
             height: 3px;
             background: var(--surface);
             border-radius: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--green), var(--blue));
-            transition: width 0.4s ease;
+            transition: width 0.3s ease;
         }
         
-        /* Crossword Grid */
         .crossword {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             gap: 3px;
-            padding: 10px;
+            padding: 8px;
             background: var(--surface);
-            border-radius: 12px;
-            margin-bottom: 10px;
-            max-width: 320px;
+            border-radius: 10px;
+            margin-bottom: 8px;
         }
         
         .cw-cell {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background: var(--card);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
         }
         
-        .cw-cell.empty {
-            background: transparent;
-        }
+        .cw-cell.empty { background: transparent; }
         
         .cw-cell.found {
             background: var(--green);
             color: white;
             animation: pop 0.3s ease;
-        }
-        
-        .cw-cell.bonus {
-            background: var(--blue);
-            color: white;
         }
         
         @keyframes pop {
@@ -150,25 +111,24 @@
             100% { transform: scale(1); }
         }
         
-        /* Current Word */
-        .current-word {
+        .current {
             display: flex;
             justify-content: center;
-            gap: 4px;
-            min-height: 42px;
-            margin-bottom: 10px;
+            gap: 3px;
+            min-height: 36px;
+            margin-bottom: 8px;
         }
         
         .curr-letter {
-            width: 32px;
-            height: 42px;
+            width: 28px;
+            height: 36px;
             background: var(--surface);
-            border-bottom: 3px solid var(--gold);
-            border-radius: 6px 6px 0 0;
+            border-bottom: 2px solid var(--gold);
+            border-radius: 4px 4px 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--gold);
         }
@@ -178,12 +138,11 @@
             border-bottom-color: var(--card);
         }
         
-        /* Letter Grid for Swipe */
-        .letter-wheel {
+        .wheel {
             position: relative;
-            width: 280px;
-            height: 280px;
-            margin-bottom: 10px;
+            width: 260px;
+            height: 260px;
+            margin-bottom: 8px;
         }
         
         .wheel-bg {
@@ -191,7 +150,7 @@
             inset: 0;
             border-radius: 50%;
             background: var(--surface);
-            box-shadow: inset 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: inset 0 3px 15px rgba(0,0,0,0.4);
         }
         
         .wheel-center {
@@ -199,55 +158,43 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             background: var(--bg);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.4);
             z-index: 10;
-            text-transform: uppercase;
         }
         
-        .letter-btn {
+        .letter {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 46px;
+            height: 46px;
             background: var(--card);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.1s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.08s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         
-        .letter-btn:hover {
-            background: #333;
-            transform: scale(1.08);
-        }
-        
-        .letter-btn:active, .letter-btn.active {
+        .letter:active, .letter.active {
             background: var(--gold);
             color: var(--bg);
-            transform: scale(0.95);
+            transform: scale(0.92);
         }
         
-        .letter-btn.used {
-            opacity: 0.2;
-            pointer-events: none;
-        }
-        
-        /* Trace Line */
-        .trace-svg {
+        .trace {
             position: absolute;
             inset: 0;
             pointer-events: none;
@@ -256,113 +203,79 @@
         
         .trace-line {
             stroke: var(--gold);
-            stroke-width: 5;
+            stroke-width: 4;
             stroke-linecap: round;
             fill: none;
-            stroke-linejoin: round;
-            opacity: 0.7;
+            opacity: 0.6;
         }
         
-        /* Buttons */
         .btns {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         
         .btn {
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         
-        .btn-clear {
-            background: var(--surface);
-            color: var(--text);
-        }
+        .btn-clear { background: var(--surface); color: var(--text); }
+        .btn-submit { background: var(--gold); color: var(--bg); }
+        .btn-shuffle { background: var(--blue); color: white; }
         
-        .btn-submit {
-            background: var(--gold);
-            color: var(--bg);
-            min-width: 80px;
-            justify-content: center;
-        }
-        
-        .btn-hint {
-            background: var(--purple);
-            color: white;
-        }
-        
-        .btn-shuffle {
-            background: var(--blue);
-            color: white;
-        }
-        
-        /* Word List */
-        .word-list {
+        .words {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px;
-            max-width: 340px;
+            gap: 5px;
+            max-width: 320px;
         }
         
-        .word-item {
+        .word {
             background: var(--surface);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-dim);
             letter-spacing: 1px;
         }
         
-        .word-item.correct {
-            background: var(--green);
-            color: white;
-        }
+        .word.correct { background: var(--green); color: white; }
         
-        .word-item.bonus {
-            background: var(--blue);
-            color: white;
-        }
-        
-        /* Message */
         #msg {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            padding: 16px 32px;
-            border-radius: 14px;
+            padding: 14px 28px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0;
             pointer-events: none;
             transition: all 0.2s ease;
             z-index: 100;
-            text-align: center;
         }
         
         #msg.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         #msg.success { background: var(--green); color: white; }
-        #msg.bonus { background: var(--blue); color: white; }
         #msg.error { background: #f44336; color: white; }
-        #msg.win { background: linear-gradient(135deg, var(--gold), #ff9800); color: var(--bg); font-size: 1.5rem; }
+        #msg.win { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--bg); font-size: 1.4rem; }
     </style>
 </head>
 <body>
     <header>
         <h1>🔥 EVO</h1>
-        <div class="stats">
-            <span>Nivel <strong id="level-num">1</strong></span>
+        <div class="info">
+            <span>Nivel <strong id="level">1</strong></span>
+            <span> | </span>
             <span>Pts <strong id="score">0</strong></span>
         </div>
     </header>
@@ -370,437 +283,253 @@
     <div class="location">
         <div class="icon" id="icon">🗼</div>
         <div class="name" id="name">Torre Eiffel</div>
-        <div class="level" id="level-hint">Paris, Francia</div>
     </div>
     
     <div class="progress"><div class="progress-fill" id="progress" style="width:0%"></div></div>
     
     <div class="crossword" id="crossword"></div>
+    <div class="current" id="current"></div>
     
-    <div class="current-word" id="current"></div>
-    
-    <div class="letter-wheel" id="wheel">
+    <div class="wheel" id="wheel">
         <div class="wheel-bg"></div>
-        <svg class="trace-svg"><path class="trace-line" id="trace" d=""/></svg>
+        <svg class="trace"><path class="trace-line" id="trace" d=""/></svg>
         <div class="wheel-center" id="center">-</div>
     </div>
     
     <div class="btns">
-        <button class="btn btn-shuffle" onclick="shuffleLetters()">🔀</button>
-        <button class="btn btn-clear" onclick="clearSwipe()">🗑️</button>
-        <button class="btn btn-submit" onclick="submitWord()">✓ OK</button>
-        <button class="btn btn-hint" onclick="useHint()">💡</button>
+        <button class="btn btn-shuffle" onclick="shuffle()">🔀</button>
+        <button class="btn btn-clear" onclick="clear()">🗑️</button>
+        <button class="btn btn-submit" onclick="submit()">✓ OK</button>
     </div>
     
-    <div class="word-list" id="words"></div>
-    
+    <div class="words" id="words"></div>
     <div id="msg"></div>
     
     <script>
-        // ==================== DICTIONARY ====================
-        const DICTIONARY = new Set([
-            'casa','cosa','vida','noche','dia','amor','agua','aire','alto','ante','arbol','arte','avion','bajo','bello','bien','blusa','brazo','bueno','caballo','cabeza','cabo','cada','cafe','calle','calma','calor','cama','camino','campo','canto','cara','carne','carta','caso','caza','cerca','cielo','cinco','clase','color','cosa','costa','crema','cruz','cuarto','cuatro','cuerpo','chico','china','chino','dia','dicho','dolor','donde','dulce','duro','edad','ella','ello','epoca','error','espalda','estar','esto','falso','falta','fama','favor','fecha','feliz','feria','fiesta','figura','firma','flor','fondo','forma','fuego','fuente','fuerza','frio','gallo','gama','ganga','gato','genio','gente','gota','gozo','grado','grande','grito','grupo','guapo','haber','hacer','hacia','hasta','hecho','helado','heroe','hijo','hoja','hombre','hora','hotel','huevo','idea','igual','isla','jardin','jefe','joven','juez','jugar','junto','lado','lago','lana','largo','leche','leer','legal','lejos','lengua','leon','letra','libre','libro','linea','lista','lobo','loco','lucha','lugar','luz','madera','madre','mago','mala','malo','mana','mano','mapa','mar','marca','marco','marido','masa','mayor','media','medio','mejor','menos','mente','mesa','metal','metro','miedo','miel','milla','mirada','mirar','mismo','moda','modo','mono','monte','moral','morir','mover','mucho','muerte','mujer','mundo','nacer','nada','nadie','nariz','nata','nave','negro','nieve','nivel','noche','nombre','norte','nota','nube','nunca','obra','oceano','ocupa','oficial','ojala','ola','opera','orden','oro','otro','oveja','padre','pagar','pais','palabra','palma','pan','panel','papel','para','parar','pared','parte','pasar','paso','pasta','paz','pecho','pedir','pelota','pena','pensar','pera','perder','perro','pesca','pie','piedra','piel','pierna','pieza','pila','pino','pintor','piso','plana','plano','planta','plata','playa','plaza','pluma','pobre','poco','poder','poeta','polo','poner','portal','precio','prensa','primo','probar','pronto','prueba','pueblo','puerta','pues','puesto','punto','puro','quedar','querer','quien','quinto','quitar','rabo','rana','rapido','raro','rasgo','rata','raton','rayo','raza','razon','real','receta','red','regio','regla','reino','relax','reloj','remar','resto','rey','rico','rima','rincon','rio','ritmo','robar','roca','rodar','rodear','rojo','romper','ropa','rostro','rubio','rueda','ruido','saber','sacar','sal','salir','salud','salvar','samba','sano','santo','seda','seguir','seis','selva','senal','senor','ser','serie','servir','sexto','siglo','signo','silla','simple','sino','sistema','sitio','sobre','social','sol','solar','solo','soltar','sombra','sonar','sonido','sonar','soplar','sordo','sorpresa','subir','suelo','suerte','suficiente','sufrir','super','tabla','tacto','talla','talon','tango','tapa','tarde','tarea','tasa','taxi','taza','teatro','techo','tela','tema','temer','temor','tender','tener','tenis','teoria','terco','terminar','tesoro','tibia','tigre','tipo','tirar','titulo','tocar','tomar','tono','toque','torre','torta','total','traer','tramo','tratar','tren','tres','trigo','triste','triunfo','tubo','tumba','tutor','unico','unir','usar','uva','vaca','vago','valer','valle','valor','vapor','vara','vaso','vecino','veinte','vela','vena','venir','verano','verbo','verdad','verde','verso','vestir','vez','viaje','vida','viejo','viento','vino','virus','visita','vista','vivir','vivo','volar','volver','voz','vuelo','yate','yema','yoga','yunque','zapato','zona',
-            'adios','ahora','amigo','anda','anza','arroz','barro','bodas','bruma','burro','busca','callo','capaz','caracol','carne','caserio','cazador','cercano','cerro','cipres','ciruela','clavel','cobertor','cocina','colcha','collar','corral','corrida','cotorra','crecida','cueca','cuello','cuento','cultura','cumbre','curita','danza','decir','delta','desfile','desierto','diario','diesel','difer','dinero','director','dormir','duende','ejercito','empeigne','empresario','energia','enfermo','entrada','epoca','equipo','escoba','escritor','escultura','espalda','espanol','especies','espiritu','estable','estado','estrella','estudio','evento','fabrica','falsedad','familia','famoso','farola','fatiga','favorito','fealdad','felicidad','feria','ferocidad','fibra','fiebre','fiesta','figura','fila','filete','finura','firma','fisica','flamenco','floracion','florero','floresta','fluidez','foca','fondo','freno','fresa','frijol','frontera','fruta','fuego','fuente','fuerza','fundir','futuro','gacela','ganar','garra','garrapata','gemelo','gorra','gotera','gratitud','grifo','grillo','grisa','grua','guanche','guardia','guerra','guiar','guiso','gustar','haber','habilidad','hallar','hamaca','harina','hechizo','heredar','herencia','herir','hidro','historia','hobby','hombre','honestidad','honor','hora','horno','hospital','hotel','hueco','huevo','humildad','humo','idea','iglesia','igualdad','imagen','imperio','indice','industria','infeccion','insecto','isla','jardin','jefe','jerga','jornada','juez','jugar','junio','labor','lagrima','lamentar','langosta','lapiz','lectura','leche','lector','leer','legal','leon','letra','levantar','leyenda','libertad','libre','linea','liquid','lista','literatura','llaga','llama','llano','llanto','llavero','llegada','llenar','lluvia','lobo','logro','lucha','lugar','luna','lustrar','luz','madera','madre','magia','maldad','males','malo','mandar','manera','mantel','manzana','mar','marca','marzo','mas','masa','material','mayor','medico','mejilla','mejor','melodia','menor','menos','mente','mentira','mesa','metal','metro','miedo','miel','migrana','milla','mimo','mineral','minuto','misa','mismo','moda','modo','moho','mojar','monte','morada','morir','mosca','mostrar','mote','motor','mover','muerte','mujer','mundo','musica','nabo','nacer','nada','nadie','nariz','narrar','nata','nave','navegar','negro','nervio','niebla','nieto','nieve','nivel','noche','nombre','norma','norte','nota','noticia','novela','nube','nudo','nuevo','nunca','nutrir','obra','observar','obtener','oceano','ocho','ocupar','oficial','ojete','ojo','ola','olor','olvidar','once','opera','opinion','optar','orden','oreo','oro','oscuro','ostra','oveja','pacer','padre','pagar','paisaje','pajaro','palabra','palco','paleta','palma','pan','pandilla','panel','papel','par','paraguas','parar','pared','paris','parlamento','parpado','parte','pasaje','pasar','paseo','pasta','paternal','patio','pato','pavon','paz','pecho','pedir','peina','pelaje','pelar','pelear','pelota','peluche','pena','pensar','pequeno','pera','perder','perilla','perro','pesca','piano','picar','pie','piedra','piel','pierna','pieza','piloto','pimienta','pin','pina','pino','pintor','pirata','piso','pitillo','pizarra','plan','plana','plano','planta','playa','plaza','plazo','pluma','pobre','poeta','polea','polen','polilla','polo','pollito','polvo','ponche','poner','portal','posada','posar','precio','predecir','prensa','preparar','presa','presto','prima','primo','princesa','principe','privar','probar','pronto','proteger','proximo','prueba','psicologo','publicar','pueblo','puente','puerta','pues','puesto','pulso','puma','punta','punto','pupila','puro','quedar','quema','quitar','quimera','quinto','radio','raiz','rama','rango','rapaz','rapido','raro','rasgo','raspar','rata','raton','rayo','raza','razon','real','receta','red','reducir','regalo','region','regla','reino','relax','reloj','remar','repetir','resto','rey','riego','rima','rincon','rio','ritmo','robar','robot','roca','rodar','rodear','rodilla','rojo','romper','ronco','ropa','rostro','rubia','rubio','rueda','rugido','ruido','rumbo','rural'
-        ]);
-        
-        // ==================== WONDERS DATA ====================
-        const WONDERS = [
-            {icon:'🗼',name:'Torre Eiffel',place:'Paris'},
-            {icon:'🗽',name:'Estátua Liberdade',place:'NYC'},
-            {icon:'🕌',name:'Taj Mahal',place:'India'},
-            {icon:'🏛️',name:'Partenón',place:'Grecia'},
-            {icon:'🗿',name:'Moai',place:'Isla Pascua'},
-            {icon:'🏰',name:'Castelo',place:'Francia'},
-            {icon:'🕰️',name:'Big Ben',place:'Londres'},
-            {icon:'🏜️',name:'Pirámides',place:'Egipto'},
-            {icon:'⛩️',name:'Templo',place:'Japón'},
-            {icon:'🏟️',name:'Coliseo',place:'Roma'}
+        const WONDS = [
+            {icon:'🗼',name:'Torre Eiffel'},
+            {icon:'🗽',name:'Estátua Liberdade'},
+            {icon:'🕌',name:'Taj Mahal'},
+            {icon:'🏛️',name:'Partenón'},
+            {icon:'🗿',name:'Moai'},
+            {icon:'🏰',name:'Castelo'},
+            {icon:'🕰️',name:'Big Ben'},
+            {icon:'🏜️',name:'Pirámides'},
+            {icon:'⛩️',name:'Templo'},
+            {icon:'🏟️',name:'Coliseo'}
         ];
         
-        // ==================== GAME STATE ====================
+        // Pre-defined levels with letters and target words
+        const LEVELS = [
+            {letters: ['A','R','T','E'], targets: ['AR','ARTE','TEAR','TER']},
+            {letters: ['A','B','C','O'], targets: ['CAB','CABA','BOCA','CACO']},
+            {letters: ['A','M','O','R'], targets: ['AMOR','MORA','ROMA','MAR']},
+            {letters: ['A','C','E','R'], targets: ['CARA','AREA','CARA','CREA']},
+            {letters: ['A','D','I','O'], targets: ['ADI','ADIO','OID','DIA']},
+            {letters: ['O','S','A','P'], targets: ['PASO','SAPO','POSA','OPAS']},
+            {letters: ['A','N','O','S'], targets: ['NOS','SON','ONS','SAN']},
+            {letters: ['A','E','L','V'], targets: ['VALE','LAVE','VELA','ALE']},
+            {letters: ['E','R','O','S'], targets: ['SERO','RESO','ROSE','EROS']},
+            {letters: ['I','R','A','D'], targets: ['RIDA','IRA','RADI','ARID']}
+        ];
+        
+        // Extended dictionary for validation
+        const DICT = new Set([
+            'casa','cosa','vida','noche','dia','amor','agua','aire','alto','ante','arbol','arte','avion','bajo','bello','bien','blusa','brazo','bueno','caballo','cabeza','cabo','cada','cafe','calle','calma','calor','cama','camino','campo','canto','cara','carne','carta','caso','caza','cerca','cielo','cinco','clase','color','cosa','costa','crema','cruz','cuarto','cuatro','cuerpo','dia','dicho','dolor','donde','dulce','duro','edad','ella','ello','epoca','error','espalda','estar','esto','falso','falta','fama','favor','fecha','feliz','feria','fiesta','figura','firma','flor','fondo','forma','fuego','fuente','fuerza','frio','gallo','gama','ganga','gato','genio','gente','gota','gozo','grado','grande','grito','grupo','guapo','haber','hacer','hacia','hasta','hecho','helado','heroe','hijo','hoja','hombre','hora','hotel','huevo','idea','igual','isla','jardin','jefe','joven','juez','jugar','junto','lado','lago','lana','largo','leche','leer','legal','lejos','lengua','leon','letra','libre','libro','linea','lista','lobo','loco','lucha','lugar','luz','madera','madre','mago','mala','malo','mana','mano','mapa','mar','marca','marco','marido','masa','mayor','media','medio','mejor','menos','mente','mesa','metal','metro','miedo','miel','milla','mirada','mirar','mismo','moda','modo','mono','monte','moral','morir','mover','mucho','muerte','mujer','mundo','nacer','nada','nadie','nariz','nata','nave','negro','nieve','nivel','noche','nombre','norte','nota','nube','nunca','obra','oceano','ocupa','oficial','ojala','ola','opera','orden','oro','otro','oveja','padre','pagar','pais','palabra','palma','pan','panel','papel','para','parar','pared','parte','pasar','paso','pasta','paz','pecho','pedir','pelota','pena','pensar','pera','perder','perro','pesca','pie','piedra','piel','pierna','pieza','pila','pino','pintor','piso','plana','plano','planta','plata','playa','plaza','pluma','pobre','poco','poder','poeta','polo','poner','portal','precio','prensa','primo','probar','pronto','prueba','pueblo','puerta','pues','puesto','punto','puro','quedar','querer','quien','quinto','quitar','rabo','rana','rapido','raro','rasgo','rata','raton','rayo','raza','razon','real','receta','red','regio','regla','reino','relax','reloj','remar','resto','rey','rico','rima','rincon','rio','ritmo','robar','roca','rodar','rodear','rojo','romper','ropa','rostro','rubio','rueda','ruido','saber','sacar','sal','salir','salud','salvar','samba','sano','santo','seda','seguir','seis','selva','senal','senor','ser','serie','servir','sexto','siglo','signo','silla','simple','sino','sistema','sitio','sobre','social','sol','solar','solo','soltar','sombra','sonar','sonido','soplar','sordo','sorpresa','subir','suelo','suerte','suficiente','sufrir','super','tabla','tacto','talla','talon','tango','tapa','tarde','tarea','tasa','taxi','taza','teatro','techo','tela','tema','temer','temor','tender','tener','tenis','teoria','terco','terminar','tesoro','tibia','tigre','tipo','tirar','titulo','tocar','tomar','tono','toque','torre','torta','total','traer','tramo','tratar','tren','tres','trigo','triste','triunfo','tubo','tumba','tutor','unico','unir','usar','uva','vaca','vago','valer','valle','valor','vapor','vara','vaso','vecino','veinte','vela','vena','venir','verano','verbo','verdad','verde','verso','vestir','vez','viaje','vida','viejo','viento','vino','virus','visita','vista','vivir','vivo','volar','volver','voz','vuelo','yate','yema','yoga','yunque','zapato','zona',
+            'arte','tear','area','tarea','cabe','coco','casa','caso','cosa','echo','esto','este','esto','hay','lee','ojo','ojo','rayo','raya','rey','reya','rueda','ruego','saco','sed','seda','sido','sube','taco','tema','tibia','tiene','tino','tira','toen','todo','tono','trae','traes','tre','trecho','tri','trip','tubo','uso','vaya','ve','vez','via','vie','vio','voz','vuel','ya','ye','yo'
+        ]);
+        
         let level = 0;
         let letters = [];
         let targets = [];
-        let bonusWords = [];
         let found = [];
-        let bonus = [];
-        let currentSwipe = [];
-        let hintsUsed = 0;
-        let maxHints = 3;
+        let swipe = [];
         let score = 0;
         
-        // DOM elements
-        const centerEl = document.getElementById('center');
-        const traceEl = document.getElementById('trace');
-        
-        // ==================== UTILS ====================
-        function randLetter() {
-            const vowels = 'aeiou';
-            const cons = 'bcdfghjklmnpqrstvwxyz';
-            if (Math.random() > 0.4) return vowels[Math.floor(Math.random() * vowels.length)];
-            return cons[Math.floor(Math.random() * cons.length)];
-        }
-        
-        function shuffle(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-        
-        function shuffleObj(arr) {
-            const a = [...arr];
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
-        }
-        
-        // ==================== LEVEL GENERATOR ====================
-        function generateLevel() {
-            // Get base word for level
-            const baseWords = [...DICTIONARY].filter(w => w.length >= 4 && w.length <= 6);
-            const baseWord = baseWords[Math.floor(Math.random() * baseWords.length)];
+        function init() {
+            const lvl = LEVELS[level % LEVELS.length];
+            letters = shuffle([...lvl.letters]);
+            targets = lvl.targets;
+            found = [];
+            swipe = [];
             
-            // Get unique letters
-            const uniqueLetters = [...new Set(baseWord)];
+            document.getElementById('icon').textContent = WONDS[level % WONDS.length].icon;
+            document.getElementById('name').textContent = WONDS[level % WONDS.length].name;
+            document.getElementById('level').textContent = level + 1;
             
-            // Generate more letters from unique set (7-10 letters)
-            const letterSet = new Set(uniqueLetters);
-            while (letterSet.size < 8 + Math.floor(level / 5)) {
-                letterSet.add(randLetter());
-            }
-            letters = shuffle([...letterSet]);
-            
-            // Find all valid words from letters
-            const allWords = [...DICTIONARY].filter(w => {
-                if (w.length < 3) return false;
-                const uniq = [...new Set(w)];
-                return uniq.every(l => letterSet.has(l));
-            });
-            
-            // Pick target words (longer words first)
-            allWords.sort((a, b) => b.length - a.length);
-            targets = allWords.slice(0, 4 + Math.floor(level / 3));
-            bonusWords = allWords.slice(4, 12);
-            
-            // Reset state
-            hintsUsed = 0;
-        }
-        
-        // ==================== CROSSWORD BUILDER ====================
-        function buildCrossword() {
-            const cw = document.getElementById('crossword');
-            cw.innerHTML = '';
-            
-            const rows = 6;
-            const cols = 6;
-            
-            // Place first word in middle
-            const firstWord = targets[0] || 'casa';
-            const startRow = Math.floor((rows - 1) / 2);
-            const startCol = Math.floor((cols - firstWord.length) / 2);
-            
-            // Create empty grid
-            const grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
-            
-            // Place first word horizontally
-            for (let i = 0; i < firstWord.length; i++) {
-                if (startCol + i < cols) {
-                    grid[startRow][startCol + i] = firstWord[i];
-                }
-            }
-            
-            // Place vertical words that share letters
-            for (let t = 1; t < targets.length; t++) {
-                const word = targets[t];
-                // Find a matching letter position
-                for (let wc = 0; wc < word.length; wc++) {
-                    for (let r = 0; r < rows; r++) {
-                        for (let c = 0; c < cols; c++) {
-                            if (grid[r][c] === word[wc] && r > 0 && r < rows - 1) {
-                                // Check space above and below
-                                let canPlace = true;
-                                if (!grid[r-1]?.[c]) canPlace = false;
-                                if (!grid[r+1]?.[c]) canPlace = false;
-                                
-                                if (canPlace && grid[r-1]?.[c] === null) {
-                                    for (let wi = 0; wi < word.length; wi++) {
-                                        if (wi !== wc && grid[r-1+wi-r]?.[c] !== null && grid[r-1+wi-r]?.[c] !== word[wi]) {
-                                            canPlace = false;
-                                            break;
-                                        }
-                                    }
-                                    if (canPlace) {
-                                        for (let wi = 0; wi < word.length; wi++) {
-                                            if (wi !== wc) {
-                                                grid[r - 1 + wi][c] = word[wi];
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Render grid
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cw-cell';
-                    if (grid[r][c]) {
-                        cell.textContent = grid[r][c].toUpperCase();
-                        const isFound = found.some(w => w.includes(grid[r][c]));
-                        if (isFound) cell.classList.add('found');
-                    } else {
-                        cell.classList.add('empty');
-                    }
-                    cw.appendChild(cell);
-                }
-            }
-        }
-        
-        // ==================== RENDER ====================
-        function render() {
-            // Location
-            const w = WONDERS[level % WONDERS.length];
-            document.getElementById('icon').textContent = w.icon;
-            document.getElementById('name').textContent = w.name;
-            document.getElementById('level-hint').textContent = w.place;
-            document.getElementById('level-num').textContent = level + 1;
-            
-            // Progress
-            const pct = targets.length ? ((found.length + bonus.length) / (targets.length + bonusWords.length)) * 100 : 0;
-            document.getElementById('progress').style.width = pct + '%';
-            document.getElementById('score').textContent = score;
-            
-            // Render letter wheel
-            renderWheel();
-            
-            // Render word list
-            renderWordList();
-            
-            // Build crossword
-            buildCrossword();
-            
-            // Clear current word
-            renderCurrentWord();
+            render();
         }
         
         function renderWheel() {
             const wheel = document.getElementById('wheel');
-            const center = 140;
-            const radius = 90;
+            wheel.querySelectorAll('.letter').forEach(l => l.remove());
             
-            // Remove old buttons
-            wheel.querySelectorAll('.letter-btn').forEach(b => b.remove());
+            const center = 130;
+            const radius = 85;
             
-            letters.forEach((letter, idx) => {
-                const angle = (idx * 360 / letters.length - 90) * Math.PI / 180;
-                const x = center + radius * Math.cos(angle) - 25;
-                const y = center + radius * Math.sin(angle) - 25;
+            letters.forEach((letter, i) => {
+                const angle = (i * 360 / letters.length - 90) * Math.PI / 180;
+                const x = center + radius * Math.cos(angle) - 23;
+                const y = center + radius * Math.sin(angle) - 23;
                 
-                const btn = document.createElement('div');
-                btn.className = 'letter-btn';
-                btn.textContent = letter.toUpperCase();
-                btn.style.left = x + 'px';
-                btn.style.top = y + 'px';
-                btn.dataset.index = idx;
-                
-                btn.addEventListener('pointerdown', e => { e.preventDefault(); startSwipe(idx); });
-                
-                wheel.appendChild(btn);
+                const el = document.createElement('div');
+                el.className = 'letter';
+                el.textContent = letter;
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+                el.dataset.index = i;
+                el.addEventListener('pointerdown', e => { e.preventDefault(); start(i); });
+                wheel.appendChild(el);
             });
             
-            // Add move listener
-            wheel.addEventListener('pointermove', onSwipeMove);
-            wheel.addEventListener('pointerup', endSwipe);
+            wheel.addEventListener('pointermove', move);
+            wheel.addEventListener('pointerup', end);
         }
         
-        function onSwipeMove(e) {
-            if (currentSwipe.length === 0) return;
-            const btn = document.elementFromPoint(e.clientX, e.clientY);
-            if (btn && btn.classList.contains('letter-btn')) {
-                const idx = parseInt(btn.dataset.index);
-                const lastIdx = currentSwipe[currentSwipe.length - 1];
-                
-                // Check if adjacent
-                if (!currentSwipe.includes(idx) && isAdjacent(lastIdx, idx)) {
-                    currentSwipe.push(idx);
-                    updateSwipe();
+        function start(i) {
+            swipe = [i];
+            update();
+        }
+        
+        function move(e) {
+            if (swipe.length === 0) return;
+            const el = document.elementFromPoint(e.clientX, e.clientY);
+            if (el && el.classList.contains('letter')) {
+                const i = parseInt(el.dataset.index);
+                if (!swipe.includes(i)) {
+                    swipe.push(i);
+                    update();
                 }
             }
         }
         
-        function isAdjacent(a, b) {
-            const angleA = (a * 360 / letters.length - 90) * Math.PI / 180;
-            const angleB = (b * 360 / letters.length - 90) * Math.PI / 180;
-            const dist = Math.abs(a - b);
-            return dist === 1 || dist === letters.length - 1;
-        }
+        function end() {}
         
-        function startSwipe(idx) {
-            currentSwipe = [idx];
-            updateSwipe();
-        }
-        
-        function endSwipe() {
-            // Done
-        }
-        
-        function updateSwipe() {
-            const center = 140;
-            const radius = 90;
+        function update() {
+            const center = 130;
+            const radius = 85;
             
-            // Update letter buttons
-            document.querySelectorAll('.letter-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', currentSwipe.includes(i));
+            document.querySelectorAll('.letter').forEach((el, i) => {
+                el.classList.toggle('active', swipe.includes(i));
             });
             
-            // Update center display
-            const word = currentSwipe.map(i => letters[i]).join('');
-            centerEl.textContent = word.toUpperCase() || '-';
+            const word = swipe.map(i => letters[i]).join('');
+            document.getElementById('center').textContent = word || '-';
             
-            // Draw trace line
-            if (currentSwipe.length < 2) {
-                traceEl.setAttribute('d', '');
+            // Draw line
+            if (swipe.length < 2) {
+                document.getElementById('trace').setAttribute('d', '');
                 return;
             }
-            
             let d = '';
-            currentSwipe.forEach((idx, i) => {
+            swipe.forEach((idx, i) => {
                 const angle = (idx * 360 / letters.length - 90) * Math.PI / 180;
                 const x = center + radius * Math.cos(angle);
                 const y = center + radius * Math.sin(angle);
                 d += (i === 0 ? 'M ' : 'L ') + x + ' ' + y + ' ';
             });
-            traceEl.setAttribute('d', d);
+            document.getElementById('trace').setAttribute('d', d);
             
-            // Update current word display
-            renderCurrentWord();
-        }
-        
-        function renderCurrentWord() {
-            const current = document.getElementById('current');
-            current.innerHTML = '';
-            const word = currentSwipe.map(i => letters[i]);
-            const maxLen = Math.max(...targets.map(t => t.length), 4);
-            
+            // Update current display
+            const cur = document.getElementById('current');
+            cur.innerHTML = '';
+            const maxLen = Math.max(...targets.map(t => t.length));
+            const display = [...word];
             for (let i = 0; i < maxLen + 1; i++) {
                 const el = document.createElement('div');
-                el.className = 'curr-letter' + (word[i] ? '' : ' empty');
-                el.textContent = word[i] ? word[i].toUpperCase() : '';
-                current.appendChild(el);
+                el.className = 'curr-letter' + (display[i] ? '' : ' empty');
+                el.textContent = display[i] || '';
+                cur.appendChild(el);
             }
         }
         
-        function clearSwipe() {
-            currentSwipe = [];
-            traceEl.setAttribute('d', '');
-            centerEl.textContent = '-';
-            document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active'));
-            renderCurrentWord();
+        function clear() {
+            swipe = [];
+            document.getElementById('trace').setAttribute('d', '');
+            document.getElementById('center').textContent = '-';
+            document.querySelectorAll('.letter').forEach(l => l.classList.remove('active'));
+            document.getElementById('current').innerHTML = '';
         }
         
-        function shuffleLetters() {
-            letters = shuffle(letters);
+        function shuffle() {
+            letters = shuffle([...letters]);
             renderWheel();
         }
         
-        function renderWordList() {
-            const list = document.getElementById('words');
-            list.innerHTML = '';
-            
-            // Show targets
-            targets.forEach(w => {
-                const el = document.createElement('div');
-                el.className = 'word-item' + (found.includes(w) ? ' correct' : '');
-                el.textContent = w.toUpperCase() + (found.includes(w) ? ' ✓' : '');
-                list.appendChild(el);
-            });
-            
-            // Show bonus available
-            bonusWords.filter(b => !bonus.includes(b)).forEach(w => {
-                if (found.length >= targets.length - 1) {
-                    const el = document.createElement('div');
-                    el.className = 'word-item';
-                    el.textContent = w.toUpperCase() + ' ★';
-                    list.appendChild(el);
-                }
-            });
-        }
-        
-        // ==================== SUBMIT ====================
-        function submitWord() {
-            const word = currentSwipe.map(i => letters[i]).join('');
+        function submit() {
+            const word = swipe.map(i => letters[i]).join('');
             const msg = document.getElementById('msg');
             
-            if (word.length < 3) {
-                show('Min 3 letras!', 'error');
-                return;
-            }
+            if (word.length < 2) return;
             
-            // Check dictionary
-            if (!DICTIONARY.has(word)) {
-                show('No está en diccionario!', 'error');
-                clearSwipe();
-                return;
-            }
-            
-            // Check if target
             if (targets.includes(word) && !found.includes(word)) {
                 found.push(word);
-                score += word.length * 20;
-                show('✓ ' + word.toUpperCase(), 'success');
-                playSound('success');
+                score += word.length * 10;
+                show('✓ ' + word, 'success');
                 
                 if (found.length === targets.length) {
-                    show('🎉 NIVEL COMPLETO!', 'win');
                     setTimeout(() => {
-                        level++;
-                        initLevel();
-                    }, 2000);
+                        show('🎉 NIVEL COMPLETO!', 'win');
+                        setTimeout(() => {
+                            level++;
+                            init();
+                        }, 2000);
+                    }, 500);
                 }
-            }
-            // Check if bonus
-            else if (bonusWords.includes(word) && !bonus.includes(word) && !found.includes(word)) {
-                bonus.push(word);
-                score += word.length * 10;
-                show('★ ' + word.toUpperCase() + ' (bonus)', 'bonus');
-            } else if (found.includes(word) || bonus.includes(word)) {
+            } else if (found.includes(word)) {
                 show('Ya encontrado!', 'error');
+            } else if (DICT.has(word)) {
+                score += word.length * 5;
+                show('★ ' + word + ' (bonus)', 'success');
             } else {
-                show('No es palabra objetivo!', 'error');
+                show('No válida!', 'error');
             }
             
-            clearSwipe();
+            clear();
             render();
         }
         
-        function useHint() {
-            if (hintsUsed >= maxHints) {
-                show('Sin pistas disponibles!', 'error');
-                return;
-            }
+        function render() {
+            renderWheel();
             
-            // Find unguessed word
-            const target = targets.find(t => !found.includes(t));
-            if (!target) return;
+            // Word list
+            const words = document.getElementById('words');
+            words.innerHTML = '';
+            targets.forEach(w => {
+                const el = document.createElement('div');
+                el.className = 'word' + (found.includes(w) ? ' correct' : '');
+                el.textContent = found.includes(w) ? w : '_'.repeat(w.length);
+                words.appendChild(el);
+            });
             
-            // Show one letter
-            const letter = target[0];
-            const idx = letters.indexOf(letter);
-            if (idx >= 0) {
-                currentSwipe = [idx];
-                updateSwipe();
-                hintsUsed++;
-                score = Math.max(0, score - 50);
-                show('💡 Pista: ' + letter.toUpperCase(), 'success');
+            // Progress
+            const pct = (found.length / targets.length) * 100;
+            document.getElementById('progress').style.width = pct + '%';
+            document.getElementById('score').textContent = score;
+            
+            // Crossword (simple)
+            const cw = document.getElementById('crossword');
+            cw.innerHTML = '';
+            const gridSize = 6;
+            const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
+            targets.forEach((w, wi) => {
+                const row = Math.floor(wi * 1.5) + 1;
+                const col = 1;
+                for (let i = 0; i < w.length; i++) {
+                    if (col + i < gridSize) grid[row][col + i] = { letter: w[i], found: found.includes(w) };
+                }
+            });
+            
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cw-cell' + (grid[r][c] ? '' : ' empty');
+                    if (grid[r][c]) {
+                        cell.textContent = grid[r][c].letter.toUpperCase();
+                        if (grid[r][c].found) cell.classList.add('found');
+                    }
+                    cw.appendChild(cell);
+                }
             }
         }
         
@@ -811,18 +540,15 @@
             setTimeout(() => msg.classList.remove('show'), 1500);
         }
         
-        function playSound(type) {
-            // Simple beep using Web Audio API could be added here
-            // For now we just use visual feedback
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
         
-        function initLevel() {
-            generateLevel();
-            render();
-        }
-        
-        // ==================== INIT ====================
-        initLevel();
+        init();
     </script>
 </body>
 </html>
