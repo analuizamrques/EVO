@@ -345,6 +345,11 @@
                 w.appendChild(el);
             });
             
+            // Add drag/touch handlers
+            w.ontouchmove = onTouchMove;
+            w.onmousemove = onTouchMove;
+            w.ontouchend = () => {};
+            
             // Allow clicking empty space to go back
             w.onclick = (e) => {
                 if (e.target === w || e.target.classList.contains('wheel-ring') || e.target.classList.contains('wheel-center')) {
@@ -367,17 +372,24 @@
         }
         
         function onTouchMove(e) {
+            if (swipe.length === 0) return;
+            e.preventDefault();
             
-            const el = document.elementFromPoint(touch.clientX, touch.clientY);
+            // Get touch or mouse position
+            const pos = e.touches ? {x: e.touches[0].clientX, y: e.touches[0].clientY} : {x: e.clientX, y: e.clientY};
+            const el = document.elementFromPoint(pos.x, pos.y);
             
             if (el && el.classList.contains('letter')) {
                 const i = parseInt(el.dataset.i);
-                
-                swipe.push(i); updateSwipe();
+                if (!swipe.includes(i)) {
+                    swipe.push(i);
+                    updateSwipe();
+                    if (navigator.vibrate) navigator.vibrate(5);
+                }
             }
         }
         
-        function onSwipeEnd() {}
+        
         
         function updateSwipe() {
             const cx = 150, r = 110;
