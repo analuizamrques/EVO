@@ -21,156 +21,111 @@
             user-select: none;
         }
         
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
+            padding: 12px 16px;
             background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
         }
         
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             background: linear-gradient(90deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .header-stats {
-            display: flex;
-            gap: 20px;
-        }
-        
+        .header-stats { display: flex; gap: 16px; }
         .stat { text-align: center; }
-        .stat-val { font-size: 0.85rem; font-weight: 700; color: #ffd700; }
-        .stat-lbl { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+        .stat-val { font-size: 0.8rem; font-weight: 700; color: #ffd700; }
+        .stat-lbl { font-size: 0.6rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
         
-        /* Level banner */
         .level-banner {
             text-align: center;
-            padding: 12px;
+            padding: 8px;
             background: linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,150,0,0.15));
-            border-bottom: 1px solid rgba(255,215,0,0.2);
         }
         
-        .level-icon { font-size: 28px; }
-        .level-name { font-size: 0.85rem; font-weight: 600; color: #ffd700; margin-top: 2px; }
+        .level-icon { font-size: 24px; }
+        .level-name { font-size: 0.8rem; font-weight: 600; color: #ffd700; }
         
-        /* Progress */
-        .progress-wrap {
-            padding: 10px 20px;
-        }
+        .progress-wrap { padding: 8px 16px; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ff9500); transition: width 0.4s ease; }
         
-        .progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ff9500);
-            border-radius: 3px;
-            transition: width 0.4s ease;
-        }
-        
-        /* CROSSWORD GRID - TOP */
         .crossword {
             flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 8px;
         }
         
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 3px;
-            padding: 12px;
+            padding: 8px;
             background: rgba(0,0,0,0.3);
-            border-radius: 16px;
+            border-radius: 12px;
         }
         
         .cell {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             background: linear-gradient(145deg, #2a2a40, #1e1e30);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            transition: all 0.3s ease;
+            color: rgba(255,255,255,0.3);
         }
         
-        .cell.empty { background: transparent; }
         .cell.has-letter { background: rgba(255,255,255,0.1); }
-        .cell.has-letter:not(.found) { color: rgba(255,255,255,0.2); }
+        .cell.found { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; }
         
-        .cell.found {
-            background: linear-gradient(145deg, #ffd700, #ff9500);
-            color: #1a1a1a;
-            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
-            animation: pop 0.4s ease;
-        }
-        
-        @keyframes pop {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-        
-        /* CURRENT WORD */
         .current-word {
             display: flex;
             justify-content: center;
             gap: 3px;
-            padding: 12px;
-            min-height: 50px;
+            padding: 8px;
+            min-height: 40px;
         }
         
         .curr-char {
-            width: 30px;
-            height: 40px;
+            width: 26px;
+            height: 34px;
             background: rgba(255,255,255,0.08);
-            border-bottom: 3px solid #ffd700;
-            border-radius: 8px 8px 4px 4px;
+            border-bottom: 2px solid #ffd700;
+            border-radius: 6px 6px 4px 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: #ffd700;
         }
         
-        .curr-char.empty {
-            background: transparent;
-            border-bottom-color: rgba(255,255,255,0.15);
-        }
+        .curr-char.empty { background: transparent; border-bottom-color: rgba(255,255,255,0.15); }
         
-        /* CIRCULAR WHEEL - BOTTOM */
         .wheel-area {
-            touch-action: none;
-            height: 260px;
+            height: 220px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: none;
         }
         
         .wheel {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 200px;
+            height: 200px;
         }
         
         .wheel-ring {
@@ -178,9 +133,7 @@
             inset: 0;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #2a2a45, #15152a);
-            box-shadow: 
-                inset 0 8px 32px rgba(0,0,0,0.5),
-                0 0 50px rgba(255,215,0,0.1);
+            box-shadow: inset 0 8px 32px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.1);
         }
         
         .wheel-center {
@@ -188,131 +141,75 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 64px;
-            height: 64px;
+            width: 44px;
+            height: 44px;
             background: linear-gradient(145deg, #1a1a30, #0f0f20);
             border: 2px solid #ffd700;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
             font-weight: 800;
             color: #ffd700;
-            box-shadow: 0 0 25px rgba(255,215,0,0.3);
             z-index: 10;
         }
         
-        /* Letters in circle */
         .letter {
             position: absolute;
-            width: 48px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(145deg, #3a3a55, #252540);
             border: 2px solid rgba(255,255,255,0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.15s ease;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             z-index: 5;
-        }
-        
-        .letter:hover, .letter:active {
-            background: #4a4a65;
-            transform: scale(1.1);
         }
         
         .letter.selected {
             background: linear-gradient(145deg, #ffd700, #ff9500);
             color: #1a1a1a;
             border-color: #ffd700;
-            box-shadow: 0 0 25px rgba(255,215,0,0.5);
-            transform: scale(0.95);
         }
         
-        /* SVG Trail */
-        .trail-svg {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 3;
-        }
+        .trail-svg { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+        .trail-path { stroke: #ffd700; stroke-width: 4; stroke-linecap: round; fill: none; opacity: 0.7; }
         
-        .trail-path {
-            stroke: #ffd700;
-            stroke-width: 5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            opacity: 0.7;
-            filter: drop-shadow(0 0 8px rgba(255,215,0,0.5));
-        }
-        
-        /* Buttons */
         .buttons {
             display: flex;
             justify-content: center;
             gap: 8px;
-            padding: 16px;
+            padding: 10px;
         }
         
-        .btn { padding: 10px 14px; font-size: 0.75rem; 
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+        .btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
             font-family: inherit;
         }
         
         .btn:active { transform: scale(0.95); }
-        
         .btn-shuffle { background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; }
         .btn-clear { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-submit { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; min-width: 64px; }
+        .btn-submit { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; min-width: 45px; }
         
-        
-        /* Word list */
-        /* .words {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 4px;
-            padding: 12px;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-        
-        */ .word-tile {
-            padding: 5px 12px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.5);
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .word-tile.found {
-            background: linear-gradient(145deg, #ffd700, #ff9500);
-            color: #1a1a1a;
-        }
-        
-        /* Popup */
         .popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            padding: 20px 40px;
-            border-radius: 20px;
-            font-size: 1.2rem;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 1rem;
             font-weight: 700;
             opacity: 0;
             pointer-events: none;
@@ -324,11 +221,10 @@
         .popup.success { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; }
         .popup.bonus { background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; }
         .popup.error { background: #ef4444; color: #fff; }
-        .popup.win { background: linear-gradient(145deg, #10b981, #059669); color: #fff; font-size: 1.6rem; }
+        .popup.win { background: linear-gradient(145deg, #10b981, #059669); color: #fff; font-size: 1.4rem; }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <h1>🔥 EVO</h1>
         <div class="header-stats">
@@ -343,28 +239,23 @@
         </div>
     </div>
     
-    <!-- Level -->
     <div class="level-banner">
-        <div class="level-icon" id="icon">🗼</div>
-        <div class="level-name" id="name">Nivel</div>
+        <div class="level-icon">🎯</div>
+        <div class="level-name">Nivel <span id="level-num">1</span> • <span id="found-count">0</span>/<span id="total-count">2</span></div>
     </div>
     
-    <!-- Progress -->
     <div class="progress-wrap">
         <div class="progress-bar">
             <div class="progress-fill" id="progress" style="width:0%"></div>
         </div>
     </div>
     
-    <!-- Crossword -->
     <div class="crossword">
         <div class="grid" id="grid"></div>
     </div>
     
-    <!-- Current word -->
     <div class="current-word" id="current"></div>
     
-    <!-- Wheel -->
     <div class="wheel-area">
         <div class="wheel" id="wheel">
             <div class="wheel-ring"></div>
@@ -373,41 +264,15 @@
         </div>
     </div>
     
-    <!-- Buttons -->
     <div class="buttons">
         <button class="btn btn-shuffle" onclick="shuffle()">🔀</button>
         <button class="btn btn-clear" onclick="clear()">🗑️</button>
         <button class="btn btn-submit" onclick="submit()">✓</button>
-        
     </div>
     
-    
-    
-    <!-- Popup -->
     <div class="popup" id="popup"></div>
     
     <script>
-        // ==================== DATA ====================
-        const PLACES = [
-            {i:'🗼',n:'Nivel'},
-            {i:'🗽',n:'Estátua Liberdade'},
-            {i:'🕌',n:'Taj Mahal'},
-            {i:'🏛️',n:'Partenón'},
-            {i:'🗿',n:'Moai'},
-            {i:'🏰',n:'Castelo'},
-            {i:'🕰️',n:'Big Ben'},
-            {i:'🏜️',n:'Pirámides'},
-            {i:'⛩️',n:'Templo'},
-            {i:'🏟️',n:'Coliseo'}
-        ];
-        
-        // Dictionary
-        const WORDS = new Set([
-            'arte','tear','area','cabe','coco','echo','hay','lee','rayo','reya','rueda','saco','sed','seda','sido','sube','tema','tiba','tiene','tino','tira','todo','tono','trae','uso','ve','via','vie','voz','yo','amor','mora','roma','mar','cabo','coba','boca','casa','caso','cosa','este','esto','rayo','raya','rey','reya','rica','rico','ruido','sale','seda','sed','sido','solo','taza','tema','tempo','tibia','vaya','voy','ya',
-            'casa','cosa','vida','noche','dia','amor','agua','aire','alto','ante','arbol','arte','avion','bajo','bello','bien','blusa','brazo','bueno','cabeza','cabo','cada','cafe','calle','calma','calor','cama','camino','campo','canto','cara','carne','carta','caso','cerca','cielo','cinco','clase','color','costa','crema','cruz','cuarto','cuatro','cuerpo','dicho','dolor','donde','dulce','duro','edad','ella','ello','epoca','error','falso','falta','fama','favor','fecha','feliz','feria','fiesta','flor','fondo','forma','fuego','fuente','fuerza','frio','gallo','gama','ganga','gato','genio','gente','gota','gozo','grado','grande','grito','grupo','guapo','haber','hacer','hacia','hasta','hecho','helado','heroe','hijo','hoja','hombre','hora','hotel','huevo','idea','igual','isla','jardin','jefe','joven','juez','jugar','junto','lado','lago','lana','largo','leche','leer','legal','lejos','lengua','leon','letra','libre','libro','linea','lista','lobo','loco','lucha','lugar','luz','madera','madre','mago','mala','malo','mana','mano','mapa','mar','marca','marco','marido','masa','mayor','media','medio','mejor','menos','mente','mesa','metal','metro','miedo','miel','milla','mirar','mismo','moda','modo','mono','monte','moral','morir','mover','mucho','muerte','mujer','mundo','nacer','nada','nadie','nariz','nata','nave','negro','nieve','nivel','noche','nombre','norte','nota','nube','nunca','obra','oceano','ocupa','ojala','ola','opera','orden','oro','otro','oveja','padre','pagar','pais','palabra','palma','pan','panel','papel','para','parar','pared','parte','pasar','paso','pasta','paz','pecho','pedir','pena','pensar','pera','perder','perro','pesca','pie','piedra','piel','pierna','pieza','pino','pintor','piso','plana','plano','planta','plata','playa','plaza','pluma','pobre','poco','poder','poeta','polo','poner','portal','precio','prensa','primo','pronto','prueba','pueblo','puerta','pues','puesto','punto','quedar','querer','quien','quinto','quitar','rana','raro','rata','rayo','raza','razon','real','receta','regla','reino','reloj','resto','rey','rico','rima','rincon','rio','ritmo','robar','roca','rodar','rojo','romper','ropa','rostro','rubio','rueda','ruido'
-        ]);
-        
-        // Levels
         const LEVELS = [
             {l:['A','R','T','E'], t:['ARTE','TEAR']},
             {l:['A','M','O','R'], t:['AMOR','MORA']},
@@ -421,27 +286,27 @@
             {l:['I','R','A','D'], t:['RIDA','IRA']}
         ];
         
-        // ==================== STATE ====================
+        const WORDS = new Set([
+            'arte','tear','area','cabe','casa','cobo','echo','hay','mora','omar','rayo','reya','roma','rueda','saco','sed','seda','sido','solo','tema','tiba','tiene','tino','tira','todo','tono','trae','uso','ve','via','vie','voz','yo','amor','cabo','boca','cosa','dia','ida','amor','mar','casa','casa','cosa','vida','noche','dia','amor','agua','aire','alto','ante','arte','avion','bajo','bello','bien','brazo','bueno','cabeza','cada','cafe','calle','calma','calor','cama','camino','campo','cara','carne','carta','cerca','cielo','cinco','clase','color','costa','crema','cruz','cuatro','cuerpo','dicho','dolor','donde','dulce','duro','edad','ella','error','falso','falta','fama','favor','fecha','feliz','feria','fiesta','flor','fondo','forma','fuego','fuente','fuerza','frio','gallo','ganga','gato','genio','gente','gota','gozo','grado','grande','grito','grupo','guapo','hacer','hacia','hasta','hecho','helado','heroe','hijo','hoja','hombre','hora','hotel','huevo','idea','igual','isla','jardin','jefe','joven','juez','jugar','junto','lado','lago','largo','leche','leer','legal','lejos','lengua','leon','letra','libre','libro','linea','lista','lobo','loco','lucha','lugar','luz','madera','madre','mala','malo','mana','mano','mapa','mar','marca','marco','marido','masa','mayor','media','medio','mejor','menos','mente','mesa','metal','metro','miedo','miel','mirar','mismo','moda','modo','mono','monte','moral','morir','mover','mucho','muerte','mujer','mundo','nacer','nada','nadie','nariz','nata','nave','negro','nieve','nivel','noche','nombre','norte','nota','nube','nunca','obra','oceano','ocupa','ola','opera','orden','oro','otro','oveja','padre','pagar','pais','palabra','palma','pan','papel','para','parar','pared','parte','pasar','paso','pasta','paz','pecho','pedir','pena','pensar','pera','perder','perro','pesca','pie','piedra','piel','pierna','pieza','pino','pintor','piso','planta','plata','playa','plaza','pluma','pobre','poco','poder','poeta','polo','poner','portal','precio','prensa','primo','pronto','prueba','pueblo','puerta','pues','punto','quedar','querer','quien','quinto','quitar','rana','raro','rata','rayo','raza','razon','receta','regla','reino','reloj','resto','rey','rico','rima','rincon','rio','ritmo','robar','roca','rojo','romper','ropa','rostro','rubio','rueda','ruido'
+        ]);
+        
         let level = 0;
-        let placements = [];
         let letters = [];
         let targets = [];
         let found = [];
         let swipe = [];
-        
+        let placements = [];
         let score = 0;
         
-        // ==================== INIT ====================
         function init() {
             const lvl = LEVELS[level % LEVELS.length];
             letters = shuffle([...lvl.l]);
             targets = lvl.t;
-            document.getElementById('total-count').textContent = targets.length;
             found = [];
             swipe = [];
             
-            document.getElementById('icon').textContent = PLACES[level % PLACES.length].i;
             document.getElementById('level-num').textContent = level + 1;
+            document.getElementById('total-count').textContent = targets.length;
             
             render();
         }
@@ -449,11 +314,9 @@
         function render() {
             renderWheel();
             renderGrid();
-            
             updateUI();
         }
         
-        // ==================== WHEEL ====================
         function renderWheel() {
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
@@ -469,51 +332,44 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 22) + 'px';
-                el.style.top = (y - 22) + 'px';
+                el.style.left = (x - 20) + 'px';
+                el.style.top = (y - 20) + 'px';
                 el.dataset.i = i;
-                el.ontouchstart = (e) => {
-                    e.preventDefault();
-                    startSwipe(parseInt(el.dataset.i));
-                };
-                el.onpointerdown = (e) => {
-                    e.preventDefault();
-                    startSwipe(parseInt(el.dataset.i));
-                };
+                
+                el.ontouchstart = (e) => { e.preventDefault(); startSwipe(i); };
+                el.onpointerdown = (e) => { e.preventDefault(); startSwipe(i); };
+                
                 w.appendChild(el);
             });
             
-            w.ontouchmove = (e) => {
-                e.preventDefault();
-                onSwipeMove(e);
-            };
-            w.onpointerup = onSwipeEnd;
+            w.ontouchmove = onSwipeMove;
+            w.onpointermove = onSwipeMove;
             w.ontouchend = onSwipeEnd;
+            w.onpointerup = onSwipeEnd;
         }
         
         function startSwipe(i) {
-            if (navigator.vibrate) navigator.vibrate(10);
             swipe = [i];
             updateSwipe();
+            if (navigator.vibrate) navigator.vibrate(10);
         }
         
         function onSwipeMove(e) {
             if (swipe.length === 0) return;
             
-            const touch = e.touches[0];
+            const touch = e.touches ? e.touches[0] : e;
             const el = document.elementFromPoint(touch.clientX, touch.clientY);
+            
             if (el && el.classList.contains('letter')) {
                 const i = parseInt(el.dataset.i);
-                const last = swipe[swipe.length - 1];
                 
-                // Allow any letter that's not already selected (more forgiving)
-                // Also allow going back (deselect last)
                 if (i === swipe[swipe.length - 2]) {
                     swipe.pop();
                     updateSwipe();
                 } else if (!swipe.includes(i)) {
                     swipe.push(i);
                     updateSwipe();
+                    if (navigator.vibrate) navigator.vibrate(5);
                 }
             }
         }
@@ -521,20 +377,16 @@
         function onSwipeEnd() {}
         
         function updateSwipe() {
-            if (navigator.vibrate) navigator.vibrate(5);
             const cx = 100, r = 70;
             const n = letters.length;
             
-            // Highlight letters
             document.querySelectorAll('.letter').forEach((el, i) => {
                 el.classList.toggle('selected', swipe.includes(i));
             });
             
-            // Center display
             const word = swipe.map(i => letters[i]).join('');
             document.getElementById('center').textContent = word || '-';
             
-            // Draw trail
             const trail = document.getElementById('trail');
             if (swipe.length < 2) {
                 trail.setAttribute('d', '');
@@ -549,7 +401,6 @@
                 trail.setAttribute('d', d);
             }
             
-            // Show current word
             const cur = document.getElementById('current');
             cur.innerHTML = '';
             const maxLen = Math.max(...targets.map(t => t.length));
@@ -562,14 +413,11 @@
             }
         }
         
-        // ==================== GRID ====================
         function renderGrid() {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
             
             const size = 4;
-            
-            // Simple: horizontal word at row 1, vertical word at col 1
             const word1 = targets[0] || 'ARTE';
             const word2 = targets[1] || 'TEAR';
             
@@ -578,7 +426,6 @@
                 { word: word2, col: 1, row: 1, dir: 'v' }
             ];
             
-            // Render cells
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     const cell = document.createElement('div');
@@ -612,10 +459,6 @@
                 }
             }
         }
-        }
-        }
-        
-        
         
         function updateUI() {
             document.getElementById('progress').style.width = (found.length / targets.length * 100) + '%';
@@ -624,7 +467,6 @@
             document.getElementById('score').textContent = score;
         }
         
-        // ==================== ACTIONS ====================
         function clear() {
             swipe = [];
             document.getElementById('trail').setAttribute('d', '');
@@ -666,7 +508,11 @@
                 if (found.length === targets.length) {
                     setTimeout(() => {
                         show('🎉 NIVEL!', 'win');
-                        setTimeout(() => { document.getElementById('total-count').textContent = targets.length; level++; init(); }, 2000);
+                        setTimeout(() => {
+                            document.getElementById('total-count').textContent = targets.length;
+                            level++;
+                            init();
+                        }, 2000);
                     }, 500);
                 }
             } else {
@@ -693,7 +539,6 @@
             return arr;
         }
         
-        // Start
         init();
     </script>
 </body>
