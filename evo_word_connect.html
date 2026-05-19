@@ -39,7 +39,7 @@
         
         .header-stats { display: flex; gap: 16px; }
         .stat { text-align: center; }
-        .stat-val { font-size: 0.8rem; font-weight: 700; color: #ffd700; }
+        .stat-val { font-size: 0.75rem; font-weight: 700; color: #ffd700; }
         .stat-lbl { font-size: 0.6rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
         
         .level-banner {
@@ -49,7 +49,7 @@
         }
         
         .level-icon { font-size: 24px; }
-        .level-name { font-size: 0.8rem; font-weight: 600; color: #ffd700; }
+        .level-name { font-size: 0.75rem; font-weight: 600; color: #ffd700; }
         
         .progress-wrap { padding: 8px 16px; }
         .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
@@ -65,7 +65,7 @@
         
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 3px;
             padding: 8px;
             background: rgba(0,0,0,0.3);
@@ -80,7 +80,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             color: rgba(255,255,255,0.3);
@@ -106,7 +106,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: #ffd700;
         }
@@ -406,57 +406,60 @@
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
             
-            const size = 4;
-            const word1 = targets[0] || 'ARTE';
-            const word2 = targets[1] || 'TEAR';
+            const size = 5;
             
-            // Horizontal word: starts at col 0, row 1 (middle-left)
-            // Vertical word: starts at col 0, row 0 - crosses at first letter
-            let hCol = 0, hRow = 1;
-            let vCol = 0, vRow = 0;
+            // Build crossword with proper intersections
+            placements = [];
             
-            // Find intersection letter
-            for (let i = 0; i < word1.length; i++) {
-                for (let j = 0; j < word2.length; j++) {
-                    if (word1[i] === word2[j]) {
-                        vCol = i;
-                        vRow = j;
-                        break;
+            // First word horizontal
+            const w1 = targets[0];
+            placements.push({ word: w1, col: 1, row: 2, dir: 'h' });
+            
+            // Try to cross second word
+            const w2 = targets[1];
+            outer: for (let i = 0; i < w1.length; i++) {
+                for (let j = 0; j < w2.length; j++) {
+                    if (w1[i] === w2[j]) {
+                        placements.push({ word: w2, col: 1 + i, row: 2 - j, dir: 'v' });
+                        break outer;
                     }
                 }
-                if (vCol > 0) break;
             }
             
-            placements = [
-                { word: word1, col: hCol, row: hRow, dir: 'h' },
-                { word: word2, col: vCol, row: vRow, dir: 'v' }
-            ];
+            if (placements.length < 2) {
+                placements.push({ word: w2, col: 0, row: 1 + w2.length, dir: 'v' });
+            }
             
+            // Render grid
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
                     
                     let letter = null;
-                    let isFound = false;
+                    let wordFound = false;
                     
                     for (const pl of placements) {
-                        for (let k = 0; k < pl.word.length; k++) {
-                            const tc = pl.dir === 'h' ? pl.col + k : pl.col;
-                            const tr = pl.dir === 'h' ? pl.row : pl.row + k;
-                            if (tr === r && tc === c) {
-                                letter = pl.word[k];
-                                isFound = found.includes(pl.word);
+                        if (pl.dir === 'h') {
+                            if (r === pl.row && c >= pl.col && c < pl.col + pl.word.length) {
+                                letter = pl.word[c - pl.col];
+                                wordFound = found.includes(pl.word);
+                                break;
+                            }
+                        } else {
+                            if (c === pl.col && r >= pl.row && r < pl.row + pl.word.length) {
+                                letter = pl.word[r - pl.row];
+                                wordFound = found.includes(pl.word);
                                 break;
                             }
                         }
-                        if (letter) break;
                     }
                     
                     if (letter) {
-                        cell.textContent = isFound ? letter.toUpperCase() : '_';
-                        cell.classList.add('has-letter');
-                        if (isFound) cell.classList.add('found');
+                        cell.textContent = wordFound ? letter.toUpperCase() : '';
+                        if (!wordFound) cell.textContent = '_';
+                        if (wordFound) cell.classList.add('found');
+                        else cell.classList.add('has-letter');
                     } else {
                         cell.classList.add('empty');
                     }
