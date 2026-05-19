@@ -410,9 +410,26 @@
             const word1 = targets[0] || 'ARTE';
             const word2 = targets[1] || 'TEAR';
             
+            // Horizontal word: starts at col 0, row 1 (middle-left)
+            // Vertical word: starts at col 0, row 0 - crosses at first letter
+            let hCol = 0, hRow = 1;
+            let vCol = 0, vRow = 0;
+            
+            // Find intersection letter
+            for (let i = 0; i < word1.length; i++) {
+                for (let j = 0; j < word2.length; j++) {
+                    if (word1[i] === word2[j]) {
+                        vCol = i;
+                        vRow = j;
+                        break;
+                    }
+                }
+                if (vCol > 0) break;
+            }
+            
             placements = [
-                { word: word1, col: 1, row: 1, dir: 'h' },
-                { word: word2, col: 1, row: 1, dir: 'v' }
+                { word: word1, col: hCol, row: hRow, dir: 'h' },
+                { word: word2, col: vCol, row: vRow, dir: 'v' }
             ];
             
             for (let r = 0; r < size; r++) {
