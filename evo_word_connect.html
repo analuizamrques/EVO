@@ -144,7 +144,18 @@
             inset: 0;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #2a2a45, #15152a);
-            box-shadow: inset 0 8px 32px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.1);
+            box-shadow: 
+                inset 0 8px 32px rgba(0,0,0,0.5),
+                inset 100px 100px 60px rgba(255,215,0,0.05),
+                0 0 30px rgba(255,215,0,0.1);
+        }
+        
+        .wheel-ring::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,215,0,0.3);
         }
         
         .wheel-center {
@@ -332,7 +343,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 150, r = 100;
+            const cx = 150, r = 112;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -400,7 +411,7 @@
         
         
         function updateSwipe() {
-            const cx = 150, r = 100;
+            const cx = 150, r = 112;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
