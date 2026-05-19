@@ -509,25 +509,24 @@
 
         .fab-submit {
             position: fixed;
-            bottom: 90px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: linear-gradient(145deg, #ffd700, #ff9500);
-            border: 4px solid #fff;
+            border: 3px solid #fff;
             color: #1a1a1a;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 
-                0 8px 32px rgba(255,215,0,0.6),
-                0 0 40px rgba(255,215,0,0.3);
+            box-shadow: 0 6px 24px rgba(255,215,0,0.5);
             z-index: 200;
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
     </style>
 </head>
@@ -674,13 +673,6 @@
         }
         
         function updateSwipe() {
-            // Auto-show submit hint when word is long enough
-            const word = swipe.map(i => letters[i]).join('');
-            
-            } else {
-                document.querySelector('.btn-submit').style.transform = 'scale(1)';
-                
-            }
             const { cx, r, n } = window._wheelParams || { cx: 100, r: 70, n: 4 };
             
             document.querySelectorAll('.letter').forEach((el, i) => {
