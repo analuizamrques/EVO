@@ -113,6 +113,8 @@
         }
         
         .cell.empty { background: transparent; }
+        .cell.has-letter { background: rgba(255,255,255,0.1); }
+        .cell.has-letter:not(.found) { color: rgba(255,255,255,0.2); }
         
         .cell.found {
             background: linear-gradient(145deg, #ffd700, #ff9500);
@@ -565,20 +567,14 @@
             grid.innerHTML = '';
             
             const size = 4;
-            const cells = Array(size).fill(null).map(() => Array(size).fill(null));
+            
+            // Build placement map - all words placed
             const placements = [];
-            
-            // Place first word horizontally
-            const first = targets.sort((a, b) => b.length - a.length)[0];
+            const first = targets[0];
             const startCol = Math.floor((size - first.length) / 2);
-            const row = 1;
+            placements.push({ word: first, col: startCol, row: 1, dir: 'h' });
             
-            placements.push({ word: first, col: startCol, row: row, dir: 'h' });
-            for (let i = 0; i < first.length; i++) {
-                cells[row][startCol + i] = first[i];
-            }
-            
-            // Try to cross other words
+            // Try cross
             for (const w of targets) {
                 if (w === first) continue;
                 for (const pl of placements) {
@@ -587,31 +583,16 @@
                             if (w[i] === pl.word[j]) {
                                 const newCol = pl.dir === 'h' ? pl.col + j : pl.col;
                                 const newRow = pl.dir === 'h' ? pl.row : pl.row + j;
-                                const newDir = pl.dir === 'h' ? 'v' : 'h';
-                                
-                                // Check if valid
-                                let valid = true;
-                                for (let k = 0; k < w.length; k++) {
-                                    const tc = newDir === 'h' ? newCol + k : newCol;
-                                    const tr = newDir === 'h' ? newRow : newRow + k;
-                                    if (tc < 0 || tc >= size || tr < 0 || tr >= size) valid = false;
-                                    else if (cells[tr][tc] && cells[tr][tc] !== w[k]) valid = false;
-                                }
-                                
-                                if (valid) {
-                                    placements.push({ word: w, col: newCol, row: newRow, dir: newDir });
-                                    for (let k = 0; k < w.length; k++) {
-                                        const tc = newDir === 'h' ? newCol + k : newCol;
-                                        const tr = newDir === 'h' ? newRow : newRow + k;
-                                        cells[tr][tc] = w[k];
-                                    }
+                                if (newCol >= 0 && newCol + w.length <= size && newRow >= 0 && newRow + w.length <= size) {
+                                    placements.push({ word: w, col: newCol, row: newRow, dir: pl.dir === 'h' ? 'v' : 'h' });
+                                    w = 'XXXX'; // Marker
                                     break;
                                 }
                             }
                         }
-                        if (placements.find(p => p.word === w)) break;
+                        if (w === 'XXXX') break;
                     }
-                    if (placements.find(p => p.word === w)) break;
+                    if (w === 'XXXX') break;
                 }
             }
             
@@ -621,18 +602,27 @@
                     const cell = document.createElement('div');
                     cell.className = 'cell';
                     
-                    if (cells[r][c]) {
-                        cell.textContent = cells[r][c].toUpperCase();
-                        
-                        // Check if this cell belongs to a found word
-                        const owner = placements.find(p => {
-                            if (p.dir === 'h') return p.row === r && c >= p.col && c < p.col + p.word.length;
-                            return p.col === c && r >= p.row && r < p.row + p.word.length;
-                        });
-                        
-                        if (owner && found.includes(owner.word)) {
-                            cell.classList.add('found');
+                    // Find letter at this position
+                    let letter = null;
+                    let isFound = false;
+                    
+                    for (const pl of placements) {
+                        for (let k = 0; k < pl.word.length; k++) {
+                            const tc = pl.dir === 'h' ? pl.col + k : pl.col;
+                            const tr = pl.dir === 'h' ? pl.row : pl.row + k;
+                            if (tr === r && tc === c) {
+                                letter = pl.word[k];
+                                isFound = found.includes(pl.word);
+                                break;
+                            }
                         }
+                        if (letter) break;
+                    }
+                    
+                    if (letter) {
+                        cell.textContent = isFound ? letter.toUpperCase() : '';
+                        cell.classList.add('has-letter');
+                        if (isFound) cell.classList.add('found');
                     } else {
                         cell.classList.add('empty');
                     }
@@ -649,7 +639,7 @@
             targets.forEach(w => {
                 const tile = document.createElement('div');
                 tile.className = 'word-tile' + (found.includes(w) ? ' found' : '');
-                tile.textContent = found.includes(w) ? w : '_'.repeat(w.length);
+                tile.textContent = w;
                 container.appendChild(tile);
             });
         }
