@@ -30,7 +30,7 @@
         }
         
         .header h1 {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             font-weight: 700;
             background: linear-gradient(90deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
@@ -39,7 +39,7 @@
         
         .header-stats { display: flex; gap: 16px; }
         .stat { text-align: center; }
-        .stat-val { font-size: 0.75rem; font-weight: 700; color: #ffd700; }
+        .stat-val { font-size: 0.9rem; font-weight: 700; color: #ffd700; }
         .stat-lbl { font-size: 0.6rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
         
         .level-banner {
@@ -49,13 +49,19 @@
         }
         
         .level-icon { font-size: 24px; }
-        .level-name { font-size: 0.75rem; font-weight: 600; color: #ffd700; }
+        .level-name { font-size: 0.9rem; font-weight: 600; color: #ffd700; }
         
         .progress-wrap { padding: 8px 16px; }
         .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ff9500); transition: width 0.4s ease; }
         
         .crossword {
+            flex: 1;
+            min-height: 150px;
+            overflow: auto;
+            justify-content: flex-start;
+            padding-top: 12px;
+        }
             overflow: auto;
             flex: 1;
             display: flex;
@@ -82,7 +88,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             font-weight: 700;
             text-transform: uppercase;
             color: rgba(255,255,255,0.3);
@@ -108,7 +114,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: #ffd700;
         }
@@ -132,8 +138,8 @@
         }
         
         .wheel {
-            width: 240px;
-            height: 240px;
+            width: 200px;
+            height: 200px;
         }
             width: 240px;
             height: 240px;
@@ -179,7 +185,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             font-weight: 800;
             color: #ffd700;
             z-index: 10;
@@ -195,7 +201,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
             z-index: 5;
@@ -220,7 +226,7 @@
         .btn {
             padding: 8px 14px;
             border-radius: 10px;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             font-weight: 600;
             border: none;
             cursor: pointer;
@@ -239,7 +245,7 @@
             transform: translate(-50%, -50%) scale(0.8);
             padding: 16px 32px;
             border-radius: 16px;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             font-weight: 700;
             opacity: 0;
             pointer-events: none;
@@ -351,7 +357,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 120, r = 88;
+            const cx = 100, r = 70;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -362,8 +368,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 22) + 'px';
-                el.style.top = (y - 22) + 'px';
+                el.style.left = (x - 20) + 'px';
+                el.style.top = (y - 20) + 'px';
                 el.dataset.i = i;
                 
                 el.ontouchstart = (e) => { e.preventDefault(); selectLetter(i); };
@@ -419,7 +425,7 @@
         
         
         function updateSwipe() {
-            const cx = 120, r = 88;
+            const cx = 100, r = 70;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
