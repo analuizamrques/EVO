@@ -56,6 +56,7 @@
         .progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ff9500); transition: width 0.4s ease; }
         
         .crossword {
+            overflow: auto;
             flex: 1;
             display: flex;
             align-items: center;
@@ -65,11 +66,12 @@
         
         .grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 3px;
-            padding: 8px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
+            grid-template-columns: repeat(5, 32px);
+            gap: 2px;
+            padding: 6px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(255,215,0,0.2);
         }
         
         .cell {
@@ -86,8 +88,8 @@
             color: rgba(255,255,255,0.3);
         }
         
-        .cell.has-letter { background: rgba(255,255,255,0.1); }
-        .cell.found { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; }
+        .cell.has-letter { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .cell.found { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; border-color: #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
         
         .current-word {
             display: flex;
@@ -123,6 +125,7 @@
         }
         
         .wheel {
+            margin: 0 auto;
             position: relative;
             width: 200px;
             height: 200px;
@@ -321,7 +324,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 140, r = 100;
+            const cx = 150, r = 110;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -336,10 +339,21 @@
                 el.style.top = (y - 22) + 'px';
                 el.dataset.i = i;
                 
+                el.ontouchstart = (e) => { e.preventDefault(); selectLetter(i); };
                 el.onclick = () => selectLetter(i);
                 
                 w.appendChild(el);
             });
+            
+            // Allow clicking empty space to go back
+            w.onclick = (e) => {
+                if (e.target === w || e.target.classList.contains('wheel-ring') || e.target.classList.contains('wheel-center')) {
+                    if (swipe.length > 0) {
+                        swipe.pop();
+                        updateSwipe();
+                    }
+                }
+            };
             
             
         }
@@ -366,7 +380,7 @@
         function onSwipeEnd() {}
         
         function updateSwipe() {
-            const cx = 140, r = 100;
+            const cx = 150, r = 110;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
