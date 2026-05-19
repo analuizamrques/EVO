@@ -336,41 +336,30 @@
                 el.style.top = (y - 22) + 'px';
                 el.dataset.i = i;
                 
-                el.ontouchstart = (e) => { e.preventDefault(); startSwipe(i); };
-                el.onpointerdown = (e) => { e.preventDefault(); startSwipe(i); };
+                el.onclick = () => selectLetter(i);
                 
                 w.appendChild(el);
             });
             
-            w.ontouchmove = onSwipeMove;
-            w.onpointermove = onSwipeMove;
-            w.ontouchend = onSwipeEnd;
-            w.onpointerup = onSwipeEnd;
-        }
-        
-        function startSwipe(i) {
-            swipe = [i];
-            updateSwipe();
-            if (navigator.vibrate) navigator.vibrate(10);
-        }
-        
-        function onSwipeMove(e) {
-            if (swipe.length === 0) return;
             
-            const touch = e.touches ? e.touches[0] : e;
+        }
+        
+        function selectLetter(i) {
+            if (!swipe.includes(i)) {
+                swipe.push(i);
+                updateSwipe();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+        }
+        
+        function onTouchMove(e) {
+            
             const el = document.elementFromPoint(touch.clientX, touch.clientY);
             
             if (el && el.classList.contains('letter')) {
                 const i = parseInt(el.dataset.i);
                 
-                if (i === swipe[swipe.length - 2]) {
-                    swipe.pop();
-                    updateSwipe();
-                } else if (!swipe.includes(i)) {
-                    swipe.push(i);
-                    updateSwipe();
-                    if (navigator.vibrate) navigator.vibrate(5);
-                }
+                swipe.push(i); updateSwipe();
             }
         }
         
