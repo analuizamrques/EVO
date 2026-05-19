@@ -346,7 +346,7 @@
     <!-- Level -->
     <div class="level-banner">
         <div class="level-icon" id="icon">🗼</div>
-        <div class="level-name" id="name">Torre Eiffel</div>
+        <div class="level-name" id="name">Nivel</div>
     </div>
     
     <!-- Progress -->
@@ -381,8 +381,7 @@
         
     </div>
     
-    <!-- Words -->
-    <div class="words" id="words"></div>
+    
     
     <!-- Popup -->
     <div class="popup" id="popup"></div>
@@ -390,7 +389,7 @@
     <script>
         // ==================== DATA ====================
         const PLACES = [
-            {i:'🗼',n:'Torre Eiffel'},
+            {i:'🗼',n:'Nivel'},
             {i:'🗽',n:'Estátua Liberdade'},
             {i:'🕌',n:'Taj Mahal'},
             {i:'🏛️',n:'Partenón'},
@@ -436,11 +435,12 @@
             const lvl = LEVELS[level % LEVELS.length];
             letters = shuffle([...lvl.l]);
             targets = lvl.t;
+            document.getElementById('total-count').textContent = targets.length;
             found = [];
             swipe = [];
             
             document.getElementById('icon').textContent = PLACES[level % PLACES.length].i;
-            document.getElementById('name').textContent = PLACES[level % PLACES.length].n;
+            document.getElementById('level-num').textContent = level + 1;
             
             render();
         }
@@ -620,7 +620,7 @@
                     }
                     
                     if (letter) {
-                        cell.textContent = isFound ? letter.toUpperCase() : '';
+                        cell.textContent = isFound ? letter.toUpperCase() : '_';
                         cell.classList.add('has-letter');
                         if (isFound) cell.classList.add('found');
                     } else {
@@ -632,20 +632,11 @@
             }
         }
         
-        function renderWords() {
-            const container = document.getElementById('words');
-            container.innerHTML = '';
-            
-            targets.forEach(w => {
-                const tile = document.createElement('div');
-                tile.className = 'word-tile' + (found.includes(w) ? ' found' : '');
-                tile.textContent = w;
-                container.appendChild(tile);
-            });
-        }
+        
         
         function updateUI() {
             document.getElementById('progress').style.width = (found.length / targets.length * 100) + '%';
+            document.getElementById('found-count').textContent = found.length;
             document.getElementById('level').textContent = level + 1;
             document.getElementById('score').textContent = score;
         }
@@ -687,17 +678,17 @@
             if (targets.includes(word)) {
                 found.push(word);
                 score += word.length * 15;
-                show('✓ ' + word, 'success');
+                show('✓', 'success');
                 
                 if (found.length === targets.length) {
                     setTimeout(() => {
                         show('🎉 NIVEL!', 'win');
-                        setTimeout(() => { level++; init(); }, 2000);
+                        setTimeout(() => { document.getElementById('total-count').textContent = targets.length; level++; init(); }, 2000);
                     }, 500);
                 }
             } else {
                 score += word.length * 5;
-                show('★ ' + word, 'bonus');
+                show('★', 'bonus');
             }
             
             clear();
