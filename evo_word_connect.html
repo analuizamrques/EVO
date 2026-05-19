@@ -28,7 +28,7 @@
             height: 100dvh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: auto; -webkit-overflow-scrolling: touch;
             touch-action: none;
             -webkit-user-select: none;
             user-select: none;
@@ -136,7 +136,7 @@
             background: rgba(255,255,255,0.08);
             border-radius: 3px;
             margin: 14px 0;
-            overflow: hidden;
+            overflow: auto; -webkit-overflow-scrolling: touch;
         }
         
         .progress-fill {
@@ -235,7 +235,7 @@
         
         /* === BOTTOM ZONE: PREMIUM WHEEL === */
         .bottom-zone {
-            flex: 0 0 44%;
+            flex: 0 0 42%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -247,8 +247,8 @@
         /* Premium Wheel Container */
         .wheel-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 170px;
+            height: 170px;
         }
         
         /* Outer glow ring */
@@ -304,7 +304,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: var(--gold);
             z-index: 15;
@@ -342,7 +342,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.85rem;
             font-weight: 700;
             cursor: pointer;
             z-index: 12;
@@ -369,11 +369,16 @@
             transform: scale(1.05);
         }
         
-        /* Buttons */
+        /* Buttons - floating between wheel and edge */
         .buttons {
             display: flex;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 14px;
+            padding: 10px 16px;
+            background: rgba(20,20,40,0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255,215,0,0.15);
         }
         
         .btn {
@@ -572,9 +577,9 @@
         function renderWheel() {
             const wheel = document.getElementById('wheel');
             const container = wheel;
-            const size = 200;
+            const size = 170;
             const cx = size / 2;
-            const r = size * 0.35;
+            const r = size * 0.38;
             
             // Clear letters
             container.querySelectorAll(':scope > .letter').forEach(el => el.remove());
@@ -588,8 +593,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 22) + 'px';
-                el.style.top = (y - 22) + 'px';
+                el.style.left = (x - 19) + 'px';
+                el.style.top = (y - 19) + 'px';
                 el.dataset.i = i;
                 el.onclick = () => selectLetter(i);
                 
