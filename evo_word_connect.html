@@ -30,7 +30,7 @@
         }
         
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             background: linear-gradient(90deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
@@ -116,6 +116,7 @@
         .curr-char.empty { background: transparent; border-bottom-color: rgba(255,255,255,0.15); }
         
         .wheel-area {
+            height: 260px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -131,6 +132,13 @@
         }
         
         .wheel {
+            width: 240px;
+            height: 240px;
+        }
+            width: 240px;
+            height: 240px;
+        }
+        .wheel_old {
             left: 50%;
             transform: translateX(-50%);
             margin: 0 auto;
@@ -187,7 +195,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             z-index: 5;
@@ -231,7 +239,7 @@
             transform: translate(-50%, -50%) scale(0.8);
             padding: 16px 32px;
             border-radius: 16px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             opacity: 0;
             pointer-events: none;
@@ -343,7 +351,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 150, r = 112;
+            const cx = 120, r = 88;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -354,8 +362,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 28) + 'px';
-                el.style.top = (y - 28) + 'px';
+                el.style.left = (x - 22) + 'px';
+                el.style.top = (y - 22) + 'px';
                 el.dataset.i = i;
                 
                 el.ontouchstart = (e) => { e.preventDefault(); selectLetter(i); };
@@ -411,7 +419,7 @@
         
         
         function updateSwipe() {
-            const cx = 150, r = 112;
+            const cx = 120, r = 88;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
