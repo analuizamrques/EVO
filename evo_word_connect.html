@@ -116,6 +116,12 @@
         .curr-char.empty { background: transparent; border-bottom-color: rgba(255,255,255,0.15); }
         
         .wheel-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 320px;
+            position: relative;
+        }
             height: 220px;
             position: relative;
             display: flex;
@@ -125,6 +131,8 @@
         }
         
         .wheel {
+            left: 50%;
+            transform: translateX(-50%);
             margin: 0 auto;
             position: relative;
             width: 200px;
@@ -324,7 +332,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 150, r = 110;
+            const cx = 150, r = 115;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -335,8 +343,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 22) + 'px';
-                el.style.top = (y - 22) + 'px';
+                el.style.left = (x - 26) + 'px';
+                el.style.top = (y - 26) + 'px';
                 el.dataset.i = i;
                 
                 el.ontouchstart = (e) => { e.preventDefault(); selectLetter(i); };
@@ -392,7 +400,7 @@
         
         
         function updateSwipe() {
-            const cx = 150, r = 110;
+            const cx = 150, r = 115;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
