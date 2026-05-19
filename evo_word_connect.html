@@ -157,6 +157,7 @@
         
         /* CIRCULAR WHEEL - BOTTOM */
         .wheel-area {
+            touch-action: none;
             height: 260px;
             position: relative;
             display: flex;
@@ -203,7 +204,7 @@
         /* Letters in circle */
         .letter {
             position: absolute;
-            width: 44px;
+            width: 48px;
             height: 44px;
             background: linear-gradient(145deg, #3a3a55, #252540);
             border: 2px solid rgba(255,255,255,0.1);
@@ -211,7 +212,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -274,7 +275,7 @@
         .btn-shuffle { background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; }
         .btn-clear { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
         .btn-submit { background: linear-gradient(145deg, #ffd700, #ff9500); color: #1a1a1a; min-width: 64px; }
-        .btn-hint { background: linear-gradient(145deg, #a855f7, #9333ea); color: #fff; }
+        
         
         /* Word list */
         .words {
@@ -309,7 +310,7 @@
             transform: translate(-50%, -50%) scale(0.8);
             padding: 20px 40px;
             border-radius: 20px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             opacity: 0;
             pointer-events: none;
@@ -375,7 +376,7 @@
         <button class="btn btn-shuffle" onclick="shuffle()">🔀</button>
         <button class="btn btn-clear" onclick="clear()">🗑️</button>
         <button class="btn btn-submit" onclick="submit()">✓</button>
-        <button class="btn btn-hint" onclick="hint()">💡</button>
+        
     </div>
     
     <!-- Words -->
@@ -425,7 +426,7 @@
         let targets = [];
         let found = [];
         let swipe = [];
-        let hints = 3;
+        
         let score = 0;
         
         // ==================== INIT ====================
@@ -454,7 +455,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 130, r = 85;
+            const cx = 130, r = 95;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -465,9 +466,13 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 22) + 'px';
-                el.style.top = (y - 22) + 'px';
+                el.style.left = (x - 24) + 'px';
+                el.style.top = (y - 24) + 'px';
                 el.dataset.i = i;
+                el.ontouchstart = (e) => {
+                    e.preventDefault();
+                    startSwipe(parseInt(el.dataset.i));
+                };
                 el.onpointerdown = (e) => {
                     e.preventDefault();
                     startSwipe(parseInt(el.dataset.i));
@@ -475,11 +480,16 @@
                 w.appendChild(el);
             });
             
-            w.onpointermove = onSwipeMove;
+            w.ontouchmove = (e) => {
+                e.preventDefault();
+                onSwipeMove(e);
+            };
             w.onpointerup = onSwipeEnd;
+            w.ontouchend = onSwipeEnd;
         }
         
         function startSwipe(i) {
+            if (navigator.vibrate) navigator.vibrate(10);
             swipe = [i];
             updateSwipe();
         }
@@ -487,17 +497,18 @@
         function onSwipeMove(e) {
             if (swipe.length === 0) return;
             
-            const el = document.elementFromPoint(e.clientX, e.clientY);
+            const touch = e.touches[0];
+            const el = document.elementFromPoint(touch.clientX, touch.clientY);
             if (el && el.classList.contains('letter')) {
                 const i = parseInt(el.dataset.i);
                 const last = swipe[swipe.length - 1];
                 
-                // Check adjacent
-                const n = letters.length;
-                const diff = Math.abs(i - last);
-                const adjacent = diff === 1 || diff === n - 1;
-                
-                if (!swipe.includes(i) && adjacent) {
+                // Allow any letter that's not already selected (more forgiving)
+                // Also allow going back (deselect last)
+                if (i === swipe[swipe.length - 2]) {
+                    swipe.pop();
+                    updateSwipe();
+                } else if (!swipe.includes(i)) {
                     swipe.push(i);
                     updateSwipe();
                 }
@@ -507,7 +518,8 @@
         function onSwipeEnd() {}
         
         function updateSwipe() {
-            const cx = 130, r = 85;
+            if (navigator.vibrate) navigator.vibrate(5);
+            const cx = 130, r = 95;
             const n = letters.length;
             
             // Highlight letters
@@ -699,22 +711,6 @@
             }
             
             clear();
-            render();
-        }
-        
-        function hint() {
-            if (hints <= 0) {
-                show('Sin pistas!', 'error');
-                return;
-            }
-            
-            const unfound = targets.find(w => !found.includes(w));
-            if (!unfound) return;
-            
-            hints--;
-            score = Math.max(0, score - 30);
-            found.push(unfound);
-            show('💡', 'success');
             render();
         }
         
