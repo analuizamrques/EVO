@@ -30,7 +30,7 @@
         }
         
         .header h1 {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, #ffd700, #ff9500);
             -webkit-background-clip: text;
@@ -176,7 +176,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             cursor: pointer;
             z-index: 5;
@@ -220,7 +220,7 @@
             transform: translate(-50%, -50%) scale(0.8);
             padding: 16px 32px;
             border-radius: 16px;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             opacity: 0;
             pointer-events: none;
@@ -332,7 +332,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 150, r = 90;
+            const cx = 150, r = 100;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -343,8 +343,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 23) + 'px';
-                el.style.top = (y - 23) + 'px';
+                el.style.left = (x - 28) + 'px';
+                el.style.top = (y - 28) + 'px';
                 el.dataset.i = i;
                 
                 el.ontouchstart = (e) => { e.preventDefault(); selectLetter(i); };
@@ -400,7 +400,7 @@
         
         
         function updateSwipe() {
-            const cx = 150, r = 90;
+            const cx = 150, r = 100;
             const n = letters.length;
             
             document.querySelectorAll('.letter').forEach((el, i) => {
