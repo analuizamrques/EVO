@@ -379,11 +379,18 @@
         function renderWheel() {
             // Calculate circle parameters based on wheel-box size
             const wheelBox = document.getElementById('wheel');
-            const boxSize = Math.min(wheelBox.offsetWidth, wheelBox.offsetHeight);
+            let boxSize = Math.min(wheelBox.offsetWidth, wheelBox.offsetHeight);
+            if (!boxSize || boxSize < 100) boxSize = 120; // Fallback for initial render
             const cx = boxSize / 2;
-            const r = boxSize * 0.32; // Letters at 32% of box
+            const r = boxSize * 0.35; // Letters at 35% of box
             
-            const layer = document.getElementById('wheel').querySelector('.letters-layer') || createLettersLayer();
+            let layer = document.getElementById('wheel').querySelector('.letters-layer');
+            if (!layer) { 
+                layer = document.createElement('div');
+                layer.className = 'letters-layer';
+                document.getElementById('wheel').appendChild(layer);
+            }
+            layer.innerHTML = '';
             
             // Clear existing letters
             layer.innerHTML = '';
