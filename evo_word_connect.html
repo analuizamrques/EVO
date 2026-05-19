@@ -261,7 +261,7 @@
             padding: 16px;
         }
         
-        .btn {
+        .btn { padding: 10px 14px; font-size: 0.75rem; 
             padding: 12px 20px;
             border-radius: 12px;
             font-size: 0.8rem;
@@ -457,7 +457,7 @@
             const w = document.getElementById('wheel');
             w.querySelectorAll('.letter').forEach(el => el.remove());
             
-            const cx = 130, r = 95;
+            const cx = 100, r = 70;
             const n = letters.length;
             
             letters.forEach((letter, i) => {
@@ -468,8 +468,8 @@
                 const el = document.createElement('div');
                 el.className = 'letter';
                 el.textContent = letter;
-                el.style.left = (x - 24) + 'px';
-                el.style.top = (y - 24) + 'px';
+                el.style.left = (x - 22) + 'px';
+                el.style.top = (y - 22) + 'px';
                 el.dataset.i = i;
                 el.ontouchstart = (e) => {
                     e.preventDefault();
@@ -521,7 +521,7 @@
         
         function updateSwipe() {
             if (navigator.vibrate) navigator.vibrate(5);
-            const cx = 130, r = 95;
+            const cx = 100, r = 70;
             const n = letters.length;
             
             // Highlight letters
