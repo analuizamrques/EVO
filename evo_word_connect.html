@@ -755,7 +755,7 @@
                     }
                     
                     if (letter) {
-                        cell.textContent = (letter && !isFound) ? letter.toUpperCase() : '';
+                        cell.textContent = isFound ? letter.toUpperCase() : '';
                         cell.classList.add('has-letter');
                         if (isFound) cell.classList.add('found');
                     }
