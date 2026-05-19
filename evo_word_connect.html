@@ -423,6 +423,7 @@
         
         // ==================== STATE ====================
         let level = 0;
+        let placements = [];
         let letters = [];
         let targets = [];
         let found = [];
@@ -568,33 +569,14 @@
             
             const size = 4;
             
-            // Build placement map - all words placed
-            const placements = [];
-            const first = targets[0];
-            const startCol = Math.floor((size - first.length) / 2);
-            placements.push({ word: first, col: startCol, row: 1, dir: 'h' });
+            // Simple: horizontal word at row 1, vertical word at col 1
+            const word1 = targets[0] || 'ARTE';
+            const word2 = targets[1] || 'TEAR';
             
-            // Try cross
-            for (const w of targets) {
-                if (w === first) continue;
-                for (const pl of placements) {
-                    for (let i = 0; i < w.length; i++) {
-                        for (let j = 0; j < pl.word.length; j++) {
-                            if (w[i] === pl.word[j]) {
-                                const newCol = pl.dir === 'h' ? pl.col + j : pl.col;
-                                const newRow = pl.dir === 'h' ? pl.row : pl.row + j;
-                                if (newCol >= 0 && newCol + w.length <= size && newRow >= 0 && newRow + w.length <= size) {
-                                    placements.push({ word: w, col: newCol, row: newRow, dir: pl.dir === 'h' ? 'v' : 'h' });
-                                    w = 'XXXX'; // Marker
-                                    break;
-                                }
-                            }
-                        }
-                        if (w === 'XXXX') break;
-                    }
-                    if (w === 'XXXX') break;
-                }
-            }
+            placements = [
+                { word: word1, col: 1, row: 1, dir: 'h' },
+                { word: word2, col: 1, row: 1, dir: 'v' }
+            ];
             
             // Render cells
             for (let r = 0; r < size; r++) {
@@ -602,7 +584,6 @@
                     const cell = document.createElement('div');
                     cell.className = 'cell';
                     
-                    // Find letter at this position
                     let letter = null;
                     let isFound = false;
                     
@@ -630,6 +611,8 @@
                     grid.appendChild(cell);
                 }
             }
+        }
+        }
         }
         
         
